@@ -67,6 +67,14 @@ const Step1 = (props) => {
     }
   };
 
+  const signWithGoogle = async () => {
+    try {
+      window.location.href = "http://localhost:3000/auth/google";
+    } catch {
+      console.error("Error during Google Sign-In:", error);
+    }
+  };
+
   return (
     <div
       ref={signupModalref}
@@ -117,7 +125,29 @@ const Step1 = (props) => {
             </button>
           </div>
         </Form>
-      </div>{" "}
+      </div>
+      <div className="text-center">OR</div>
+      <div className="m-3">
+        <button
+          onClick={signWithGoogle}
+          type="submit"
+          className="w-full bg-white text-black p-2 mt-4 rounded-md border border-black"
+        >
+          sign with google
+        </button>
+        <button
+          type="submit"
+          className="w-full bg-white text-black p-2 mt-4 rounded-md border border-black"
+        >
+          sign with facebook
+        </button>
+        <button
+          type="submit"
+          className="w-full bg-white text-black p-2 mt-4 rounded-md border border-black"
+        >
+          sign with Apple
+        </button>
+      </div>
     </div>
   );
 };

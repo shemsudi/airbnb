@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const passport = require("passport");
 const AuthRouter = require("./routes/auth.js");
 const ProfileRouter = require("./routes/profile.js");
+const GoogleStrategy = require("passport-google-oauth20").Strategy;
 
 const cors = require("cors");
 const bodyParser = require("body-parser");
@@ -21,7 +22,21 @@ app.use(express.json());
 
 app.use(passport.initialize());
 
-require("./config/passport.js")(passport);
+require("./configs/passport.js")(passport);
+passport.use(
+  new GoogleStrategy(
+    {
+      clientID: process.env.CLIENT_ID,
+      clientSecret: process.env.CLIENT_SECRET,
+      callbackURL: "http://localhost:5173/auth/google/callback",
+    },
+    function (accessToken, refreshToken, profile, cb) {
+      User.findOrCreate({ googleId: profile.id }, function (err, user) {
+        return cb(err, user);
+      });
+    }
+  )
+);
 
 app.use("/", AuthRouter);
 app.use("/user", ProfileRouter);

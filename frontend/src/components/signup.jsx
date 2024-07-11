@@ -125,62 +125,14 @@ const Signup = () => {
             setShowSignupage={setShowSignupage}
           />
         )}
-        {step === 2 && <Step2 setStep={setStep} phoneNumber countryCode />}
+        {step === 2 && (
+          <Step2
+            setStep={setStep}
+            phoneNumber={phoneNumber}
+            countryCode={countryCode}
+          />
+        )}
         {step === 3 && <Step3 setStep={setStep} phoneNumber countryCode />}
-        {/* {step === 1 && <Login />}
-          {step === 2 && (
-            <div ref={verifyModalref} className="m-4">
-              <h1 className="center">Enter the code</h1>
-              <Form onSubmit={verifyOtp}>
-                <div className="mb-4 flex items-center">
-                  <input
-                    type="text"
-                    name="otp"
-                    value={otp}
-                    onChange={(e) => setOtp(e.target.value)}
-                    className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-                    required
-                  />
-                </div>
-                <div>
-                  <button
-                    type="submit"
-                    className="w-full bg-blue-500 text-white p-2 rounded-md"
-                  >
-                    Submit
-                  </button>
-                </div>
-              </Form>
-            </div>
-          )}
-          {step === 3 && (
-            <div ref={completeModalref}>
-              <form onSubmit={handleRegistrationSubmit}>
-                <input
-                  type="text"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="Name"
-                  required
-                />
-                <input
-                  type="date"
-                  value={birthday}
-                  onChange={(e) => setBirthday(e.target.value)}
-                  placeholder="Birthday"
-                  required
-                />
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Email"
-                  required
-                />
-                <button type="submit">Register</button>
-              </form>
-            </div> */}
-        {/* )} */}
       </div>
     )
   );

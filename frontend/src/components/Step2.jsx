@@ -30,7 +30,8 @@ const Step2 = (props) => {
 
   const verifyOtp = async (e) => {
     e.preventDefault();
-    const fullPhoneNumber = props.phoneNumber + props.countryCode;
+    console.log(props.countryCode, props.phoneNumber, "hello");
+    const fullPhoneNumber = props.countryCode + props.phoneNumber;
     const formData = { phoneNumber: fullPhoneNumber, enteredOtp: otp };
     console.log(formData);
 
@@ -46,6 +47,7 @@ const Step2 = (props) => {
 
       if (response.ok) {
         const responseData = await response.json();
+        console.log(responseData);
         if (!responseData.isUserExist) {
           props.setStep(3); // Proceed to the final step if OTP is verified
         } else {
@@ -57,10 +59,10 @@ const Step2 = (props) => {
           dispatch(closeSignUpPage());
         }
       } else {
-        console.error("Error:", response);
+        console.log(response);
       }
     } catch (error) {
-      console.error("Error:", error);
+      console.log("shemsu");
     }
   };
 

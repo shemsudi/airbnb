@@ -15,35 +15,34 @@ exports.verifyPhone = async (req, res) => {
   const fullPhoneNumber = countryCode + phoneNumber;
 
   try {
-    // const resposne = await client.verify.v2
-    //   .services(process.env.serviceId)
-    //   .verifications.create({ to: fullPhoneNumber, channel: "sms" });
-    // console.log("im here");
+    const response = await client.verify.v2
+      .services(process.env.serviceId)
+      .verifications.create({ to: fullPhoneNumber, channel: "sms" });
+    console.log("im here");
 
-    const token = jwt.sign({ fullPhoneNumber }, process.env.JWT_SECRET, {
-      expiresIn: "2h",
-    });
-    res.json({ token });
+    res.json({ response });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Failed to send OTP" });
   }
 };
 exports.verifyOTP = async (req, res) => {
-  const { fullPhoneNumber, enteredOtp } = req.body;
+  const { phoneNumber, enteredOtp } = req.body;
+  console.log(req.body);
 
   if (!enteredOtp) {
     return res.status(400).json({ message: "OTP is required" });
   }
   try {
-    // const verifiedResponse = await client.verify.v2
-    //   .services(process.env.serviceId)
-    //   .verificationChecks.create({
-    //     to: decoded.fullPhoneNumber,
-    //     code: enterdOtp,
-    //   });
-    if (true) {
-      const user = await User.findOne({ phone: fullPhoneNumber });
+    const verifiedResponse = await client.verify.v2
+      .services(process.env.serviceId)
+      .verificationChecks.create({
+        to: phoneNumber,
+        code: enteredOtp,
+      });
+    console.log(verifiedResponse);
+    if (verifiedResponse.valid) {
+      const user = await User.findOne({ phone: phoneNumber });
       if (user) {
         const payload = { userId: user.id };
         const authToken = jwt.sign(payload, process.env.JWT_SECRET, {
@@ -51,7 +50,6 @@ exports.verifyOTP = async (req, res) => {
         });
         console.log(authToken, user);
         res.status(201).json({
-          message: "User registered successfully",
           isUserExist: true,
           token: "Bearer " + authToken,
           user: user,

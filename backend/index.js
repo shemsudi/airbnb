@@ -1,9 +1,11 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const session = require("express-session");
 const passport = require("passport");
 const AuthRouter = require("./routes/auth.js");
 const ProfileRouter = require("./routes/profile.js");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
+const User = require("./models/User.js");
 
 const cors = require("cors");
 const bodyParser = require("body-parser");
@@ -20,7 +22,17 @@ app.use(cors(corsOptions));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.json());
 
+// Session middleware configuration
+app.use(
+  session({
+    secret: "yourSecretKey", // Replace with your own secret key
+    resave: false,
+    saveUninitialized: true,
+  })
+);
+
 app.use(passport.initialize());
+app.use(passport.session());
 
 require("./configs/passport.js")(passport);
 passport.use(
@@ -28,7 +40,7 @@ passport.use(
     {
       clientID: process.env.CLIENT_ID,
       clientSecret: process.env.CLIENT_SECRET,
-      callbackURL: "http://localhost:5173/auth/google/callback",
+      callbackURL: "http://localhost:3000/auth/google/callback",
     },
     function (accessToken, refreshToken, profile, cb) {
       User.findOrCreate({ googleId: profile.id }, function (err, user) {
@@ -37,6 +49,18 @@ passport.use(
     }
   )
 );
+passport.serializeUser(function (user, done) {
+  done(null, user.id);
+});
+
+passport.deserializeUser(async function (id, done) {
+  try {
+    const user = await User.findById(id);
+    done(null, user);
+  } catch (err) {
+    done(err, null);
+  }
+});
 
 app.use("/", AuthRouter);
 app.use("/user", ProfileRouter);

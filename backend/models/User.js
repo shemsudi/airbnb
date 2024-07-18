@@ -4,12 +4,12 @@ const findOrCreate = require("mongoose-findorcreate");
 const userSchema = new Schema({
   googleId: {
     type: String,
-    required: true,
+    required: false,
   },
-  phone: { type: String },
-  email: { type: String },
-  name: { type: String },
-  birthday: { type: Date },
+  phone: { type: String, required: true },
+  email: { type: String, required: true },
+  name: { type: String, required: true },
+  birthday: { type: Date, required: true },
 
   created_at: {
     type: Date,

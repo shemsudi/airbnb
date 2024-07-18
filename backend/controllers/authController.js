@@ -8,97 +8,109 @@ const moment = require("moment");
 const User = require("../models/User");
 const nodemailer = require("nodemailer");
 const client = require("twilio")(process.env.accountSid, process.env.authToken);
+const validatePhoneNumber = require("../validation/validatePhone.js");
 
 exports.verifyPhone = async (req, res) => {
   const { countryCode, phoneNumber } = req.body;
 
   const fullPhoneNumber = countryCode + phoneNumber;
+  const { errors, isValid } = validatePhoneNumber(fullPhoneNumber);
+  if (!isValid) {
+    return res.status(400).json(errors); // Return validation errors
+  }
 
   try {
     const response = await client.verify.v2
       .services(process.env.serviceId)
       .verifications.create({ to: fullPhoneNumber, channel: "sms" });
-    console.log("im here");
 
     res.json({ response });
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: "Failed to send OTP" });
+    errors.phone = "Failed to send Otp to current Phone number ";
+    res.status(500).json(errors);
   }
 };
 exports.verifyOTP = async (req, res) => {
-  const { phoneNumber, enteredOtp } = req.body;
+  const { fullPhoneNumber, enteredOtp } = req.body;
   console.log(req.body);
-
+  let errors = {};
   if (!enteredOtp) {
-    return res.status(400).json({ message: "OTP is required" });
+    errors.Otp = "OTP is required";
+    return res.status(400).json(errors);
   }
   try {
+    console.log("Verifying OTP...");
     const verifiedResponse = await client.verify.v2
       .services(process.env.serviceId)
       .verificationChecks.create({
-        to: phoneNumber,
+        to: fullPhoneNumber,
         code: enteredOtp,
       });
     console.log(verifiedResponse);
     if (verifiedResponse.valid) {
-      const user = await User.findOne({ phone: phoneNumber });
+      const user = await User.findOne({ phone: fullPhoneNumber });
       if (user) {
         const payload = { userId: user.id };
         const authToken = jwt.sign(payload, process.env.JWT_SECRET, {
           expiresIn: "1h",
         });
-        console.log(authToken, user);
+        console.log("User found, JWT generated:", authToken);
         res.status(201).json({
           isUserExist: true,
           token: "Bearer " + authToken,
           user: user,
         });
       } else {
+        console.log("User not found");
         res.json({ isUserExist: false });
       }
     }
   } catch (error) {
-    console.log(error);
-    res.send("Incorrect OTP");
+    console.error("Error during OTP verification:", error);
+    errors.Otp = "The entered Otp is not correct";
+    return res.status(400).json(errors);
   }
 };
 
 exports.completeRegistration = async (req, res) => {
   const { errors, isValid } = validateRegisterInput(req.body);
+
   if (!isValid) {
-    res.status(400).json(errors);
+    return res.status(400).json(errors);
   }
   const { fullPhoneNumber, name, birthday, email } = req.body;
   const parsedBirthday = moment(birthday, "DD/MM/YYYY").toDate();
 
-  // console.log(req.body);
+  console.log(req.body);
   try {
-    User.findOne({ email: email }).then((user) => {
-      if (user) {
-        return res.json({ email: "email already exists" });
-      }
-      const newUser = new User({
-        phone: fullPhoneNumber,
-        name,
-        birthday: parsedBirthday,
-        email,
-      });
-      console.log(newUser);
+    const user = await User.findOne({ email: email });
+    if (user) {
+      errors.email = "email already exists";
+      return res.status(400).json(errors);
+    }
+    const newUser = new User({
+      phone: fullPhoneNumber,
+      name,
+      birthday: parsedBirthday,
+      email,
+    });
+    console.log(newUser);
 
-      const payload = { userId: newUser._id };
-      const authToken = jwt.sign(payload, process.env.JWT_SECRET, {
-        expiresIn: "2h",
-      });
-      newUser.save();
-      res.status(201).json({
-        message: "User registered successfully",
-        token: authToken,
-        user: newUser,
-      });
+    const payload = { userId: newUser._id };
+    console.log(payload);
+    const authToken = jwt.sign(payload, process.env.JWT_SECRET, {
+      expiresIn: "2h",
+    });
+    console.log(authToken);
+    await newUser.save();
+    return res.status(201).json({
+      message: "User registered successfully",
+      token: authToken,
+      user: newUser,
     });
   } catch (err) {
-    res.status(400).json({ message: "Invalid or expired token" });
+    errors.message = err;
+    return res.status(400).json(errors);
   }
 };
 

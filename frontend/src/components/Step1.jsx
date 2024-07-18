@@ -51,14 +51,17 @@ const Step1 = (props) => {
         "http://localhost:3000/login",
         formData
       );
-
-      if ((response.status = 200)) {
+      console.log(response.data.errors);
+      if (response.status === 200) {
         props.setStep(2);
       } else {
         console.log("Error:", response.data.errors);
       }
     } catch (error) {
       console.error("Error:", error);
+      if (error.response && error.response.data) {
+        console.log("Validation errors:", error.response.data);
+      }
     }
   };
 

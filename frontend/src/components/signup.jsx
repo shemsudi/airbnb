@@ -132,7 +132,13 @@ const Signup = () => {
             countryCode={countryCode}
           />
         )}
-        {step === 3 && <Step3 setStep={setStep} phoneNumber countryCode />}
+        {step === 3 && (
+          <Step3
+            setStep={setStep}
+            phoneNumber={phoneNumber}
+            countryCode={countryCode}
+          />
+        )}
       </div>
     )
   );

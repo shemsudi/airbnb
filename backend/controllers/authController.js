@@ -5,7 +5,7 @@ const validateRegisterInput = require("../validation/register.js");
 const jwt = require("jsonwebtoken");
 const moment = require("moment");
 
-const User = require("../models/User");
+const User = require("../models/User.js");
 const nodemailer = require("nodemailer");
 const client = require("twilio")(process.env.accountSid, process.env.authToken);
 const validatePhoneNumber = require("../validation/validatePhone.js");
@@ -81,10 +81,11 @@ exports.completeRegistration = async (req, res) => {
   if (!isValid) {
     return res.status(400).json(errors);
   }
-  const { fullPhoneNumber, name, birthday, email } = req.body;
-  const parsedBirthday = moment(birthday, "DD/MM/YYYY").toDate();
+  const { phoneNumber, name, birthday, email } = req.body;
+  const parsedBirthday = moment(birthday, "YYYY-MM-DD").toDate();
 
   console.log(req.body);
+  console.log(parsedBirthday);
   try {
     const user = await User.findOne({ email: email });
     if (user) {
@@ -92,7 +93,7 @@ exports.completeRegistration = async (req, res) => {
       return res.status(400).json(errors);
     }
     const newUser = new User({
-      phone: fullPhoneNumber,
+      phone: phoneNumber,
       name,
       birthday: parsedBirthday,
       email,
@@ -105,11 +106,11 @@ exports.completeRegistration = async (req, res) => {
       expiresIn: "2h",
     });
     console.log(authToken);
-    await newUser.save();
+    const savedUser = await newUser.save();
     return res.status(201).json({
       message: "User registered successfully",
       token: authToken,
-      user: newUser,
+      user: savedUser,
     });
   } catch (err) {
     errors.message = err;

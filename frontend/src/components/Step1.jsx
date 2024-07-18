@@ -3,6 +3,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Form } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import axios from "axios";
 
 const countryCodes = [
   { code: "+1", country: "United States" },
@@ -46,21 +47,15 @@ const Step1 = (props) => {
     console.log(formData);
 
     try {
-      const response = await fetch("http://localhost:3000/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      const response = await axios.post(
+        "http://localhost:3000/login",
+        formData
+      );
 
-      if (response.ok) {
-        const data = await response.json();
+      if ((response.status = 200)) {
         props.setStep(2);
-        console.log(data.token);
-        props.setToken(data.token); // Set token in the parent component or Redux
       } else {
-        console.error("Error:", response);
+        console.log("Error:", response.data.errors);
       }
     } catch (error) {
       console.error("Error:", error);

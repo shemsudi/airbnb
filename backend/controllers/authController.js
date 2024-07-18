@@ -15,23 +15,26 @@ exports.verifyPhone = async (req, res) => {
 
   const fullPhoneNumber = countryCode + phoneNumber;
   const { errors, isValid } = validatePhoneNumber(fullPhoneNumber);
+  console.log(errors);
   if (!isValid) {
     return res.status(400).json(errors); // Return validation errors
   }
 
   try {
-    const response = await client.verify.v2
-      .services(process.env.serviceId)
-      .verifications.create({ to: fullPhoneNumber, channel: "sms" });
+    response = { ok: true };
+    // const response = await client.verify.v2
+    //   .services(process.env.serviceId)
+    //   .verifications.create({ to: fullPhoneNumber, channel: "sms" });
 
-    res.json({ response });
+    res.status(200).json({ response });
   } catch (error) {
     errors.phone = "Failed to send Otp to current Phone number ";
+    errors.error = error;
     res.status(500).json(errors);
   }
 };
 exports.verifyOTP = async (req, res) => {
-  const { fullPhoneNumber, enteredOtp } = req.body;
+  const { phoneNumber, enteredOtp } = req.body;
   console.log(req.body);
   let errors = {};
   if (!enteredOtp) {
@@ -40,21 +43,21 @@ exports.verifyOTP = async (req, res) => {
   }
   try {
     console.log("Verifying OTP...");
-    const verifiedResponse = await client.verify.v2
-      .services(process.env.serviceId)
-      .verificationChecks.create({
-        to: fullPhoneNumber,
-        code: enteredOtp,
-      });
-    console.log(verifiedResponse);
-    if (verifiedResponse.valid) {
-      const user = await User.findOne({ phone: fullPhoneNumber });
+    // const verifiedResponse = await client.verify.v2
+    //   .services(process.env.serviceId)
+    //   .verificationChecks.create({
+    //     to: fullPhoneNumber,
+    //     code: enteredOtp,
+    //   });
+    // console.log(verifiedResponse);
+    if (true) {
+      const user = await User.findOne({ phone: phoneNumber });
       if (user) {
         const payload = { userId: user.id };
         const authToken = jwt.sign(payload, process.env.JWT_SECRET, {
           expiresIn: "1h",
         });
-        console.log("User found, JWT generated:", authToken);
+        console.log("User found");
         res.status(201).json({
           isUserExist: true,
           token: "Bearer " + authToken,
@@ -62,7 +65,7 @@ exports.verifyOTP = async (req, res) => {
         });
       } else {
         console.log("User not found");
-        res.json({ isUserExist: false });
+        res.status(200).json({ isUserExist: false });
       }
     }
   } catch (error) {

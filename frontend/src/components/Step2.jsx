@@ -2,12 +2,14 @@
 
 import React, { useRef, useState, useEffect } from "react";
 import { Form } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setCredentials } from "../redux/AuthReducer";
 import { closeSignUpPage } from "../redux/ModalReducer.js";
+import axios from "axios";
 // import { setStep } from "../redux/SignupReducer"; // Assuming you have a SignupReducer managing step state
 
 const Step2 = (props) => {
+  const user = useSelector((state) => state.auth.user);
   const [otp, setOtp] = useState("");
   const dispatch = useDispatch();
   const verifyModalref = useRef(null);
@@ -30,36 +32,24 @@ const Step2 = (props) => {
 
   const verifyOtp = async (e) => {
     e.preventDefault();
-    console.log(props.countryCode, props.phoneNumber, "hello");
+    console.log(props.countryCode, props.phoneNumber);
     const fullPhoneNumber = props.countryCode + props.phoneNumber;
     const formData = { phoneNumber: fullPhoneNumber, enteredOtp: otp };
     console.log(formData);
 
     try {
-      const response = await fetch("http://localhost:3000/verify", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-      console.log(response.ok);
-
-      if (response.ok) {
-        const responseData = await response.json();
-        console.log(responseData);
-        if (!responseData.isUserExist) {
-          props.setStep(3); // Proceed to the final step if OTP is verified
-        } else {
-          // Parse the JSON response
-          const { user, token } = responseData;
-          localStorage.setItem("user", JSON.stringify(user));
-          localStorage.setItem("token", token);
-          dispatch(setCredentials({ user, accessToken: token }));
-          dispatch(closeSignUpPage());
-        }
+      const response = await axios.post(
+        "http://localhost:3000/verify",
+        formData
+      );
+      if (!response.data.isUserExist) {
+        props.setStep(3); // Proceed to the final step if OTP is verified
       } else {
-        console.log(response);
+        const { user, token } = response.data;
+        localStorage.setItem("user", JSON.stringify(user));
+        localStorage.setItem("token", token);
+        dispatch(setCredentials({ user, accessToken: token }));
+        dispatch(closeSignUpPage());
       }
     } catch (error) {
       console.log("shemsu");

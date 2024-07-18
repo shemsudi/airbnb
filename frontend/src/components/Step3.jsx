@@ -4,7 +4,9 @@ import React, { useState, useRef, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { closeSignUpPage } from "../redux/ModalReducer";
 import { setCredentials } from "../redux/AuthReducer";
+import { setErrors } from "../redux/errorReducer";
 import { Form } from "react-router-dom";
+import { resolveComponent } from "vue";
 
 const Step3 = (props) => {
   const [name, setName] = useState("");
@@ -35,29 +37,25 @@ const Step3 = (props) => {
     const fullPhoneNumber = props.phoneNumber + props.countryCode;
 
     const formData = { phoneNumber: fullPhoneNumber, name, email, birthday };
+
     // console.log(formData);
     try {
-      const response = await fetch(
+      const response = await axios.post(
         "http://localhost:3000/complete-registration",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        }
+        formData
       );
-
-      if (response.ok) {
-        const responseData = await response.json(); // Parse the JSON response
-        const { user, token } = responseData;
+      if ((response.status = 201)) {
+        const { user, token } = response.data;
         dispatch(setCredentials({ user, accessToken: token }));
         dispatch(closeSignUpPage());
         console.log("Registration successful");
       } else {
-        console.error("Registration failed:", response.statusText);
+        useDispatch(setErrors(response.errors));
+        console.error("Registration failed:", response.errors);
       }
     } catch (error) {
+      useDispatch(setErrors(error));
+
       console.error("Error:", error);
     }
   };

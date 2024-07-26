@@ -44,24 +44,20 @@ const Step1 = (props) => {
       phoneNumber,
       countryCode,
     };
-    console.log(formData);
 
     try {
       const response = await axios.post(
         "http://localhost:3000/login",
         formData
       );
-      console.log(response.data.errors);
+      console.log(response.data);
       if (response.status === 200) {
         props.setStep(2);
       } else {
-        console.log("Error:", response.data.errors);
+        console.log(response.data);
       }
     } catch (error) {
-      console.error("Error:", error);
-      if (error.response && error.response.data) {
-        console.log("Validation errors:", error.response.data);
-      }
+      console.log(error.response.data);
     }
   };
 

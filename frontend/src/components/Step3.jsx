@@ -39,7 +39,6 @@ const Step3 = (props) => {
 
     const formData = { phoneNumber: fullPhoneNumber, name, email, birthday };
 
-    console.log(formData);
     try {
       const response = await axios.post(
         "http://localhost:3000/complete-registration",
@@ -49,7 +48,7 @@ const Step3 = (props) => {
         const { user, token } = response.data;
         dispatch(setCredentials({ user, accessToken: token }));
         dispatch(closeSignUpPage());
-        console.log("Registration successful");
+        console.log("succesfully registered");
       } else {
         dispatch(setErrors(response.errors));
         console.error("Registration failed:", response.errors);
@@ -57,7 +56,7 @@ const Step3 = (props) => {
     } catch (error) {
       if (error.response && error.response.data) {
         dispatch(setErrors(error.response.data));
-        console.error("Error:", error.response.data);
+        console.log(error.response.data);
       } else {
         console.error("Error:", error);
       }
@@ -70,7 +69,7 @@ const Step3 = (props) => {
       className=" relative overflow-y-scroll w-2/5 h-5/6 top-1/2 left-1/2 rounded-xl border shadow-md bg-white -translate-x-1/2 -translate-y-1/2"
     >
       <div>
-        <form onSubmit={handleRegistrationSubmit}>
+        <form onSubmit={handleRegistrationSubmit} noValidate>
           <input
             type="text"
             value={name}

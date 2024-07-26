@@ -81,6 +81,7 @@ exports.completeRegistration = async (req, res) => {
   if (!isValid) {
     return res.status(400).json(errors);
   }
+
   const { phoneNumber, name, birthday, email } = req.body;
   const parsedBirthday = moment(birthday, "YYYY-MM-DD").toDate();
 

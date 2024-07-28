@@ -1,4 +1,5 @@
 const { color } = require("npm");
+const defaultTheme = require("tailwindcss/defaultTheme");
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -10,10 +11,13 @@ module.exports = {
         primary: "#FF385C",
         blurred: "#6A6A6A",
       },
+      fontFamily: {
+        roboto: ["Roboto", ...defaultTheme.fontFamily.sans],
+      },
     },
+    variants: {
+      extend: {},
+    },
+    plugins: [],
   },
-  variants: {
-    extend: {},
-  },
-  plugins: [],
 };

@@ -16,7 +16,8 @@ const countryCodes = [
 
 const Step1 = (props) => {
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [countryCode, setCountryCode] = useState("+1");
+  const [countryCode, setCountryCode] = useState("+251");
+  const [errors, setErrors] = useState({});
   const dispatch = useDispatch();
   const signupModalref = useRef(null);
 
@@ -50,13 +51,11 @@ const Step1 = (props) => {
         "http://localhost:3000/login",
         formData
       );
-      console.log(response.data);
       if (response.status === 200) {
         props.setStep(2);
-      } else {
-        console.log(response.data);
       }
     } catch (error) {
+      setErrors(error.response.data);
       console.log(error.response.data);
     }
   };
@@ -72,75 +71,84 @@ const Step1 = (props) => {
   return (
     <div
       ref={signupModalref}
-      className=" relative overflow-y-scroll w-2/5 h-5/6 top-1/2 left-1/2 rounded-xl border shadow-md bg-white -translate-x-1/2 -translate-y-1/2"
+      className=" relative flex flex-col overflow-y-scroll w-2/5 h-5/6 top-1/2 left-1/2 rounded-xl border shadow-md bg-white -translate-x-1/2 -translate-y-1/2"
     >
-      <div className="p-4">
-        <Form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label
-              htmlFor="countryCode"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Country Code
-            </label>
-            <select
-              id="countryCode"
-              name="countryCode"
-              value={countryCode}
-              onChange={(e) => setCountryCode(e.target.value)}
-              className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-              required
-            >
-              {countryCodes.map((country) => (
-                <option key={country.code} value={country.code}>
-                  {country.country} ({country.code})
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="mb-4 flex items-center ">
-            <span className="mr-2">{countryCode}</span>
-            <input
-              type="text"
-              id="phoneNumber"
-              name="phoneNumber"
-              value={phoneNumber}
-              onChange={(e) => setPhoneNumber(e.target.value)}
-              className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-              required
-            />
-          </div>
-          <div>
-            <button
-              type="submit"
-              className="w-full bg-blue-500 text-white p-2 rounded-md"
-            >
-              Submit
-            </button>
-          </div>
-        </Form>
+      <div className="flex justify-between p-4">
+        <button>close</button>
+        <p>Log in or sign up</p>
+        <div></div>
       </div>
-      <div className="text-center">OR</div>
-      <div className="m-3">
-        <button
-          onClick={signWithGoogle}
-          type="submit"
-          className="w-full bg-white text-black p-2 mt-4 rounded-md border border-black"
-        >
-          sign with google
-        </button>
-        <button
-          type="submit"
-          className="w-full bg-white text-black p-2 mt-4 rounded-md border border-black"
-        >
-          sign with facebook
-        </button>
-        <button
-          type="submit"
-          className="w-full bg-white text-black p-2 mt-4 rounded-md border border-black"
-        >
-          sign with Apple
-        </button>
+      <hr />
+      <div className="p-4 flex flex-col">
+        <p className="mb-4 font-roboto text-2xl ">Welcome to Airbnb</p>
+        <div className="">
+          <Form onSubmit={handleSubmit}>
+            <div className="mb-4">
+              <label
+                htmlFor="countryCode"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Country Code
+              </label>
+              <select
+                id="countryCode"
+                name="countryCode"
+                value={countryCode}
+                onChange={(e) => setCountryCode(e.target.value)}
+                className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                required
+              >
+                {countryCodes.map((country) => (
+                  <option key={country.code} value={country.code}>
+                    {country.country} ({country.code})
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="mb-4 flex items-center ">
+              <span className="mr-2">{countryCode}</span>
+              <input
+                type="text"
+                id="phoneNumber"
+                name="phoneNumber"
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
+                className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                required
+              />
+            </div>
+            <div>
+              <button
+                type="submit"
+                className="w-full bg-blue-500 text-white p-2 rounded-md"
+              >
+                Submit
+              </button>
+            </div>
+          </Form>
+        </div>
+        <div className="text-center">OR</div>
+        <div className="m-3">
+          <button
+            onClick={signWithGoogle}
+            type="submit"
+            className="w-full bg-white text-black p-2 mt-4 rounded-md border border-black"
+          >
+            sign with google
+          </button>
+          <button
+            type="submit"
+            className="w-full bg-white text-black p-2 mt-4 rounded-md border border-black"
+          >
+            sign with facebook
+          </button>
+          <button
+            type="submit"
+            className="w-full bg-white text-black p-2 mt-4 rounded-md border border-black"
+          >
+            sign with Apple
+          </button>
+        </div>
       </div>
     </div>
   );

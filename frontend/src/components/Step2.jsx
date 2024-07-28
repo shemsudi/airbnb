@@ -9,8 +9,10 @@ import axios from "axios";
 // import { setStep } from "../redux/SignupReducer"; // Assuming you have a SignupReducer managing step state
 
 const Step2 = (props) => {
-  const user = useSelector((state) => state.auth.user);
+  // const user = useSelector((state) => state.auth.user);
   const [otp, setOtp] = useState("");
+  const [errors, setErrors] = useState({});
+
   const dispatch = useDispatch();
   const verifyModalref = useRef(null);
 
@@ -52,6 +54,7 @@ const Step2 = (props) => {
         dispatch(closeSignUpPage());
       }
     } catch (error) {
+      setErrors(error.response.data);
       console.log("shemsu");
     }
   };

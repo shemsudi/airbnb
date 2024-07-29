@@ -3,14 +3,16 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { closeSignUpPage } from "../redux/ModalReducer";
+import { closeSignUp_LoginPage } from "../redux/ModalReducer";
 import { setCredentials } from "../redux/AuthReducer";
 // import { setErrors } from "../redux/errorReducer";
 import { Form } from "react-router-dom";
 import axios from "axios";
 
 const Step3 = (props) => {
-  const [name, setName] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+
   const [birthday, setBirthday] = useState("");
   const [email, setEmail] = useState("");
   const [optOutMarketing, setOptOutMarketing] = useState(false); // New state for the checkbox
@@ -40,7 +42,14 @@ const Step3 = (props) => {
     e.preventDefault();
     const fullPhoneNumber = props.countryCode + props.phoneNumber;
 
-    const formData = { phoneNumber: fullPhoneNumber, name, email, birthday };
+    const formData = {
+      phoneNumber: fullPhoneNumber,
+      firstName,
+      lastName,
+      email,
+      birthday,
+      optOutMarketing,
+    };
 
     try {
       const response = await axios.post(
@@ -50,7 +59,7 @@ const Step3 = (props) => {
       if (response.status === 201) {
         const { user, token } = response.data;
         dispatch(setCredentials({ user, accessToken: token }));
-        dispatch(closeSignUpPage());
+        dispatch(closeSignUp_LoginPage());
         console.log("succesfully registered");
       } else {
         dispatch(setErrors(response.errors));
@@ -105,13 +114,13 @@ const Step3 = (props) => {
                 id="firstName"
                 name="firstName"
                 type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
                 placeholder="First name"
               />
             </div>
             <div className="flex flex-col border border-t-0  border-gray-300 rounded-md rounded-l-none  p-1 mb-3">
-              <label htmlFor="firstName" className="text-sm text-gray-500">
+              <label htmlFor="lastName" className="text-sm text-gray-500">
                 Last name on Id
               </label>
               <input
@@ -119,8 +128,8 @@ const Step3 = (props) => {
                 id="lastName"
                 name="lastName"
                 type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
                 placeholder="Last name"
               />
             </div>

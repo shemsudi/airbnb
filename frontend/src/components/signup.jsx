@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { closeSignUpPage, selectModals } from "../redux/ModalReducer.js";
+import { closeSignUp_LoginPage, selectModals } from "../redux/ModalReducer.js";
 
 import Step1 from "./Step1.jsx";
 import Step2 from "./Step2.jsx";
@@ -13,16 +13,16 @@ const Signup = () => {
   const [countryCode, setCountryCode] = useState("+251");
 
   const dispatch = useDispatch();
-  const { isSignUpPageOpen } = useSelector(selectModals);
+  const { isSignUp_LoginPageOpen } = useSelector(selectModals);
 
   console.log(step);
 
   const setShowSignupage = () => {
-    dispatch(closeSignUpPage());
+    dispatch(closeSignUp_LoginPage());
   };
 
   return (
-    isSignUpPageOpen && (
+    isSignUp_LoginPageOpen && (
       <div
         className={`fixed top-0 right-0 left-0 bottom-0 bg-black bg-opacity-60 z-10`}
       >

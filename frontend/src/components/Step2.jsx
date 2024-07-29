@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { Form } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setCredentials } from "../redux/AuthReducer";
-import { closeSignUpPage } from "../redux/ModalReducer.js";
+import { closeSignUp_LoginPage } from "../redux/ModalReducer.js";
 import axios from "axios";
 // import { setStep } from "../redux/SignupReducer"; // Assuming you have a SignupReducer managing step state
 
@@ -52,7 +52,7 @@ const Step2 = (props) => {
         localStorage.setItem("user", JSON.stringify(user));
         localStorage.setItem("token", token);
         dispatch(setCredentials({ user, accessToken: token }));
-        dispatch(closeSignUpPage());
+        dispatch(closeSignUp_LoginPage());
       }
     } catch (error) {
       setErrors(error.response.data);

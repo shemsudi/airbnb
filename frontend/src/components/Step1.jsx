@@ -4,7 +4,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Form } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { closeSignUpPage, selectModals } from "../redux/ModalReducer.js";
+import { closeSignUp_LoginPage } from "../redux/ModalReducer.js";
 import axios from "axios";
 
 const countryCodes = [
@@ -78,7 +78,7 @@ const Step1 = (props) => {
       <div className="flex justify-between p-4">
         <button
           data-modal-hide="default-modal"
-          onClick={() => dispatch(closeSignUpPage())}
+          onClick={() => dispatch(closeSignUp_LoginPage())}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

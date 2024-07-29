@@ -1,24 +1,19 @@
 import React, { useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  openLoginPage,
-  closeLoginPage,
-  openSignUpPage,
-  closeSignUpPage,
+  openSignUp_LoginPage,
   openDropDown,
   closeDropDown,
   selectModals,
 } from "../redux/ModalReducer.js";
 import ProfileModal from "./ProfileModal.jsx";
-import Login from "./login2.jsx";
 import Signup from "./signup.jsx";
 import CheckTokenExpiration from "./CheckTokenExpiration";
 
 const ProfileDropDown = (props) => {
   CheckTokenExpiration();
   const dispatch = useDispatch();
-  const { isLoginPageOpen, isSignUpPageOpen, isDropDownOpen } =
-    useSelector(selectModals);
+  const { isSignUp_LoginPageOpen, isDropDownOpen } = useSelector(selectModals);
   const dropdownRef = useRef(null);
 
   useEffect(() => {
@@ -43,14 +38,7 @@ const ProfileDropDown = (props) => {
   };
 
   const showSignupPage = () => {
-    dispatch(openSignUpPage());
-    dispatch(closeLoginPage());
-    dispatch(closeDropDown());
-  };
-
-  const showLoginPage = () => {
-    dispatch(openLoginPage());
-    dispatch(closeSignUpPage());
+    dispatch(openSignUp_LoginPage());
     dispatch(closeDropDown());
   };
 
@@ -90,14 +78,9 @@ const ProfileDropDown = (props) => {
           />
         </svg>
       </button>
-      {isDropDownOpen && (
-        <ProfileModal
-          showLoginPage={showLoginPage}
-          showSignupPage={showSignupPage}
-        />
-      )}
-      {isLoginPageOpen && <Login />}
-      {isSignUpPageOpen && <Signup />}
+      {isDropDownOpen && <ProfileModal showSignupPage={showSignupPage} />}
+
+      {isSignUp_LoginPageOpen && <Signup />}
     </div>
   );
 };

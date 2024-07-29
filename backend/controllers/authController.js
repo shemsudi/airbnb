@@ -82,7 +82,8 @@ exports.completeRegistration = async (req, res) => {
     return res.status(400).json(errors);
   }
 
-  const { phoneNumber, name, birthday, email } = req.body;
+  const { phoneNumber, firstName, lastName, birthday, email, optOutMarketing } =
+    req.body;
   const parsedBirthday = moment(birthday, "YYYY-MM-DD").toDate();
 
   console.log(req.body);
@@ -95,7 +96,9 @@ exports.completeRegistration = async (req, res) => {
     }
     const newUser = new User({
       phone: phoneNumber,
-      name,
+      firstName: firstName,
+      lastName: lastName,
+      isOptOutMarketing: optOutMarketing,
       birthday: parsedBirthday,
       email,
     });

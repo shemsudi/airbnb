@@ -12,18 +12,6 @@ export const modalSlice = createSlice({
     isSignUpPageOpen: false,
   },
   reducers: {
-    openLoginPage: (state) => {
-      state.isLoginPageOpen = true;
-    },
-    closeLoginPage: (state) => {
-      state.isLoginPageOpen = false;
-    },
-    openVerifyPage: (state) => {
-      state.isVerifyPageOpen = true;
-    },
-    closeVerifyPage: (state) => {
-      state.isVerifyPageOpen = false;
-    },
     openSignUpPage: (state) => {
       state.isSignUpPageOpen = true;
     },

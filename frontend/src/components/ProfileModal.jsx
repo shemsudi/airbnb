@@ -7,7 +7,6 @@ import {
   setCredentials,
 } from "../redux/AuthReducer";
 import { closeDropDown } from "../redux/ModalReducer";
-import NewRealeased from "../pages/realesedFeaures";
 
 const ProfileModal = (props) => {
   const currentUser = useSelector(selectCurrentUser);
@@ -120,12 +119,7 @@ const ProfileModal = (props) => {
         <li
           role="menuitem"
           className="w-full p-3 cursor-pointer hover:bg-slate-50"
-          onClick={props.showLoginPage}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              props.showLoginPage;
-            }
-          }}
+          onClick={props.showSignupPage}
           tabIndex="0"
         >
           Login

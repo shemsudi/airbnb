@@ -3,6 +3,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Form } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import { closeSignUpPage, selectModals } from "../redux/ModalReducer.js";
 import axios from "axios";
 
 const countryCodes = [
@@ -74,7 +75,25 @@ const Step1 = (props) => {
       className=" relative flex flex-col overflow-y-scroll w-2/5 h-5/6 top-1/2 left-1/2 rounded-xl border shadow-md bg-white -translate-x-1/2 -translate-y-1/2"
     >
       <div className="flex justify-between p-4">
-        <button>close</button>
+        <button
+          data-modal-hide="default-modal"
+          onClick={() => dispatch(closeSignUpPage())}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="w-6 h-6"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M6 18 18 6M6 6l12 12"
+            />
+          </svg>
+        </button>
         <p>Log in or sign up</p>
         <div></div>
       </div>
@@ -83,10 +102,10 @@ const Step1 = (props) => {
         <p className="mb-4 font-roboto text-2xl ">Welcome to Airbnb</p>
         <div className="">
           <Form onSubmit={handleSubmit}>
-            <div className="mb-4">
+            <div className=" flex flex-col border border-gray-300 rounded-md">
               <label
                 htmlFor="countryCode"
-                className="block text-sm font-medium text-gray-700"
+                className=" text-sm font-medium text-gray-500 pl-2"
               >
                 Country Code
               </label>
@@ -95,32 +114,37 @@ const Step1 = (props) => {
                 name="countryCode"
                 value={countryCode}
                 onChange={(e) => setCountryCode(e.target.value)}
-                className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                className="text-md font-roboto pl-1 bg-white"
                 required
               >
                 {countryCodes.map((country) => (
-                  <option key={country.code} value={country.code}>
+                  <option className="" key={country.code} value={country.code}>
                     {country.country} ({country.code})
                   </option>
                 ))}
               </select>
             </div>
-            <div className="mb-4 flex items-center ">
-              <span className="mr-2">{countryCode}</span>
-              <input
-                type="text"
-                id="phoneNumber"
-                name="phoneNumber"
-                value={phoneNumber}
-                onChange={(e) => setPhoneNumber(e.target.value)}
-                className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-                required
-              />
+            <div className="mb-4 flex flex-col  pl-2 border border-t-0 border-gray-300 rounded-md rounded-l-none 	">
+              <label htmlFor="phoneNumber" className="text-gray-500">
+                phone number
+              </label>
+              <div className="flex">
+                <span className="mr-2">{countryCode}</span>
+                <input
+                  type="text"
+                  id="phoneNumber"
+                  name="phoneNumber"
+                  value={phoneNumber}
+                  onChange={(e) => setPhoneNumber(e.target.value)}
+                  className="w-full"
+                  required
+                />
+              </div>
             </div>
             <div>
               <button
                 type="submit"
-                className="w-full bg-blue-500 text-white p-2 rounded-md"
+                className="w-full bg-blue-500 text-white p-2 rounded-md "
               >
                 Submit
               </button>

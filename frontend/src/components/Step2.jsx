@@ -1,6 +1,7 @@
 // src/components/Step2.js
 
 import React, { useRef, useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { Form } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setCredentials } from "../redux/AuthReducer";
@@ -58,34 +59,62 @@ const Step2 = (props) => {
       console.log("shemsu");
     }
   };
+  function backToStep1() {
+    props.setStep(1);
+  }
 
   return (
     <div
       ref={verifyModalref}
-      className=" relative overflow-y-scroll w-2/5 h-5/6 top-1/2 left-1/2 rounded-xl border shadow-md bg-white -translate-x-1/2 -translate-y-1/2"
+      className=" relative   w-1/3 top-1/2 left-1/2 rounded-xl border shadow-md bg-white -translate-x-1/2 -translate-y-1/2"
     >
-      <div className="m-4">
-        <h1 className="center">Enter the code</h1>
-        <Form onSubmit={verifyOtp}>
-          <div className="mb-4 flex items-center">
-            <input
-              type="text"
-              name="otp"
-              value={otp}
-              onChange={(e) => setOtp(e.target.value)}
-              className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-              required
-            />
-          </div>
-          <div>
-            <button
-              type="submit"
-              className="w-full bg-blue-500 text-white p-2 rounded-md"
+      <div className=" flex flex-col">
+        <div className="flex p-3 justify-between ">
+          <button onClick={backToStep1}>
+            <svg
+              className="w-4 h-4 self-center "
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 320 512"
             >
-              Submit
-            </button>
-          </div>
-        </Form>
+              <path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z" />
+            </svg>
+          </button>
+          <div>Confirm your Number</div>
+          <div></div>
+        </div>
+        <hr />
+        <div className="flex flex-col p-3">
+          <p className="text-sm m-2">
+            Enter the code we sent over SMS to{" "}
+            {props.countryCode + " " + props.phoneNumber}:
+          </p>
+
+          <Form>
+            <div className="mb-4 flex items-center">
+              <input
+                type="text"
+                name="otp"
+                value={otp}
+                onChange={(e) => setOtp(e.target.value)}
+                className="mt-3 mb-3 block ml-2 p-2  border border-gray-300 rounded-md"
+                maxLength={6}
+              />
+            </div>
+          </Form>
+        </div>
+        <hr />
+        <div className="flex m-1   justify-between p-3">
+          <Link onClick={backToStep1} className="underline self-center">
+            More Options
+          </Link>
+          <button
+            onClick={verifyOtp}
+            type="submit"
+            className=" bg-pink-600 text-white p-2 rounded-xl"
+          >
+            Continue
+          </button>
+        </div>
       </div>
     </div>
   );

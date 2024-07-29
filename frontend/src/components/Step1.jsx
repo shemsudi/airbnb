@@ -1,6 +1,7 @@
 // src/components/Step1.js
 
 import React, { useState, useRef, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { Form } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { closeSignUpPage, selectModals } from "../redux/ModalReducer.js";
@@ -72,7 +73,7 @@ const Step1 = (props) => {
   return (
     <div
       ref={signupModalref}
-      className=" relative flex flex-col overflow-y-scroll w-4/12  h-5/6 top-1/2 left-1/2 rounded-xl border shadow-md bg-white -translate-x-1/2 -translate-y-1/2"
+      className=" relative flex flex-col min-w-96 w-1/3   h-5/6 top-1/2 left-1/2 rounded-xl border shadow-md bg-white -translate-x-1/2 -translate-y-1/2"
     >
       <div className="flex justify-between p-4">
         <button
@@ -98,7 +99,7 @@ const Step1 = (props) => {
         <div></div>
       </div>
       <hr />
-      <div className="p-4 flex flex-col">
+      <div className="p-4 flex flex-col overflow-y-scroll ">
         <p className="mb-4 font-roboto text-2xl ">Welcome to Airbnb</p>
         <div className="">
           <Form onSubmit={handleSubmit}>
@@ -124,7 +125,7 @@ const Step1 = (props) => {
                 ))}
               </select>
             </div>
-            <div className="mb-4 flex flex-col  pl-2 border border-t-0 border-gray-300 rounded-md rounded-l-none 	">
+            <div className="flex flex-col  pl-2 border border-t-0 border-gray-300 rounded-md rounded-l-none 	">
               <label htmlFor="phoneNumber" className="text-gray-500">
                 phone number
               </label>
@@ -140,6 +141,15 @@ const Step1 = (props) => {
                   required
                 />
               </div>
+            </div>
+            <div className="mb-4 text-sm ">
+              <p className="pl-1 mt-1">
+                We’ll call or text you to confirm your number. Standard message
+                and data rates apply.{" "}
+                <Link to={"/privacy"} className="underline">
+                  Privacy Policy
+                </Link>
+              </p>
             </div>
             <div>
               <button

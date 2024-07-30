@@ -49,6 +49,7 @@ const Step1 = (props) => {
     };
 
     try {
+      setErrors({});
       const response = await axios.post(
         "http://localhost:3000/login",
         formData
@@ -57,8 +58,9 @@ const Step1 = (props) => {
         props.setStep(2);
       }
     } catch (error) {
-      setErrors(error.response.data);
-      console.log(error.response.data);
+      if (error.response.status === 400) {
+        setErrors(error.response.data);
+      }
     }
   };
 
@@ -73,7 +75,7 @@ const Step1 = (props) => {
   return (
     <div
       ref={signupModalref}
-      className=" relative flex flex-col min-w-96 w-1/3   h-5/6 top-1/2 left-1/2 rounded-xl border shadow-md bg-white -translate-x-1/2 -translate-y-1/2"
+      className=" relative flex flex-col max-w-xl  h-5/6 top-1/2 left-1/2 rounded-xl border shadow-md bg-white -translate-x-1/2 -translate-y-1/2"
     >
       <div className="flex justify-between p-4">
         <button
@@ -101,6 +103,21 @@ const Step1 = (props) => {
       <hr />
       <div className="p-4 flex flex-col overflow-y-scroll ">
         <p className="mb-4 font-roboto text-2xl ">Welcome to Airbnb</p>
+        {errors.longPhoneNumber && (
+          <div className="flex gap-3 justify-between mb-4 border border-gray-300  p-2 rounded-xl">
+            <svg
+              className="w-14 h-12 fill-red-800 mr-2"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 512 512"
+            >
+              <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm0-384c13.3 0 24 10.7 24 24l0 112c0 13.3-10.7 24-24 24s-24-10.7-24-24l0-112c0-13.3 10.7-24 24-24zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z" />
+            </svg>
+            <div className="flex flex-col">
+              <h1>Let's try that again</h1>
+              <p className=" text-sm text-gray-500">{errors.longPhoneNumber}</p>
+            </div>
+          </div>
+        )}{" "}
         <div className="">
           <Form onSubmit={handleSubmit}>
             <div className=" flex flex-col border border-gray-300 rounded-md">
@@ -126,8 +143,13 @@ const Step1 = (props) => {
               </select>
             </div>
             <div className="flex flex-col  pl-2 border border-t-0 border-gray-300 rounded-md rounded-l-none 	">
-              <label htmlFor="phoneNumber" className="text-gray-500">
-                phone number
+              <label
+                htmlFor="phoneNumber"
+                className={`text-gray-500 text-sm ${
+                  errors.phoneNumber ? "text-red-700" : ""
+                }`}
+              >
+                Phone number
               </label>
               <div className="flex">
                 <span className="mr-2">{countryCode}</span>
@@ -138,19 +160,45 @@ const Step1 = (props) => {
                   value={phoneNumber}
                   onChange={(e) => setPhoneNumber(e.target.value)}
                   className="w-full focus:outline-none focus:ring-0"
-                  required
                 />
               </div>
             </div>
-            <div className="mb-4 text-sm ">
-              <p className="pl-1 mt-1">
-                We’ll call or text you to confirm your number. Standard message
-                and data rates apply.{" "}
-                <Link to={"/privacy"} className="underline">
-                  Privacy Policy
-                </Link>
-              </p>
-            </div>
+            {errors.phoneNumber && (
+              <div className="flex mb-4">
+                <svg
+                  className="w-3 h-3 self-center fill-red-800 mr-2"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 512 512"
+                >
+                  <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm0-384c13.3 0 24 10.7 24 24l0 112c0 13.3-10.7 24-24 24s-24-10.7-24-24l0-112c0-13.3 10.7-24 24-24zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z" />
+                </svg>
+                <p className="text-red-500 text-sm">{errors.phoneNumber}</p>
+              </div>
+            )}
+            {!errors.phoneNumber && (
+              <div className="mb-5 text-sm ">
+                <p className="pl-1 mt-1  ">
+                  We’ll call or text you to confirm your number. Standard
+                  message and data rates apply.{" "}
+                  <Link to={"/privacy"} className="underline">
+                    Privacy Policy
+                  </Link>
+                </p>
+              </div>
+            )}
+            {errors.invalidPhoneNumber && (
+              <div className=" flex gap-3 text-gray-500 text-sm m-2 border border-gray-300 p-2 rounded-xl">
+                <svg
+                  className="w-5 h-5 self-center fill-"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 512 512"
+                >
+                  <path d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480L40 480c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24l0 112c0 13.3 10.7 24 24 24s24-10.7 24-24l0-112c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z" />
+                </svg>
+
+                <p>{errors.invalidPhoneNumber}</p>
+              </div>
+            )}
             <div>
               <button
                 type="submit"

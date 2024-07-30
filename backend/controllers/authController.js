@@ -14,7 +14,7 @@ exports.verifyPhone = async (req, res) => {
   const { countryCode, phoneNumber } = req.body;
 
   const fullPhoneNumber = countryCode + phoneNumber;
-  const { errors, isValid } = validatePhoneNumber(fullPhoneNumber);
+  const { errors, isValid } = validatePhoneNumber(req.body);
   console.log(errors);
   if (!isValid) {
     return res.status(400).json(errors); // Return validation errors

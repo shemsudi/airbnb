@@ -102,6 +102,9 @@ const Step2 = (props) => {
             </div>
           </Form>
         </div>
+        {errors.Otp && (
+          <div className="text-red-500 text-sm p-2">{errors.Otp}</div>
+        )}
         <hr />
         <div className="flex m-1   justify-between p-3">
           <Link onClick={backToStep1} className="underline self-center">

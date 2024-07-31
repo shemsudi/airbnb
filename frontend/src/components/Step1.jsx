@@ -4,7 +4,11 @@ import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Form } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { closeSignUp_LoginPage } from "../redux/ModalReducer.js";
+import {
+  closeLoginPage,
+  closeSignUp_LoginPage,
+  openVerifyPage,
+} from "../redux/ModalReducer.js";
 import axios from "axios";
 
 const countryCodes = [
@@ -29,7 +33,7 @@ const Step1 = (props) => {
         signupModalref.current &&
         !signupModalref.current.contains(event.target)
       ) {
-        props.setShowSignupage();
+        dispatch(closeSignUp_LoginPage());
       }
     };
 
@@ -55,7 +59,8 @@ const Step1 = (props) => {
         formData
       );
       if (response.status === 200) {
-        props.setStep(2);
+        dispatch(closeLoginPage());
+        dispatch(openVerifyPage());
       }
     } catch (error) {
       if (error.response.status === 400) {

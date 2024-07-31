@@ -5,7 +5,12 @@ import { Link } from "react-router-dom";
 import { Form } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setCredentials } from "../redux/AuthReducer";
-import { closeSignUp_LoginPage } from "../redux/ModalReducer.js";
+import {
+  closeSignUp_LoginPage,
+  openSignUpPage,
+  closeVerifyPage,
+  openLoginPage,
+} from "../redux/ModalReducer.js";
 import axios from "axios";
 // import { setStep } from "../redux/SignupReducer"; // Assuming you have a SignupReducer managing step state
 
@@ -23,7 +28,8 @@ const Step2 = (props) => {
         verifyModalref.current &&
         !verifyModalref.current.contains(event.target)
       ) {
-        props.setStep(1);
+        dispatch(closeVerifyPage());
+        dispatch(openLoginPage());
       }
     };
 
@@ -46,13 +52,16 @@ const Step2 = (props) => {
         formData
       );
       if (!response.data.isUserExist) {
-        props.setStep(3); // Proceed to the final step if OTP is verified
+        dispatch(closeVerifyPage());
+        dispatch(openSignUpPage()); // Proceed to the final step if OTP is verified
       } else {
         const { user, token } = response.data;
         localStorage.setItem("user", JSON.stringify(user));
         localStorage.setItem("token", token);
         dispatch(setCredentials({ user, accessToken: token }));
+        dispatch(closeVerifyPage());
         dispatch(closeSignUp_LoginPage());
+        dispatch(openLoginPage());
       }
     } catch (error) {
       setErrors(error.response.data);
@@ -60,7 +69,8 @@ const Step2 = (props) => {
     }
   };
   function backToStep1() {
-    props.setStep(1);
+    dispatch(closeVerifyPage());
+    dispatch(openLoginPage());
   }
 
   return (

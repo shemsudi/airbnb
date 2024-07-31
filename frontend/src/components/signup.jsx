@@ -7,46 +7,32 @@ import Step2 from "./Step2.jsx";
 import Step3 from "./Step3.jsx";
 
 const Signup = () => {
-  const [step, setStep] = useState(1);
-
   const [phoneNumber, setPhoneNumber] = useState("");
   const [countryCode, setCountryCode] = useState("+251");
 
   const dispatch = useDispatch();
-  const { isSignUp_LoginPageOpen } = useSelector(selectModals);
+  const { isSignUp_LoginPageOpen, isLoginPage, isVerifyPage, isSignupPage } =
+    useSelector(selectModals);
 
-  console.log(step);
-
-  const setShowSignupage = () => {
-    dispatch(closeSignUp_LoginPage());
-  };
+  console.log(isSignUp_LoginPageOpen, isLoginPage, isVerifyPage, isSignupPage);
+  console.log(isSignUp_LoginPageOpen);
 
   return (
     isSignUp_LoginPageOpen && (
       <div
         className={`fixed top-0 right-0 left-0 bottom-0 bg-black bg-opacity-60 z-10`}
       >
-        {step === 1 && (
+        {isLoginPage && (
           <Step1
             setPhoneNumber={setPhoneNumber}
             setCountryCode={setCountryCode}
-            setStep={setStep}
-            setShowSignupage={setShowSignupage}
           />
         )}
-        {step === 2 && (
-          <Step2
-            setStep={setStep}
-            phoneNumber={phoneNumber}
-            countryCode={countryCode}
-          />
+        {isVerifyPage && (
+          <Step2 phoneNumber={phoneNumber} countryCode={countryCode} />
         )}
-        {step === 3 && (
-          <Step3
-            setStep={setStep}
-            phoneNumber={phoneNumber}
-            countryCode={countryCode}
-          />
+        {isSignupPage && (
+          <Step3 phoneNumber={phoneNumber} countryCode={countryCode} />
         )}
       </div>
     )

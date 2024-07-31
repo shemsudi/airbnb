@@ -3,7 +3,11 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { closeSignUp_LoginPage } from "../redux/ModalReducer";
+import {
+  closeSignUp_LoginPage,
+  closeSignUpPage,
+  openLoginPage,
+} from "../redux/ModalReducer";
 import { setCredentials } from "../redux/AuthReducer";
 // import { setErrors } from "../redux/errorReducer";
 import { Form } from "react-router-dom";
@@ -61,6 +65,8 @@ const Step3 = (props) => {
         const { user, token } = response.data;
         dispatch(setCredentials({ user, accessToken: token }));
         dispatch(closeSignUp_LoginPage());
+        dispatch(openLoginPage());
+        dispatch(closeSignUpPage());
         console.log("succesfully registered");
       } else {
         dispatch(setErrors(response.errors));
@@ -77,7 +83,8 @@ const Step3 = (props) => {
     }
   };
   function backToStep2() {
-    props.setStep(1);
+    dispatch(closeSignUpPage());
+    dispatch(openLoginPage());
   }
   return (
     <div

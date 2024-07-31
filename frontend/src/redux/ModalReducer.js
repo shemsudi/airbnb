@@ -7,16 +7,16 @@ export const modalSlice = createSlice({
   initialState: {
     isDropDownOpen: false,
     isSignUp_LoginPageOpen: false,
-    isLoginPageOpen: false,
-    isVerifyPageOpen: false,
-    isSignUpPageOpen: false,
+    isLoginPage: true,
+    isVerifyPage: false,
+    isSignupPage: false,
   },
   reducers: {
-    openSignUpPage: (state) => {
-      state.isSignUpPageOpen = true;
+    openLoginPage: (state) => {
+      state.isLoginPage = true;
     },
-    closeSignUpPage: (state) => {
-      state.isSignUpPageOpen = false;
+    closeLoginPage: (state) => {
+      state.isLoginPage = false;
     },
     openDropDown: (state) => {
       state.isDropDownOpen = true;
@@ -29,6 +29,18 @@ export const modalSlice = createSlice({
     },
     closeSignUp_LoginPage: (state) => {
       state.isSignUp_LoginPageOpen = false;
+    },
+    openVerifyPage: (state) => {
+      state.isVerifyPage = true;
+    },
+    closeVerifyPage: (state) => {
+      state.isVerifyPage = false;
+    },
+    openSignUpPage: (state) => {
+      state.isSignupPage = true;
+    },
+    closeSignUpPage: (state) => {
+      state.isSignupPage = false;
     },
   },
 });

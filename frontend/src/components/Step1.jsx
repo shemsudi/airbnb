@@ -75,7 +75,7 @@ const Step1 = (props) => {
   return (
     <div
       ref={signupModalref}
-      className=" relative flex flex-col max-w-xl  h-5/6 top-1/2 left-1/2 rounded-xl border shadow-md bg-white -translate-x-1/2 -translate-y-1/2"
+      className=" relative flex flex-col max-w-md h-5/6 top-1/2 left-1/2 rounded-xl border shadow-md bg-white -translate-x-1/2 -translate-y-1/2"
     >
       <div className="flex justify-between p-4">
         <button
@@ -104,7 +104,7 @@ const Step1 = (props) => {
       <div className="p-4 flex flex-col overflow-y-scroll ">
         <p className="mb-4 font-roboto text-2xl ">Welcome to Airbnb</p>
         {errors.longPhoneNumber && (
-          <div className="flex gap-3 justify-between mb-4 border border-gray-300  p-2 rounded-xl">
+          <div className="flex gap-3  mb-4 border border-gray-300  p-2 rounded-xl">
             <svg
               className="w-14 h-12 fill-red-800 mr-2"
               xmlns="http://www.w3.org/2000/svg"

@@ -91,7 +91,7 @@ exports.completeRegistration = async (req, res) => {
   try {
     const user = await User.findOne({ email: email });
     if (user) {
-      errors.email = "email already exists";
+      errors.email = "email already exists.";
       return res.status(400).json(errors);
     }
     const newUser = new User({

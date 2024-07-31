@@ -28,7 +28,7 @@ const Step3 = (props) => {
         completeModalref.current &&
         !completeModalref.current.contains(event.target)
       ) {
-        props.setStep(2);
+        props.setStep(1);
       }
     };
 
@@ -52,6 +52,7 @@ const Step3 = (props) => {
     };
 
     try {
+      setErrors({});
       const response = await axios.post(
         "http://localhost:3000/complete-registration",
         formData
@@ -76,12 +77,12 @@ const Step3 = (props) => {
     }
   };
   function backToStep2() {
-    props.setStep(2);
+    props.setStep(1);
   }
   return (
     <div
       ref={completeModalref}
-      className=" relative w-1/3 h-5/6 top-1/2 left-1/2 rounded-xl border shadow-md bg-white -translate-x-1/2 -translate-y-1/2"
+      className=" relative max-w-xl  h-5/6 top-1/2 left-1/2 rounded-xl border shadow-md bg-white -translate-x-1/2 -translate-y-1/2"
     >
       <div className="flex flex-col h-full">
         <div className="flex justify-between p-3 mb-1">
@@ -104,10 +105,30 @@ const Step3 = (props) => {
             onSubmit={handleRegistrationSubmit}
             noValidate
           >
+            {errors.firstName && (
+              <div className="flex gap-3  mb-4 border border-gray-300  p-2 rounded-xl">
+                <svg
+                  className="w-10 h-10 fill-red-800 mr-2"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 512 512"
+                >
+                  <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm0-384c13.3 0 24 10.7 24 24l0 112c0 13.3-10.7 24-24 24s-24-10.7-24-24l0-112c0-13.3 10.7-24 24-24zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z" />
+                </svg>
+                <div className="flex flex-col">
+                  <h1>Let's try that again</h1>
+                  <p className=" text-sm text-gray-500">{errors.firstName}</p>
+                </div>
+              </div>
+            )}
             <div className="mb-3">Legal name</div>
             <div className="flex flex-col border border-gray-300 rounded-md p-1">
-              <label htmlFor="firstName" className="text-sm text-gray-500">
-                First name on Id
+              <label
+                htmlFor="firstName"
+                className={`text-gray-500 text-sm ${
+                  errors.firstName ? "text-red-700" : ""
+                }`}
+              >
+                First name on id{" "}
               </label>
               <input
                 className="focus:outline-none focus:ring-0"
@@ -119,9 +140,14 @@ const Step3 = (props) => {
                 placeholder="First name"
               />
             </div>
-            <div className="flex flex-col border border-t-0  border-gray-300 rounded-md rounded-l-none  p-1 mb-3">
-              <label htmlFor="lastName" className="text-sm text-gray-500">
-                Last name on Id
+            <div className="flex flex-col border border-t-0  border-gray-300 rounded-md rounded-l-none  p-1 ">
+              <label
+                htmlFor="lastName"
+                className={`text-gray-500 text-sm ${
+                  errors.firstName && errors.lastName ? "text-red-700" : ""
+                }`}
+              >
+                Last name on id{" "}
               </label>
               <input
                 className="focus:outline-none focus:ring-0"
@@ -133,10 +159,27 @@ const Step3 = (props) => {
                 placeholder="Last name"
               />
             </div>
+            {errors.firstName && (
+              <div className="flex mb-4">
+                <svg
+                  className="w-3 h-3 self-center fill-red-800 mr-2"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 512 512"
+                >
+                  <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm0-384c13.3 0 24 10.7 24 24l0 112c0 13.3-10.7 24-24 24s-24-10.7-24-24l0-112c0-13.3 10.7-24 24-24zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z" />
+                </svg>
+                <p className="text-red-500 text-sm">{errors.firstName}</p>
+              </div>
+            )}
 
-            <div className="mb-2">Date of Birth</div>
+            <div className="mb-2 mt-3">Date of Birth</div>
             <div className="flex flex-col border border-gray-300 rounded-md p-1">
-              <label htmlFor="birthday" className="text-sm text-gray-500">
+              <label
+                htmlFor="birthday"
+                className={`text-sm text-gray-500 ${
+                  errors.birthday ? "text-red-500" : ""
+                }  `}
+              >
                 Birthday{" "}
               </label>
               <input
@@ -149,14 +192,33 @@ const Step3 = (props) => {
                 placeholder="Birthday"
               />
             </div>
-            <p className="text-sm text-gray-500 mb-4">
-              To sign up, you need to be at least 18. Your birthday won’t be
-              shared with other people who use Airbnb.
-            </p>
+            {errors.birthday && (
+              <div className="flex mb-4">
+                <svg
+                  className="w-5 h-5 self-start pt-1 fill-red-800 mr-2"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 512 512"
+                >
+                  <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm0-384c13.3 0 24 10.7 24 24l0 112c0 13.3-10.7 24-24 24s-24-10.7-24-24l0-112c0-13.3 10.7-24 24-24zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z" />
+                </svg>
+                <p className="text-red-500 text-sm">{errors.birthday}</p>
+              </div>
+            )}
+            {!errors.birthday && (
+              <p className="text-sm text-gray-500 mb-4">
+                To sign up, you need to be at least 18. Your birthday won’t be
+                shared with other people who use Airbnb.
+              </p>
+            )}
             <div className="mb-2">Contact info</div>
             <div className="flex flex-col border border-gray-300 rounded-md p-1">
-              <label htmlFor="email" className="text-sm text-gray-500">
-                Email
+              <label
+                htmlFor="email"
+                className={`text-sm text-gray-500 ${
+                  errors.birthday ? "text-red-500" : ""
+                }  `}
+              >
+                Email{" "}
               </label>
               <input
                 className="focus:outline-none focus:ring-0"
@@ -168,6 +230,18 @@ const Step3 = (props) => {
                 placeholder="Email"
               />
             </div>
+            {errors.email && (
+              <div className="flex mb-4">
+                <svg
+                  className="w-3 h-3 self-center fill-red-800 mr-2"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 512 512"
+                >
+                  <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm0-384c13.3 0 24 10.7 24 24l0 112c0 13.3-10.7 24-24 24s-24-10.7-24-24l0-112c0-13.3 10.7-24 24-24zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z" />
+                </svg>
+                <p className="text-red-500 text-sm">{errors.email}</p>
+              </div>
+            )}
             <div className="text-sm text-gray-500 mb-4">
               We'll email you trip confirmations and receipts.
             </div>

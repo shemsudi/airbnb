@@ -90,21 +90,22 @@ const Step2 = (props) => {
           </p>
 
           <Form>
-            <div className="mb-4 flex items-center">
+            <div className="mb-4 flex flex-col items-start">
               <input
                 type="text"
                 name="otp"
                 value={otp}
                 onChange={(e) => setOtp(e.target.value)}
-                className="mt-3 mb-3 block ml-2 p-2  border border-gray-300 rounded-md"
+                className="mt-3 block ml-2 p-2  border border-gray-300 rounded-md"
                 maxLength={6}
               />
+              {errors.Otp && (
+                <div className="text-red-500 text-sm p-2 ">{errors.Otp}</div>
+              )}
             </div>
           </Form>
         </div>
-        {errors.Otp && (
-          <div className="text-red-500 text-sm p-2">{errors.Otp}</div>
-        )}
+
         <hr />
         <div className="flex m-1   justify-between p-3">
           <Link onClick={backToStep1} className="underline self-center">

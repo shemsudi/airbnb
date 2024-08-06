@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  error: null,
+  errors: {},
 };
 
 const errorSlice = createSlice({
@@ -9,11 +9,7 @@ const errorSlice = createSlice({
   initialState,
   reducers: {
     setErrors: (state, action) => {
-      const { errors } = action.payload;
-      return {
-        ...state,
-        error: errors,
-      };
+      state.errors = action.payload; // Directly mutating the state is safe with Immer in Redux Toolkit
     },
   },
 });
@@ -21,4 +17,4 @@ const errorSlice = createSlice({
 export const { setErrors } = errorSlice.actions;
 
 export default errorSlice.reducer;
-export const selectCurrentError = (state) => state.error.error;
+export const selectCurrentError = (state) => state.error.errors;

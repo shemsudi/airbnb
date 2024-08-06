@@ -113,7 +113,7 @@ exports.completeRegistration = async (req, res) => {
     const savedUser = await newUser.save();
     return res.status(201).json({
       message: "User registered successfully",
-      token: authToken,
+      acessToken: authToken,
       user: savedUser,
     });
   } catch (err) {

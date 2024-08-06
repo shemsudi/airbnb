@@ -3,14 +3,10 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Form } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import {
-  closeLoginPage,
-  closeSignUp_LoginPage,
-  openVerifyPage,
-} from "../redux/ModalReducer.js";
-import axios from "axios";
-
+import { useDispatch, useSelector } from "react-redux";
+import { closeSignUp_LoginPage } from "../redux/ModalReducer.js";
+import { sendMessage } from "../redux/action.js";
+import { selectCurrentError, setErrors } from "../redux/errorReducer.js";
 const countryCodes = [
   { code: "+1", country: "United States" },
   { code: "+44", country: "United Kingdom" },
@@ -23,17 +19,22 @@ const countryCodes = [
 const Step1 = (props) => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [countryCode, setCountryCode] = useState("+251");
-  const [errors, setErrors] = useState({});
   const dispatch = useDispatch();
   const signupModalref = useRef(null);
+  const errors = useSelector(selectCurrentError) || {};
+  console.log(errors);
 
+  function handleCloseModal() {
+    dispatch(closeSignUp_LoginPage());
+    dispatch(setErrors({}));
+  }
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
         signupModalref.current &&
         !signupModalref.current.contains(event.target)
       ) {
-        dispatch(closeSignUp_LoginPage());
+        handleCloseModal();
       }
     };
 
@@ -53,18 +54,10 @@ const Step1 = (props) => {
     };
 
     try {
-      setErrors({});
-      const response = await axios.post(
-        "http://localhost:3000/login",
-        formData
-      );
-      if (response.status === 200) {
-        dispatch(closeLoginPage());
-        dispatch(openVerifyPage());
-      }
+      await dispatch(sendMessage(formData)).unwrap();
     } catch (error) {
-      if (error.response.status === 400) {
-        setErrors(error.response.data);
+      if (error.status === 400) {
+        setErrors(error);
       }
     }
   };
@@ -85,7 +78,7 @@ const Step1 = (props) => {
       <div className="flex justify-between p-4">
         <button
           data-modal-hide="default-modal"
-          onClick={() => dispatch(closeSignUp_LoginPage())}
+          onClick={() => handleCloseModal()}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { sendMessage, verifyOtp, registerUser } from "./action.js";
 
 const initialState = {
   loading: false,
@@ -23,6 +24,45 @@ const userSlice = createSlice({
       state.user = null;
       state.token = null;
     },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(sendMessage.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(sendMessage.fulfilled, (state, action) => {
+        state.loading = false;
+      })
+      .addCase(sendMessage.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "An error occurred";
+      })
+      .addCase(verifyOtp.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(verifyOtp.fulfilled, (state, action) => {
+        state.loading = false;
+      })
+      .addCase(verifyOtp.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "An error occurred";
+      })
+      .addCase(registerUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(registerUser.fulfilled, (state, action) => {
+        state.loading = false;
+        const { user, accessToken } = action.payload;
+        state.user = user;
+        state.token = accessToken;
+      })
+      .addCase(registerUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "An error occurred";
+      });
   },
 });
 

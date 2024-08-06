@@ -4,21 +4,17 @@ import React, { useRef, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Form } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { setCredentials } from "../redux/AuthReducer";
-import {
-  closeSignUp_LoginPage,
-  openSignUpPage,
-  closeVerifyPage,
-  openLoginPage,
-} from "../redux/ModalReducer.js";
-import axios from "axios";
+import { verifyOtp } from "../redux/action.js";
+import { closeVerifyPage, openLoginPage } from "../redux/ModalReducer.js";
+import { selectCurrentError, setErrors } from "../redux/errorReducer.js";
+
 // import { setStep } from "../redux/SignupReducer"; // Assuming you have a SignupReducer managing step state
 
 const Step2 = (props) => {
   // const user = useSelector((state) => state.auth.user);
   const [otp, setOtp] = useState("");
-  const [errors, setErrors] = useState({});
-
+  const errors = useSelector(selectCurrentError) || {};
+  console.log(errors);
   const dispatch = useDispatch();
   const verifyModalref = useRef(null);
 
@@ -28,8 +24,7 @@ const Step2 = (props) => {
         verifyModalref.current &&
         !verifyModalref.current.contains(event.target)
       ) {
-        dispatch(closeVerifyPage());
-        dispatch(openLoginPage());
+        backToStep1();
       }
     };
 
@@ -39,7 +34,7 @@ const Step2 = (props) => {
     };
   }, [dispatch]);
 
-  const verifyOtp = async (e) => {
+  const handleVerifyOtp = async (e) => {
     e.preventDefault();
     console.log(props.countryCode, props.phoneNumber);
     const fullPhoneNumber = props.countryCode + props.phoneNumber;
@@ -47,30 +42,15 @@ const Step2 = (props) => {
     console.log(formData);
 
     try {
-      const response = await axios.post(
-        "http://localhost:3000/verify",
-        formData
-      );
-      if (!response.data.isUserExist) {
-        dispatch(closeVerifyPage());
-        dispatch(openSignUpPage()); // Proceed to the final step if OTP is verified
-      } else {
-        const { user, token } = response.data;
-        localStorage.setItem("user", JSON.stringify(user));
-        localStorage.setItem("token", token);
-        dispatch(setCredentials({ user, accessToken: token }));
-        dispatch(closeVerifyPage());
-        dispatch(closeSignUp_LoginPage());
-        dispatch(openLoginPage());
-      }
+      await dispatch(verifyOtp(formData));
     } catch (error) {
-      setErrors(error.response.data);
-      console.log("shemsu");
+      setErrors(error);
     }
   };
   function backToStep1() {
     dispatch(closeVerifyPage());
     dispatch(openLoginPage());
+    dispatch(setErrors({}));
   }
 
   return (
@@ -122,7 +102,7 @@ const Step2 = (props) => {
             More Options
           </Link>
           <button
-            onClick={verifyOtp}
+            onClick={handleVerifyOtp}
             type="submit"
             className=" bg-pink-600 text-white p-2 rounded-xl"
           >

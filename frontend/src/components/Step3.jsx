@@ -3,15 +3,9 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import {
-  closeSignUp_LoginPage,
-  closeSignUpPage,
-  openLoginPage,
-} from "../redux/ModalReducer";
-import { setCredentials } from "../redux/AuthReducer";
+import { closeSignUpPage, openLoginPage } from "../redux/ModalReducer";
 // import { setErrors } from "../redux/errorReducer";
-import { Form } from "react-router-dom";
-import axios from "axios";
+import { registerUser } from "../redux/action";
 
 const Step3 = (props) => {
   const [firstName, setFirstName] = useState("");
@@ -56,30 +50,9 @@ const Step3 = (props) => {
     };
 
     try {
-      setErrors({});
-      const response = await axios.post(
-        "http://localhost:3000/complete-registration",
-        formData
-      );
-      if (response.status === 201) {
-        const { user, token } = response.data;
-        dispatch(setCredentials({ user, accessToken: token }));
-        dispatch(closeSignUp_LoginPage());
-        dispatch(openLoginPage());
-        dispatch(closeSignUpPage());
-        console.log("succesfully registered");
-      } else {
-        dispatch(setErrors(response.errors));
-        console.error("Registration failed:", response.errors);
-      }
+      dispatch(registerUser(formData));
     } catch (error) {
-      if (error.response && error.response.data) {
-        // dispatch(setErrors(error.response.data));
-        setErrors(error.response.data);
-        console.log(error.response.data);
-      } else {
-        console.error("Error:", error);
-      }
+      dispatch(setErrors(error));
     }
   };
   function backToStep2() {

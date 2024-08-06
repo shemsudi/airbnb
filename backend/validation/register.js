@@ -7,7 +7,7 @@ module.exports = function validateRegisterInput(data) {
     errors.birthday = "Birthday is required";
   } else {
     const birthDate = new Date(data.birthday);
-    const age = new Date().getFullYear() - birthDate.getFullYear();
+    let age = new Date().getFullYear() - birthDate.getFullYear();
     const monthDifference = new Date().getMonth() - birthDate.getMonth();
     const dayDifference = new Date().getDate() - birthDate.getDate();
 

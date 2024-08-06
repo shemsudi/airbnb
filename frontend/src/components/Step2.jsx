@@ -6,7 +6,7 @@ import { Form } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { verifyOtp } from "../redux/action.js";
 import { closeVerifyPage, openLoginPage } from "../redux/ModalReducer.js";
-import { selectCurrentError, setErrors } from "../redux/errorReducer.js";
+import { selectCurrentError, setErrors } from "../redux/AuthReducer.js";
 
 // import { setStep } from "../redux/SignupReducer"; // Assuming you have a SignupReducer managing step state
 

@@ -12,13 +12,13 @@ const userSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
+    setErrors: (state, action) => {
+      state.error = action.payload;
+    },
     setCredentials: (state, action) => {
       const { user, accessToken } = action.payload;
-      return {
-        ...state,
-        user: user,
-        token: accessToken,
-      };
+      state.user = user;
+      state.token = accessToken;
     },
     logOut: (state) => {
       state.user = null;
@@ -44,6 +44,14 @@ const userSlice = createSlice({
       })
       .addCase(verifyOtp.fulfilled, (state, action) => {
         state.loading = false;
+        if (!action.payload.isUserExist) {
+          state.error = null;
+        } else {
+          const { user, accessToken } = action.payload;
+          state.user = user;
+          state.token = accessToken;
+          state.error = null;
+        }
       })
       .addCase(verifyOtp.rejected, (state, action) => {
         state.loading = false;
@@ -58,16 +66,19 @@ const userSlice = createSlice({
         const { user, accessToken } = action.payload;
         state.user = user;
         state.token = accessToken;
+        state.error = null;
       })
       .addCase(registerUser.rejected, (state, action) => {
+        console.log(action.payload);
         state.loading = false;
         state.error = action.payload || "An error occurred";
       });
   },
 });
 
-export const { setCredentials, logOut } = userSlice.actions;
+export const { setCredentials, logOut, setErrors } = userSlice.actions;
 
 export default userSlice.reducer;
 export const selectCurrentUser = (state) => state.auth.user;
 export const selectCurrentToken = (state) => state.auth.token;
+export const selectCurrentError = (state) => state.auth.error;

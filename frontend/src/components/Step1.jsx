@@ -6,7 +6,7 @@ import { Form } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { closeSignUp_LoginPage } from "../redux/ModalReducer.js";
 import { sendMessage } from "../redux/action.js";
-import { selectCurrentError, setErrors } from "../redux/errorReducer.js";
+import { selectCurrentError, setErrors } from "../redux/AuthReducer.js";
 const countryCodes = [
   { code: "+1", country: "United States" },
   { code: "+44", country: "United Kingdom" },
@@ -26,7 +26,6 @@ const Step1 = (props) => {
 
   function handleCloseModal() {
     dispatch(closeSignUp_LoginPage());
-    dispatch(setErrors({}));
   }
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -56,9 +55,7 @@ const Step1 = (props) => {
     try {
       await dispatch(sendMessage(formData)).unwrap();
     } catch (error) {
-      if (error.status === 400) {
-        setErrors(error);
-      }
+      setErrors(error);
     }
   };
 

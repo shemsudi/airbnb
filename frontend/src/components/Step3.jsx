@@ -2,11 +2,11 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { closeSignUpPage, openLoginPage } from "../redux/ModalReducer";
 // import { setErrors } from "../redux/errorReducer";
 import { registerUser } from "../redux/action";
-
+import { selectCurrentError, setErrors } from "../redux/AuthReducer";
 const Step3 = (props) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -14,8 +14,7 @@ const Step3 = (props) => {
   const [birthday, setBirthday] = useState("");
   const [email, setEmail] = useState("");
   const [optOutMarketing, setOptOutMarketing] = useState(false); // New state for the checkbox
-
-  const [errors, setErrors] = useState({});
+  const errors = useSelector(selectCurrentError) || {};
   const dispatch = useDispatch();
 
   const completeModalref = useRef(null);

@@ -6,7 +6,12 @@ import { Form } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { closeSignUp_LoginPage } from "../redux/ModalReducer.js";
 import { sendMessage } from "../redux/action.js";
-import { selectCurrentError, setErrors } from "../redux/AuthReducer.js";
+import { delay } from "../controller/delay.js";
+import {
+  selectCurrentError,
+  selectLoading,
+  setErrors,
+} from "../redux/AuthReducer.js";
 const countryCodes = [
   { code: "+1", country: "United States" },
   { code: "+44", country: "United Kingdom" },
@@ -19,13 +24,16 @@ const countryCodes = [
 const Step1 = (props) => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [countryCode, setCountryCode] = useState("+251");
+  const [isShrinking, setIsShrinking] = useState(false);
   const dispatch = useDispatch();
   const signupModalref = useRef(null);
   const errors = useSelector(selectCurrentError) || {};
-  console.log(errors);
+  const loading = useSelector(selectLoading);
+  console.log(loading);
 
   function handleCloseModal() {
     dispatch(closeSignUp_LoginPage());
+    dispatch(setErrors({}));
   }
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -45,12 +53,16 @@ const Step1 = (props) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsShrinking(true);
     props.setPhoneNumber(phoneNumber);
     props.setCountryCode(countryCode);
     const formData = {
       phoneNumber,
       countryCode,
     };
+    setTimeout(() => {
+      setIsShrinking(false);
+    }, 200);
 
     try {
       await dispatch(sendMessage(formData)).unwrap();
@@ -170,17 +182,18 @@ const Step1 = (props) => {
                 <p className="text-red-500 text-sm">{errors.phoneNumber}</p>
               </div>
             )}
-            {!errors.phoneNumber && (
-              <div className="mb-5 text-sm ">
-                <p className="pl-1 mt-1  ">
-                  We’ll call or text you to confirm your number. Standard
-                  message and data rates apply.{" "}
-                  <Link to={"/privacy"} className="underline">
-                    Privacy Policy
-                  </Link>
-                </p>
-              </div>
-            )}
+
+            <div
+              className={`mb-5 text-sm ${errors.phoneNumber ? "hidden" : ""} `}
+            >
+              <p className="pl-1 mt-1  ">
+                We’ll call or text you to confirm your number. Standard message
+                and data rates apply.{" "}
+                <Link to={"/privacy"} className="underline">
+                  Privacy Policy
+                </Link>
+              </p>
+            </div>
             {errors.invalidPhoneNumber && (
               <div className=" flex gap-3 text-gray-500 text-sm m-2 border border-gray-300 p-2 rounded-xl">
                 <svg
@@ -197,7 +210,10 @@ const Step1 = (props) => {
             <div>
               <button
                 type="submit"
-                className="w-full bg-pink-600 text-white p-2 rounded-md "
+                disabled={loading}
+                className={` w-full bg-pink-600 hover:bg-pink-700 text-white p-2 rounded-md ${
+                  loading ? "opacity-50 cursor-not-allowed" : ""
+                }   ${isShrinking ? "transform scale-90" : ""}`}
               >
                 Submit
               </button>

@@ -6,7 +6,11 @@ import { Form } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { verifyOtp } from "../redux/action.js";
 import { closeVerifyPage, openLoginPage } from "../redux/ModalReducer.js";
-import { selectCurrentError, setErrors } from "../redux/AuthReducer.js";
+import {
+  selectCurrentError,
+  selectLoading,
+  setErrors,
+} from "../redux/AuthReducer.js";
 
 // import { setStep } from "../redux/SignupReducer"; // Assuming you have a SignupReducer managing step state
 
@@ -14,6 +18,7 @@ const Step2 = (props) => {
   // const user = useSelector((state) => state.auth.user);
   const [otp, setOtp] = useState("");
   const errors = useSelector(selectCurrentError) || {};
+  const loading = useSelector(selectLoading);
   console.log(errors);
   const dispatch = useDispatch();
   const verifyModalref = useRef(null);
@@ -102,9 +107,10 @@ const Step2 = (props) => {
             More Options
           </Link>
           <button
+            disabled={loading}
             onClick={handleVerifyOtp}
             type="submit"
-            className=" bg-pink-600 text-white p-2 rounded-xl"
+            className={`  bg-pink-600 hover:bg-pink-700 text-white p-2 rounded-xl`}
           >
             Continue
           </button>

@@ -82,3 +82,4 @@ export default userSlice.reducer;
 export const selectCurrentUser = (state) => state.auth.user;
 export const selectCurrentToken = (state) => state.auth.token;
 export const selectCurrentError = (state) => state.auth.error;
+export const selectLoading = (state) => state.auth.loading;

@@ -6,7 +6,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { closeSignUpPage, openLoginPage } from "../redux/ModalReducer";
 // import { setErrors } from "../redux/errorReducer";
 import { registerUser } from "../redux/action";
-import { selectCurrentError, setErrors } from "../redux/AuthReducer";
+import {
+  selectCurrentError,
+  selectLoading,
+  setErrors,
+} from "../redux/AuthReducer";
 const Step3 = (props) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -15,6 +19,7 @@ const Step3 = (props) => {
   const [email, setEmail] = useState("");
   const [optOutMarketing, setOptOutMarketing] = useState(false); // New state for the checkbox
   const errors = useSelector(selectCurrentError) || {};
+  const loading = useSelector(selectLoading);
   const dispatch = useDispatch();
 
   const completeModalref = useRef(null);
@@ -247,7 +252,13 @@ const Step3 = (props) => {
               </p>
             </div>
 
-            <button className="bg-pink-600 p-2 rounded-xl mb-3 " type="submit">
+            <button
+              disabled={loading}
+              className={` ${
+                loading ? "cursor-not-allowed opacity-50" : ""
+              }bg-pink-600 p-2 rounded-xl mb-3 hover:bg-pink-700  `}
+              type="submit"
+            >
               Agree and Continue
             </button>
           </form>

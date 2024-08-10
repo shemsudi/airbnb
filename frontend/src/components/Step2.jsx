@@ -91,7 +91,7 @@ const Step2 = (props) => {
                 name="otp"
                 value={otp}
                 onChange={(e) => setOtp(e.target.value)}
-                className="mt-3 block ml-2 p-2  border border-gray-300 rounded-md"
+                className="mt-3 w-40 ml-2 p-2  border border-gray-300 rounded-md"
                 maxLength={6}
               />
               {errors.Otp && (
@@ -107,12 +107,10 @@ const Step2 = (props) => {
             More Options
           </Link>
           <button
-            disabled={loading}
+            className=" bg-pink-600 hover:bg-pink-700 text-white p-2 rounded-xl  "
             onClick={handleVerifyOtp}
-            type="submit"
-            className={`  bg-pink-600 hover:bg-pink-700 text-white p-2 rounded-xl`}
           >
-            Continue
+            continue
           </button>
         </div>
       </div>

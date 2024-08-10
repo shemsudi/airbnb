@@ -2,9 +2,9 @@ import { createSlice } from "@reduxjs/toolkit";
 import { sendMessage, verifyOtp, registerUser } from "./action.js";
 
 const initialState = {
+  isUserAuthenticated: false,
   loading: false,
   user: null,
-  token: null,
   error: null,
 };
 
@@ -16,13 +16,12 @@ const userSlice = createSlice({
       state.error = action.payload;
     },
     setCredentials: (state, action) => {
-      const { user, accessToken } = action.payload;
-      state.user = user;
-      state.token = accessToken;
+      state.user = action.payload;
+      state.isUserAuthenticated = true;
     },
     logOut: (state) => {
       state.user = null;
-      state.token = null;
+      state.isUserAuthenticated = false;
     },
   },
   extraReducers: (builder) => {
@@ -44,12 +43,12 @@ const userSlice = createSlice({
       })
       .addCase(verifyOtp.fulfilled, (state, action) => {
         state.loading = false;
+        console.log(action.payload);
         if (!action.payload.isUserExist) {
           state.error = null;
         } else {
-          const { user, accessToken } = action.payload;
-          state.user = user;
-          state.token = accessToken;
+          state.isUserAuthenticated = true;
+          state.user = action.payload.decoded;
           state.error = null;
         }
       })
@@ -63,9 +62,8 @@ const userSlice = createSlice({
       })
       .addCase(registerUser.fulfilled, (state, action) => {
         state.loading = false;
-        const { user, accessToken } = action.payload;
-        state.user = user;
-        state.token = accessToken;
+        state.isUserAuthenticated = true;
+        state.user = action.payload.decoded;
         state.error = null;
       })
       .addCase(registerUser.rejected, (state, action) => {

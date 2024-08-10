@@ -1,4 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import setAuthToken from "../utils/setAuthToken.js";
+import { jwtDecode } from "jwt-decode";
 
 import {
   closeLoginPage,
@@ -32,24 +34,25 @@ export const verifyOtp = createAsyncThunk(
   "auth/verifyOtp",
   async (payload, { dispatch, rejectWithValue }) => {
     try {
-      console.log(payload);
       const response = await axios.post(
         "http://localhost:3000/verify",
         payload
       );
-      console.log(response.data);
       if (!response.data.isUserExist) {
         dispatch(closeVerifyPage());
         dispatch(openSignUpPage());
         return response.data;
       } else {
-        const { user, accessToken } = response.data;
-        localStorage.setItem("user", JSON.stringify(user));
-        localStorage.setItem("token", accessToken);
+        const { token, isUserExist } = response.data;
+        localStorage.setItem("jwtToken", token);
+        setAuthToken(token);
+        const decoded = jwtDecode(token);
+        console.log(decoded);
         dispatch(closeVerifyPage());
         dispatch(closeSignUp_LoginPage());
         dispatch(openLoginPage());
-        return response.data;
+
+        return { decoded, isUserExist };
       }
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -66,11 +69,16 @@ export const registerUser = createAsyncThunk(
       );
       console.log(response);
       if (response.status === 201) {
+        const { token } = response.data;
+        localStorage.setItem("jwtToken", token);
+        setAuthToken(token);
+        const decoded = jwtDecode(token);
         dispatch(closeSignUp_LoginPage());
         dispatch(openLoginPage());
         dispatch(closeSignUpPage());
         console.log("succesfully registered");
-        return response.data;
+
+        return decoded;
       } else {
         console.error("Registration failed:", response.errors);
       }

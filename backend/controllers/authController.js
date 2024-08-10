@@ -61,7 +61,6 @@ exports.verifyOTP = async (req, res) => {
         res.status(201).json({
           isUserExist: true,
           token: "Bearer " + authToken,
-          user: user,
         });
       } else {
         console.log("User not found");
@@ -113,8 +112,7 @@ exports.completeRegistration = async (req, res) => {
     const savedUser = await newUser.save();
     return res.status(201).json({
       message: "User registered successfully",
-      acessToken: authToken,
-      user: savedUser,
+      token: "Bearer " + authToken,
     });
   } catch (err) {
     errors.message = err;

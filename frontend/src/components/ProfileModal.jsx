@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 import {
   logOut,
   selectCurrentUser,
@@ -13,19 +14,17 @@ const ProfileModal = (props) => {
 
   const dispatch = useDispatch();
   useEffect(() => {
-    const user = localStorage.getItem("user");
-    const token = localStorage.getItem("token");
-
-    if (user && token) {
-      dispatch(setCredentials({ user: JSON.parse(user), accessToken: token }));
+    const token = localStorage.getItem("jwtToken");
+    if (token) {
+      const decode = jwtDecode(token);
+      dispatch(setCredentials(decode));
     }
   }, [dispatch]);
 
   const handleLogout = () => {
     dispatch(logOut());
     dispatch(closeDropDown());
-    localStorage.removeItem("user");
-    localStorage.removeItem("token");
+    localStorage.removeItem("jwtToken");
   };
   return currentUser ? (
     <div

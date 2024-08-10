@@ -8,7 +8,6 @@ import {
 } from "../redux/ModalReducer.js";
 import ProfileModal from "./ProfileModal.jsx";
 import Signup from "./signup.jsx";
-
 const ProfileDropDown = (props) => {
   const dispatch = useDispatch();
   const { isSignUp_LoginPageOpen, isDropDownOpen } = useSelector(selectModals);

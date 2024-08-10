@@ -13,13 +13,6 @@ const ProfileModal = (props) => {
   const currentUser = useSelector(selectCurrentUser);
 
   const dispatch = useDispatch();
-  useEffect(() => {
-    const token = localStorage.getItem("jwtToken");
-    if (token) {
-      const decode = jwtDecode(token);
-      dispatch(setCredentials(decode));
-    }
-  }, [dispatch]);
 
   const handleLogout = () => {
     dispatch(logOut());

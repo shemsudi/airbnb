@@ -1,5 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { sendMessage, verifyOtp, registerUser } from "./action.js";
+import setAuthToken from "../utils/setAuthToken.js";
+import axios from "axios";
 
 const initialState = {
   isUserAuthenticated: false,
@@ -20,6 +22,7 @@ const userSlice = createSlice({
       state.isUserAuthenticated = true;
     },
     logOut: (state) => {
+      setAuthToken(false);
       state.user = null;
       state.isUserAuthenticated = false;
     },

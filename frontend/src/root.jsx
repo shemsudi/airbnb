@@ -5,16 +5,26 @@ import { Outlet } from "react-router-dom";
 import Footer from "./footer";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { setCredentials } from "./redux/AuthReducer";
+import { setCredentials, logOut } from "./redux/AuthReducer";
 import { jwtDecode } from "jwt-decode";
+import setAuthToken from "./utils/setAuthToken";
 
 const Root = (props) => {
   const dispatch = useDispatch();
   useEffect(() => {
     const token = localStorage.getItem("jwtToken");
     if (token) {
-      const decode = jwtDecode(token);
-      dispatch(setCredentials(decode));
+      const decoded = jwtDecode(token);
+      dispatch(setCredentials(decoded));
+
+      const currentTime = Date.now() / 1000;
+      const timeRemaining = decoded.exp - currentTime;
+      console.log(timeRemaining);
+      setTimeout(() => {
+        localStorage.removeItem("jwtToken");
+        dispatch(logOut());
+        setAuthToken(false);
+      }, timeRemaining * 1000);
     }
   }, [dispatch]);
   return (

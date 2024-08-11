@@ -4,13 +4,13 @@ import React, { useRef, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Form } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { verifyOtp } from "../redux/action.js";
-import { closeVerifyPage, openLoginPage } from "../redux/ModalReducer.js";
+import { verifyOtp } from "../../redux/action.js";
+import { closeVerifyPage, openLoginPage } from "../../redux/ModalReducer.js";
 import {
   selectCurrentError,
   selectLoading,
   setErrors,
-} from "../redux/AuthReducer.js";
+} from "../../redux/AuthReducer.js";
 
 // import { setStep } from "../redux/SignupReducer"; // Assuming you have a SignupReducer managing step state
 
@@ -19,7 +19,6 @@ const Step2 = (props) => {
   const [otp, setOtp] = useState("");
   const errors = useSelector(selectCurrentError) || {};
   const loading = useSelector(selectLoading);
-  console.log(errors);
   const dispatch = useDispatch();
   const verifyModalref = useRef(null);
 

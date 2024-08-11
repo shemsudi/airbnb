@@ -3,14 +3,14 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { closeSignUpPage, openLoginPage } from "../redux/ModalReducer";
+import { closeSignUpPage, openLoginPage } from "../../redux/ModalReducer";
 // import { setErrors } from "../redux/errorReducer";
-import { registerUser } from "../redux/action";
+import { registerUser } from "../../redux/action";
 import {
   selectCurrentError,
   selectLoading,
   setErrors,
-} from "../redux/AuthReducer";
+} from "../../redux/AuthReducer";
 const Step3 = (props) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");

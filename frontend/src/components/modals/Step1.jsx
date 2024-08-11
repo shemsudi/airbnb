@@ -4,14 +4,13 @@ import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Form } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { closeSignUp_LoginPage } from "../redux/ModalReducer.js";
-import { sendMessage } from "../redux/action.js";
-import { delay } from "../controller/delay.js";
+import { closeSignUp_LoginPage } from "../../redux/ModalReducer.js";
+import { sendMessage } from "../../redux/action.js";
 import {
   selectCurrentError,
   selectLoading,
   setErrors,
-} from "../redux/AuthReducer.js";
+} from "../../redux/AuthReducer.js";
 const countryCodes = [
   { code: "+1", country: "United States" },
   { code: "+44", country: "United Kingdom" },
@@ -29,7 +28,6 @@ const Step1 = (props) => {
   const signupModalref = useRef(null);
   const errors = useSelector(selectCurrentError) || {};
   const loading = useSelector(selectLoading);
-  console.log(loading);
 
   function handleCloseModal() {
     dispatch(closeSignUp_LoginPage());

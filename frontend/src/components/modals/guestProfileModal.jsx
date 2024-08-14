@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { openSignUp_LoginPage, closeDropDown } from "../../redux/ModalReducer";
 
-const AuthProfileModal = (props) => {
+const GuestProfileModal = (props) => {
   const dispatch = useDispatch();
   const showSignupPage = () => {
     dispatch(openSignUp_LoginPage());
@@ -62,4 +62,4 @@ const AuthProfileModal = (props) => {
   );
 };
 
-export default AuthProfileModal;
+export default GuestProfileModal;

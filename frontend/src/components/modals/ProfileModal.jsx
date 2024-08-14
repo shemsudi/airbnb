@@ -1,8 +1,8 @@
 import { useSelector, useDispatch } from "react-redux";
 import { logOut, selectCurrentUser } from "../../redux/AuthReducer";
 import { closeDropDown } from "../../redux/ModalReducer";
-import GuestProfileModal from "./authProfileModal";
-import AuthProfileModal from "./unAuthProfileModal";
+import GuestProfileModal from "./guestProfileModal";
+import AuthProfileModal from "./AuthProfileModal";
 
 const ProfileModal = (props) => {
   const currentUser = useSelector(selectCurrentUser);

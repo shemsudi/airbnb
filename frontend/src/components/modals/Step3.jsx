@@ -11,6 +11,9 @@ import {
   selectLoading,
   setErrors,
 } from "../../redux/AuthReducer";
+
+import Button from "../buttons/button";
+import BackIcon from "../icons/backIcon";
 const Step3 = (props) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -70,15 +73,7 @@ const Step3 = (props) => {
     >
       <div className="flex flex-col h-full">
         <div className="flex justify-between p-3 mb-1">
-          <button onClick={backToStep2}>
-            <svg
-              className="w-5 h-5 self-center border rounded-full border-gray-500 "
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 320 512"
-            >
-              <path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z" />
-            </svg>
-          </button>
+          <Button onClick={backToStep2} children={<BackIcon />}></Button>
           <div>Finsh singning up</div>
           <div></div>
         </div>

@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const GuestProfileModal = (props) => {
+const AuthProfileModal = (props) => {
   return (
     <div
       className={`  rounded-2xl shadow-lg min-w-max h-auto absolute top-14 right-3 border z-10 bg-white`}
@@ -86,4 +86,4 @@ const GuestProfileModal = (props) => {
   );
 };
 
-export default GuestProfileModal;
+export default AuthProfileModal;

@@ -1,18 +1,19 @@
-// src/components/Step2.js
-
 import React, { useRef, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Form } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { verifyOtp } from "../../redux/action.js";
 import { closeVerifyPage, openLoginPage } from "../../redux/ModalReducer.js";
+// redux
 import {
   selectCurrentError,
   selectLoading,
   setErrors,
 } from "../../redux/AuthReducer.js";
-
-// import { setStep } from "../redux/SignupReducer"; // Assuming you have a SignupReducer managing step state
+//custom components
+import CloseIcon from "../icons/closeIcon.jsx";
+import Button from "../buttons/button.jsx";
+import BackIcon from "../icons/backIcon.jsx";
 
 const Step2 = (props) => {
   // const user = useSelector((state) => state.auth.user);
@@ -64,15 +65,8 @@ const Step2 = (props) => {
     >
       <div className=" flex flex-col">
         <div className="flex p-3 justify-between ">
-          <button onClick={backToStep1}>
-            <svg
-              className="w-4 h-4 self-center "
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 320 512"
-            >
-              <path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z" />
-            </svg>
-          </button>
+          <Button onClick={backToStep1} children={<BackIcon />}></Button>
+
           <div>Confirm your Number</div>
           <div></div>
         </div>

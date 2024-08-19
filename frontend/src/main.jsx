@@ -3,8 +3,11 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
+// routes
+import ErrorPage from "./pages/errorPage.jsx";
 import Root from "./root.jsx";
 import NewRealeased from "./pages/realesedFeaures.jsx";
+import Icons from "../src/components/Icons.jsx";
 
 import { Provider } from "react-redux";
 import store from "./redux/store.jsx";
@@ -12,21 +15,11 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <Root />,
-    errorElement: (
-      <h1 className="flex justify-center items-center  font-bold">
-        Here is some images of icons
-      </h1>
-    ),
+    errorElement: <ErrorPage />,
     children: [
       {
-        path: "/icons",
-        element: (
-          <main className="pt-2 grid grid-flow-row -z-50 overflow-hidden">
-            <h1 className="text-center font-bold">
-              Here is some images of icons
-            </h1>
-          </main>
-        ),
+        index: true,
+        element: <Icons />,
       },
       {
         path: "/places",

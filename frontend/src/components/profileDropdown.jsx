@@ -1,7 +1,6 @@
 import React, { useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  openSignUp_LoginPage,
   openDropDown,
   closeDropDown,
   selectModals,

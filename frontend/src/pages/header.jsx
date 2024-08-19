@@ -1,24 +1,9 @@
 import Search from "../components/search";
 import ProfileModal from "../components/profileDropdown";
-import { useEffect, useState, useRef } from "react";
 import SearchBar from "./searchBar";
 
-const Header = () => {
-  const [goingUp, setGoingUp] = useState(false);
-
-  const handleScroll = () => {
-    const currentScrollY = window.scrollY;
-    if (currentScrollY === 0) {
-      setGoingUp(true);
-    } else {
-      setGoingUp(false);
-    }
-  };
-
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+const Header = ({ atTop }) => {
+  console.log(atTop);
   return (
     <div className="z-50">
       <header className="flex px-8 py-4 justify-between items-center">
@@ -39,7 +24,7 @@ const Header = () => {
           </svg>
           <h1 className="font-bold text-primary text-2xl">airbnb</h1>
         </a>
-        {goingUp ? (
+        {atTop ? (
           <div className="flex gap-5">
             <h1>Stays</h1> <h1 className="text-blurred">Expreiences</h1>
             <h1 className="text-blurred">Online Expriences</h1>
@@ -71,7 +56,7 @@ const Header = () => {
           <ProfileModal />
         </div>
       </header>
-      {goingUp ? <SearchBar /> : ""}
+      {atTop ? <SearchBar /> : ""}
 
       <div className="mt-3 -z-50">
         <hr />

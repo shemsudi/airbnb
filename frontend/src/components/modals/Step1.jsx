@@ -14,8 +14,8 @@ import {
 //custom components
 import CloseIcon from "../icons/closeIcon.jsx";
 import Button from "../buttons/button.jsx";
-import CountrySelect from "../countrySelect.jsx";
-import PhoneNumberInput from "../phoneNumberInput.jsx";
+import CountrySelect from "../forms/countrySelect.jsx";
+import PhoneNumberInput from "../forms/phoneNumberInput.jsx";
 import SocialSignInButtons from "../socialSignInButtons.jsx";
 
 const Step1 = (props) => {

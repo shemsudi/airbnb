@@ -2,8 +2,8 @@ import React from "react";
 
 const SearchBar = (props) => {
   return (
-    <div className="flex justify-center ">
-      <div className="flex border p-3 rounded-full shadow-md  gap-4 w-3/4 items-stretch">
+    <div className="flex justify-center transition ease-in duration-1000 ">
+      <div className="flex border p-3 rounded-full shadow-md  gap-4 w-3/4 ">
         <div className="flex self-center w-1/3 ">Anywhere</div>
         <div className="border-r-2 "></div>
         <div className="flex self-center w-1/3">Any week</div>

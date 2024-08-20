@@ -1,33 +1,21 @@
 import Search from "../components/search";
 import ProfileModal from "../components/profileDropdown";
 import SearchBar from "./searchBar";
+import Logo from "../assets/logos";
+import { Link } from "react-router-dom";
 
 const Header = ({ atTop }) => {
   console.log(atTop);
   return (
     <div className="z-50">
       <header className="flex px-8 py-4 justify-between items-center">
-        <a href="#" className="flex gap-2">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="w-10 h-10 -rotate-90 text-primary"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5"
-            />
-          </svg>
-          <h1 className="font-bold text-primary text-2xl">airbnb</h1>
-        </a>
+        <Logo />
         {atTop ? (
-          <div className="flex gap-5">
-            <h1>Stays</h1> <h1 className="text-blurred">Expreiences</h1>
-            <h1 className="text-blurred">Online Expriences</h1>
+          <div className="flex gap-5 transition ease-in-out duration-700">
+            <h1 className="transition-colors duration-500">Stays</h1>{" "}
+            <h1 className="text-blurred transition-colors duration-500">
+              Expreiences
+            </h1>
           </div>
         ) : (
           <Search />
@@ -35,7 +23,7 @@ const Header = ({ atTop }) => {
 
         <div className="flex gap-3 items-center">
           <div>
-            <a href="#">Airbnb your home</a>
+            <Link to={"#"}>Airbnb your home</Link>
           </div>
           <button>
             <svg

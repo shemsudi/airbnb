@@ -22,6 +22,10 @@ const router = createBrowserRouter([
         element: <Icons />,
       },
       {
+        path: "/icons",
+        element: <Icons />,
+      },
+      {
         path: "/places",
         element: (
           <h1 className="text-center font-bold">

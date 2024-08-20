@@ -38,7 +38,7 @@ const ProfileDropDown = (props) => {
   return (
     <div ref={dropdownRef} className="relative">
       <button
-        className=" border flex gap-3 rounded-3xl py-2 px-3 items-center shadow-md"
+        className=" border flex gap-3 rounded-3xl p-1 items-center shadow-md"
         onClick={toggleDropdown}
       >
         <MenuIcon />

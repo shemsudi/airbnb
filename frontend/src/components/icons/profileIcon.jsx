@@ -8,7 +8,7 @@ const ProfileIcon = (props) => {
       viewBox="0 0 24 24"
       strokeWidth={1.5}
       stroke="currentColor"
-      className=" w-8 h-8 text-white bg-black rounded-full"
+      className=" w-6 h-6 text-white bg-black rounded-full"
     >
       <path
         strokeLinecap="round"

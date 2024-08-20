@@ -2,7 +2,7 @@ import React from "react";
 
 const Search = (props) => {
   return (
-    <div className="flex gap-2 border rounded-full py-2 px-4 shadow-md translate-x-8 transition ease-in duration-700">
+    <div className="flex gap-2 border rounded-full py-2 px-4 shadow-md translate-x-8 ">
       <div className="flex self-center">Anywhere</div>
       <div className="border-r-2"></div>
       <div className="flex self-center">Any week</div>

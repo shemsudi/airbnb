@@ -3,22 +3,36 @@ import ProfileModal from "../components/profileDropdown";
 import SearchBar from "./searchBar";
 import Logo from "../assets/logos";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 
 const Header = ({ atTop }) => {
-  console.log(atTop);
+  const [selectedOption, setSelectedOption] = useState("stays");
+  const option = [
+    { key: "stays", label: "Stays" },
+    { key: "experiences", label: "Experiences" },
+  ];
   return (
-    <div className="z-50">
-      <header className="flex px-8 py-4 justify-between items-center">
+    <div className="flex flex-col z-50">
+      <header className="flex px-12 py-4 justify-between items-center">
         <Logo />
-        {atTop ? (
-          <div className="flex gap-5 transition ease-in-out duration-700">
-            <h1 className="transition-colors duration-500">Stays</h1>{" "}
-            <h1 className="text-blurred transition-colors duration-500">
-              Expreiences
-            </h1>
-          </div>
-        ) : (
+        {!atTop ? (
           <Search />
+        ) : (
+          <div className="flex gap-5  ">
+            {option.map((option) => (
+              <h1
+                key={option.key}
+                className={`cursor-pointer px-3 py-1 rounded-full transition-colors duration-300 ${
+                  selectedOption === option.key
+                    ? "text-black"
+                    : "text-gray-500 hover:bg-gray-100"
+                }`}
+                onClick={() => setSelectedOption(option.key)}
+              >
+                {option.label}
+              </h1>
+            ))}
+          </div>
         )}
 
         <div className="flex gap-3 items-center">
@@ -44,7 +58,7 @@ const Header = ({ atTop }) => {
           <ProfileModal />
         </div>
       </header>
-      {atTop ? <SearchBar /> : ""}
+      {atTop ? <SearchBar selectedOption={selectedOption} /> : <div></div>}
 
       <div className="mt-3 -z-50">
         <hr />

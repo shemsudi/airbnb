@@ -4,11 +4,11 @@ import items from "../assets/items";
 
 const NavigateTom3 = (props) => {
   return (
-    <div className="w-full no-scrollbar overflow-x-auto shadow-sm">
-      <ul className="px-3 pt-2 flex ">
+    <div className="w-full px-12 no-scrollbar overflow-x-auto shadow-sm">
+      <ul className="pt-2 flex gap-8">
         {items.map((item, index) => (
           <li
-            className="px-5 before:pb-2 box-border min-w-max opacity-70 hover:opacity-100 hover:border-b-2 hover:border-gray "
+            className="box-border min-w-max opacity-70 hover:opacity-100 hover:border-b-2 hover:border-gray "
             key={index}
           >
             <NavLink

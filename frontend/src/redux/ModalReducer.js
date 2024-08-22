@@ -10,8 +10,15 @@ export const modalSlice = createSlice({
     isLoginPage: true,
     isVerifyPage: false,
     isSignupPage: false,
+    isSearchBarOpen: false,
   },
   reducers: {
+    openSearchBar: (state) => {
+      state.isSearchBarOpen = true;
+    },
+    closeSearchBar: (state) => {
+      state.isSearchBarOpen = false;
+    },
     openLoginPage: (state) => {
       state.isLoginPage = true;
     },
@@ -56,8 +63,12 @@ export const {
   closeDropDown,
   openSignUp_LoginPage,
   closeSignUp_LoginPage,
+  openSearchBar,
+  closeSearchBar,
 } = modalSlice.actions;
 
 export const selectModals = (state) => state.modal;
+export const selectCurrentError = (state) => state.auth.error;
+export const selectCurrentSearchBar = (state) => state.modal.isSearchBarOpen;
 
 export default modalSlice.reducer;

@@ -11,4 +11,15 @@
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
   }
+  .search-input {
+    @apply focus:ring-0 focus:outline-none w-full;
+  }
+
+  .input-container {
+    @apply flex flex-col pl-6 py-2 pr-2 rounded-full;
+  }
+
+  .search-button {
+    @apply bg-primary rounded-full text-white p-1;
+  }
 }

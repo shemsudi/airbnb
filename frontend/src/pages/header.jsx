@@ -37,7 +37,7 @@ const Header = ({ atTop }) => {
 
         <div className="flex gap-3 items-center">
           <div>
-            <Link to={"#"}>Airbnb your home</Link>
+            <Link to={"host/homes"}>Airbnb your home</Link>
           </div>
           <button>
             <svg

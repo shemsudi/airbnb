@@ -8,12 +8,12 @@ const NavigateTom3 = (props) => {
       <ul className="pt-2 flex gap-8">
         {items.map((item, index) => (
           <li
-            className="box-border min-w-max opacity-70 hover:opacity-100 hover:border-b-2 hover:border-gray "
+            className="min-w-max opacity-70 hover:opacity-100 hover:border-b-2   hover:border-gray  "
             key={index}
           >
             <NavLink
               to={`/${item.name ? item.name : item}`}
-              className=" flex flex-col align-center"
+              className="  flex flex-col align-center"
             >
               <div className="self-center">
                 <img

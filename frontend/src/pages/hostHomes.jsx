@@ -5,8 +5,8 @@ import AirbnbSetupInfo from "../components/hosthomes/airbnbSetupInfo";
 import HostPromotionSection from "../components/hosthomes/hostPromotionSection";
 
 import AirbnbProtectionComparison from "../components/hosthomes/airbnbProtectionComparision";
+import FrequentlyAskedQuestion from "../components/hosthomes/FrequentlyAskedQuestion";
 const HostHomes = () => {
-  const total = 30;
   const [nights, setNights] = React.useState(7);
   const [pricePerNight, setPricePerNight] = React.useState(43);
   const handleSliderChange = (event) => {
@@ -26,6 +26,7 @@ const HostHomes = () => {
       <AirbnbSetupInfo />
       <HostPromotionSection />
       <AirbnbProtectionComparison />
+      <FrequentlyAskedQuestion />
     </div>
   );
 };

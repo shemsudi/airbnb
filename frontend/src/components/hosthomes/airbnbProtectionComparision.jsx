@@ -5,7 +5,7 @@ import XIcon from "../icons/xIcon";
 
 const AirbnbProtectionComparison = () => {
   return (
-    <div className="xl:px-80 lg:px-40 md:px-20 px-5 w-full flex flex-col justify-center items-center mb-24">
+    <div className="xl:px-80 lg:px-40 md:px-20 px-5 w-full flex flex-col justify-center items-center mb-20">
       <img
         className="w-40 self-start lg:self-center "
         src="https://a0.muscache.com/im/pictures/cecbf134-6674-410f-9345-603716048771.jpg?im_w=480&im_q=highq"

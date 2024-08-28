@@ -22,4 +22,13 @@
   .search-button {
     @apply bg-primary rounded-full text-white p-1;
   }
+  .clas {
+    @apply w-28 h-16;
+  }
+  .clas1 {
+    @apply text-start;
+  }
+  .clas2 {
+    @apply text-justify text-xxy pb-3 font-medium text-gray-600;
+  }
 }

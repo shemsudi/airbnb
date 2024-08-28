@@ -2,9 +2,9 @@ import React from "react";
 
 const CheckIcon = () => {
   return (
-    <div className="w-full text-center">
+    <div className="w-full flex justify-center">
       <svg
-        className="w-6 h-6 text-green-500 fill-green-500"
+        className="w-6 h-6  text-green-500 fill-green-500"
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 448 512"
       >

@@ -7,6 +7,11 @@ module.exports = {
   darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {
+      fontSize: {
+        xxs: "0.6rem",
+        xxl: "0.6rem",
+      },
+
       colors: {
         primary: "#FF385C",
         blurred: "#6A6A6A",

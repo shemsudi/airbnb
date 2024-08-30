@@ -40,12 +40,11 @@ const EstimateEarnings = ({ nights, pricePerNight, handleSliderChange }) => {
             </div>
           </div>
         </div>
-        <div className="w-full md:w-1/2 bg-green-300 rounded-xl">
+        <div className="w-full md:w-1/2 bg-green-300 rounded-xl ">
           <iframe
             className="h-96 w-full rounded-xl"
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3153.014858185892!2d-122.41941848468195!3d37.77492977975982!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8085806b293e4b23%3A0x9d6eebad2e8c3f5e!2sSan%20Francisco%2C%20CA%2C%20USA!5e0!3m2!1sen!2sin!4v1623758365957!5m2!1sen!2sin"
             loading="lazy"
-            allowFullScreen="true"
           ></iframe>{" "}
         </div>
       </div>

@@ -5,7 +5,7 @@ import Root from "./root.jsx";
 import NewRealeased from "./pages/realesedFeaures.jsx";
 import Icons from "../src/components/Icons.jsx";
 import HostHomes from "./pages/hostHomes.jsx";
-import BecameAhost from "./components/hosthomes/became-a-host.jsx";
+import BecameAhost from "./pages/became-a-host.jsx";
 const router = createBrowserRouter([
   {
     path: "/",

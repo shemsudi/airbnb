@@ -1,6 +1,5 @@
 const express = require("express");
 const passport = require("passport");
-const { v4: uuidv4 } = require("uuid");
 
 const {
   verifyPhone,
@@ -33,10 +32,5 @@ router.get(
     res.json(req.user);
   }
 );
-router.get("/generate-uuid", (req, res) => {
-  const generatedUuid = uuidv4(); // Generate UUID
-  console.log(generatedUuid);
-  res.json({ uuid: generatedUuid });
-});
 
 module.exports = router;

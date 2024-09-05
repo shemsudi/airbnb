@@ -2,73 +2,94 @@ const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
-const listingSchema = new Schema({
+const hostingSchema = new Schema({
   title: {
-    type: String,
-    required: true,
-  },
-  type: {
-    type: String,
-    enum: ["entire home", "private room", "shared room"],
-    required: true,
-  },
-  description: {
-    type: String,
-    required: true,
-  },
-  guests: {
-    type: Number,
-    required: true,
-  },
-  beds: {
-    type: Number,
-    required: true,
-  },
-  bathrooms: {
-    type: Number,
-    required: true,
-  },
-  uniqueFeatures: {
     type: String,
     required: false,
   },
+  uuid: {
+    type: String,
+    required: true,
+  },
+  lastPage: {
+    type: String,
+    required: false,
+  },
+  isCompleted: {
+    type: Boolean,
+    default: false,
+  },
+  structure: {
+    type: String,
+    required: false,
+  },
+
+  privacyType: {
+    type: String,
+    required: false,
+  },
+  description: {
+    type: String,
+    required: false,
+  },
+  guests: {
+    type: Number,
+    required: false,
+  },
+  beds: {
+    type: Number,
+    required: false,
+  },
+  bedrooms: {
+    type: Number,
+    required: false,
+  },
+  bathrooms: {
+    type: Number,
+    required: false,
+  },
+
   location: {
-    address: {
+    streetAddress: {
       type: String,
-      required: true,
+      required: false,
     },
     city: {
       type: String,
-      required: true,
+      required: false,
     },
     state: {
       type: String,
-      required: true,
+      required: false,
     },
     country: {
       type: String,
-      required: true,
+      required: false,
     },
     zipCode: {
       type: String,
-      required: true,
+      required: false,
     },
     coordinates: {
       lat: {
         type: Number,
-        required: true,
+        required: false,
       },
       lng: {
         type: Number,
-        required: true,
+        required: false,
       },
+    },
+    showExactLocation: {
+      type: Boolean,
+      default: false,
     },
   },
   photos: [
     {
       url: {
         type: String,
-        required: true,
+        required: false,
       },
       description: {
         type: String,
@@ -77,6 +98,18 @@ const listingSchema = new Schema({
     },
   ],
   amenities: [
+    {
+      type: String,
+      required: false,
+    },
+  ],
+  uniqueAmenities: [
+    {
+      type: String,
+      required: false,
+    },
+  ],
+  safetyAmenities: [
     {
       type: String,
       required: false,
@@ -91,11 +124,11 @@ const listingSchema = new Schema({
   pricing: {
     nightlyRate: {
       type: Number,
-      required: true,
+      required: false,
     },
     currency: {
       type: String,
-      required: true,
+      required: false,
       default: "USD",
     },
     smartPricing: {
@@ -106,15 +139,15 @@ const listingSchema = new Schema({
   availability: {
     startDate: {
       type: Date,
-      required: true,
+      required: false,
     },
     endDate: {
       type: Date,
-      required: true,
+      required: false,
     },
     minStay: {
       type: Number,
-      required: true,
+      required: false,
     },
     maxStay: {
       type: Number,
@@ -124,7 +157,7 @@ const listingSchema = new Schema({
   user: {
     type: Schema.Types.ObjectId,
     ref: "User",
-    required: true,
+    required: false,
   },
   created_at: {
     type: Date,
@@ -136,11 +169,11 @@ const listingSchema = new Schema({
   },
 });
 
-listingSchema.pre("save", function (next) {
+hostingSchema.pre("save", function (next) {
   this.updated_at = Date.now();
   next();
 });
 
-const Listing = mongoose.model("Listing", listingSchema);
+const Hosting = mongoose.model("Hosting", hostingSchema);
 
-module.exports = Listing;
+module.exports = Hosting;

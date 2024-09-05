@@ -55,7 +55,7 @@ exports.verifyOTP = async (req, res) => {
       if (user) {
         const payload = { userId: user.id };
         const authToken = jwt.sign(payload, process.env.JWT_SECRET, {
-          expiresIn: "1m",
+          expiresIn: "2h",
         });
         console.log("User found");
         res.status(201).json({

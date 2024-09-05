@@ -9,7 +9,9 @@ const BecameAhost = () => {
   const handleClick = async () => {
     console.log("clicked");
     try {
-      const response = await axios.get("http://localhost:3000/generate-uuid"); //"http://localhost:3000/login"
+      const response = await axios.get(
+        "http://localhost:3000/host/generate-uuid"
+      ); //"http://localhost:3000/login"
       const data = response.data;
       console.log(data);
       navigate(`/became-a-host/${data.uuid}/about-your-place`);

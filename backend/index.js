@@ -4,6 +4,7 @@ const session = require("express-session");
 const passport = require("passport");
 const AuthRouter = require("./routes/auth.js");
 const ProfileRouter = require("./routes/profile.js");
+const HostRouter = require("./routes/host.js");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const User = require("./models/User.js");
 
@@ -64,6 +65,7 @@ passport.deserializeUser(async function (id, done) {
 
 app.use("/", AuthRouter);
 app.use("/user", ProfileRouter);
+app.use("/host", HostRouter);
 
 app.listen(port, () => {
   console.log(`app listening on port ${port}`);

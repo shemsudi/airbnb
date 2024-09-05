@@ -5,9 +5,6 @@ import { Outlet } from "react-router-dom";
 import Footer from "./footer";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
-import { setCredentials, logOut } from "./redux/AuthReducer";
-import { jwtDecode } from "jwt-decode";
-import setAuthToken from "./utils/setAuthToken";
 
 const Root = () => {
   const [atTop, setAtTop] = useState(true);
@@ -26,24 +23,6 @@ const Root = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
-  useEffect(() => {
-    const token = localStorage.getItem("jwtToken");
-    if (token) {
-      const decoded = jwtDecode(token);
-      dispatch(setCredentials(decoded));
-
-      const currentTime = Date.now() / 1000;
-      const timeRemaining = decoded.exp - currentTime;
-      console.log(timeRemaining);
-
-      setTimeout(() => {
-        localStorage.removeItem("jwtToken");
-        dispatch(logOut());
-        setAuthToken(false);
-      }, timeRemaining * 1000);
-    }
-  }, [dispatch]);
 
   return (
     <div className="relative h-full ">

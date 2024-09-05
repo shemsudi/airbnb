@@ -33,6 +33,10 @@ const router = createBrowserRouter([
   { path: "host/homes", element: <HostHomes /> },
   { path: "/became-a-host", element: <BecameAhost /> },
   {
+    path: `/became-a-host/:uuid/about-your-place`,
+    element: <NewRealeased />,
+  },
+  {
     path: "/release/features",
     element: <NewRealeased />,
   },

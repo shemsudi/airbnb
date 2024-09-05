@@ -1,8 +1,22 @@
 import React from "react";
 import Logo from "../assets/logos";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const BecameAhost = () => {
+  const navigate = useNavigate();
+  const handleClick = async () => {
+    console.log("clicked");
+    try {
+      const response = await axios.get("http://localhost:3000/generate-uuid"); //"http://localhost:3000/login"
+      const data = response.data;
+      console.log(data);
+      navigate(`/became-a-host/${data.uuid}/about-your-place`);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div className="h-full flex flex-col">
       <div className="flex justify-between px-12 pt-8 sticky top-0 left-0 bg-white">
@@ -87,9 +101,12 @@ const BecameAhost = () => {
         </div>
       </div>
 
-      <div className="border-t-4  w-full  sticky top-3 left-0 z-100 bg-white py-3 mb-3 border-gray-200">
-        <div className="relative w-full ">
-          <button className="absolute  top-3 md:right-10 rounded-md bg-primary text-white px-6 py-2 max-md:w-full">
+      <div className="border-t-4  w-full  sticky bottom-0 left-0 z-100 bg-white px-6  py-3 border-gray-200">
+        <div className=" w-full flex justify-end items-center ">
+          <button
+            onClick={handleClick}
+            className="  rounded-md hover:transform hover:scale-95  bg-primary text-white px-6 py-2 max-md:w-full"
+          >
             {" "}
             Get started
           </button>

@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 
 const AboutYourPlace = () => {
   const host = useSelector((state) => state.host.host);
-  console.log(host);
   const navigate = useNavigate();
   const BackToHome = () => {
     navigate("/became-a-host/overview");

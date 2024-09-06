@@ -5,7 +5,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { setHost } from "../redux/HostReducer";
+import { addHost, clearHost } from "../redux/HostReducer";
 
 const BecameAhost = () => {
   const navigate = useNavigate();
@@ -14,11 +14,13 @@ const BecameAhost = () => {
   const handleClick = async () => {
     console.log("clicked");
     try {
+      dispatch(clearHost());
       const response = await axios.get(
         "http://localhost:3000/host/generate-uuid"
       ); //"http://localhost:3000/login"
       const data = response.data;
-      dispatch(setHost(data));
+
+      dispatch(addHost(data));
       navigate(`/became-a-host/${data.uuid}/about-your-place`);
     } catch (error) {
       console.log(error);

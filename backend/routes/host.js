@@ -15,7 +15,7 @@ router.get(
     });
     await hosting.save();
     console.log(generatedUuid);
-    res.json({ uuid: generatedUuid });
+    res.json({ uuid: generatedUuid, lastPage: "structure" });
   }
 );
 

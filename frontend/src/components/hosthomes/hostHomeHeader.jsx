@@ -20,7 +20,7 @@ const HostPageHeader = () => {
         <div className=" gap-3 items-center hidden sm:flex ">
           <h1>Ready to airbnb it?</h1>
           <Link
-            to={"/became-a-host"}
+            to={"/became-a-host/overview"}
             className="flex gap-2 items-center bg-primary px-4 py-2 rounded-md text-white"
           >
             <svg

@@ -6,6 +6,7 @@ import NewRealeased from "./pages/realesedFeaures.jsx";
 import Icons from "../src/components/Icons.jsx";
 import HostHomes from "./pages/hostHomes.jsx";
 import BecameAhost from "./pages/became-a-host.jsx";
+import AboutYourPlace from "./pages/hostingSteps/aboutYourPlace.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -31,9 +32,13 @@ const router = createBrowserRouter([
     ],
   },
   { path: "host/homes", element: <HostHomes /> },
-  { path: "/became-a-host", element: <BecameAhost /> },
+  { path: "/became-a-host/overview", element: <BecameAhost /> },
   {
     path: `/became-a-host/:uuid/about-your-place`,
+    element: <AboutYourPlace />,
+  },
+  {
+    path: `/became-a-host/:uuid/structure`,
     element: <NewRealeased />,
   },
   {

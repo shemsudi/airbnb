@@ -19,8 +19,8 @@ const PrivacyType = () => {
   const onNext = () => {
     navigate(`/became-a-host/${host.uuid}/location`);
   };
-  onBack = () => {
-    navigate(`/became-a-host/${host.uuid}/privacyType`);
+  const onBack = () => {
+    navigate(`/became-a-host/${host.uuid}/structure`);
   };
 
   return (

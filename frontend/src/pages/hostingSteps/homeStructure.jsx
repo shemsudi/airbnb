@@ -43,7 +43,7 @@ const HomeSturcture = () => {
     "Yurt",
   ];
   const host = useSelector((state) => state.host.host);
-  const [typeOfPlace, setTypeOfPlace] = useState("House");
+  const [typeOfPlace, setTypeOfPlace] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const backToStructurePage = () => {

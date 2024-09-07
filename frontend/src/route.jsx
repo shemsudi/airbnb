@@ -9,6 +9,7 @@ import BecameAhost from "./pages/became-a-host.jsx";
 import AboutYourPlace from "./pages/hostingSteps/aboutYourPlace.jsx";
 import HomeSturcture from "./pages/hostingSteps/homeStructure.jsx";
 import PrivacyType from "./pages/hostingSteps/privacyType.jsx";
+import LocationPage from "./pages/hostingSteps/locationPage.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -42,6 +43,10 @@ const router = createBrowserRouter([
   {
     path: "/became-a-host/:uuid/privacyType",
     element: <PrivacyType />,
+  },
+  {
+    path: "/became-a-host/:uuid/location",
+    element: <LocationPage />,
   },
   {
     path: `/became-a-host/:uuid/structure`,

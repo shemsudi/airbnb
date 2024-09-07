@@ -2,7 +2,7 @@ import React from "react";
 
 const FooterNavigation = ({ onBack, onNext }) => {
   return (
-    <div className="border-t-4 self-end w-full sticky bottom-0 left-0 z-100 bg-white px-6 py-3 border-gray-200">
+    <div className=" self-end w-full sticky bottom-0 left-0 z-100 bg-white px-6 py-3 ">
       <div className="w-full flex justify-between items-center">
         <button
           onClick={onBack}

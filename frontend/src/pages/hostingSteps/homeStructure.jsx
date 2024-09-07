@@ -7,6 +7,7 @@ import HouseIcon from "../../components/icons/houseIcon";
 import FooterNavigation from "./footerNavigation.jsx";
 import axios from "axios";
 import HostHeader from "./hostHeader.jsx";
+import ProgressBar from "./progressBar.jsx";
 
 const HomeSturcture = () => {
   const types = [
@@ -43,7 +44,9 @@ const HomeSturcture = () => {
     "Yurt",
   ];
   const host = useSelector((state) => state.host.host);
-  const [typeOfPlace, setTypeOfPlace] = useState("");
+  const previouslyChoosed = host.structure ? host.structure : "";
+  console.log(previouslyChoosed);
+  const [typeOfPlace, setTypeOfPlace] = useState(previouslyChoosed);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const backToStructurePage = () => {
@@ -71,7 +74,7 @@ const HomeSturcture = () => {
       <HostHeader />
       <div className="flex-1 flex flex-col min-[720px]:items-center px-4  min-[720px]:px-10  overflow-y-auto">
         {" "}
-        <h1 className="text-2xl font-semibold pb-3 pt-2">
+        <h1 className="text-2xl  font-roboto pb-3 pt-2">
           Which of these best describes your places?{" "}
         </h1>
         <div className=" grid grid-cols-1 min-[390px]:grid-cols-2 min-[720px]:grid-cols-3 gap-2 ">
@@ -89,6 +92,7 @@ const HomeSturcture = () => {
           ))}
         </div>
       </div>
+      <ProgressBar step={1} pos={1} />
       <FooterNavigation
         onBack={backToStructurePage}
         onNext={NavigateToPrivacyTypePage}

@@ -37,4 +37,22 @@ router.post(
   }
 );
 
+router.post(
+  "/privacyType",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    const { uuid, privacyType } = req.body;
+    try {
+      const hosting = await Hosting.findOne({ uuid });
+      hosting.privacyType = privacyType;
+      hosting.lastPage = "location";
+      await hosting.save();
+      res.status(200).json();
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: "Internal Server Error" });
+    }
+  }
+);
+
 module.exports = router;

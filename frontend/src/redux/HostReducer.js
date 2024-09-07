@@ -4,22 +4,21 @@ const initialState = {
   hosts: {},
   loading: false,
   error: null,
-  host: {
-    uuid: "",
-    lastPage: "",
-    structure: "",
-  },
+  host: {},
 };
 
 const hostSlice = createSlice({
   name: "host",
   initialState,
   reducers: {
+    setHost: (state, action) => {
+      state.host = action.payload;
+    },
     addHost: (state, action) => {
       const { uuid, lastPage } = action.payload;
       state.host.uuid = action.payload.uuid;
       state.host.lastPage = action.payload.lastPage;
-      state.hosts[uuid] = action.payload; // Add or update host data using uuid as key
+      state.hosts[uuid] = action.payload;
     },
     UpdateLastPage: (state, action) => {
       const { uuid, lastPage } = action.payload;
@@ -35,6 +34,13 @@ const hostSlice = createSlice({
       }
       state.host.structure = structure;
     },
+    setPrivacyType: (state, action) => {
+      const { uuid, privacyType } = action.payload;
+      if (state.hosts[uuid]) {
+        state.hosts[uuid].privacyType = privacyType;
+      }
+      state.host.privacyType = privacyType;
+    },
     setLoading: (state, action) => {
       state.loading = action.payload;
     },
@@ -42,19 +48,17 @@ const hostSlice = createSlice({
       state.error = action.payload;
     },
     clearHost: (state) => {
-      state.host.uuid = "";
-      state.host.lastPage = "";
-      state.host.structure = "";
+      state.host = {};
     },
   },
 });
 
 export const {
-  setHosts,
+  setHost,
   addHost,
   setStructure,
   UpdateLastPage,
-  updateHost,
+  setPrivacyType,
   setLoading,
   setError,
   clearHost,

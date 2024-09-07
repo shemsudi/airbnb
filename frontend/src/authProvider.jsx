@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { setCredentials, logOut } from "./redux/AuthReducer";
 import { jwtDecode } from "jwt-decode";
 import setAuthToken from "./utils/setAuthToken";
+import { setHost } from "./redux/HostReducer";
 
 const AuthContext = createContext();
 
@@ -11,6 +12,11 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const token = localStorage.getItem("jwtToken");
+    const currentHost = JSON.parse(localStorage.getItem("currentHost"));
+    console.log(currentHost);
+    if (currentHost) {
+      dispatch(setHost(currentHost));
+    }
     if (token) {
       setAuthToken(token);
       const decoded = jwtDecode(token);

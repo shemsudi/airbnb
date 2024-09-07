@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import FooterNavigation from "./footerNavigation";
+import ProgressBar from "./progressBar";
 
 const AboutYourPlace = () => {
   const host = useSelector((state) => state.host.host);
@@ -62,6 +63,7 @@ const AboutYourPlace = () => {
           </div>
         </div>
       </div>
+      <ProgressBar step={0} pos={0} />
       <FooterNavigation onBack={BackToHome} onNext={NavigateToStructurePage} />
     </div>
   );

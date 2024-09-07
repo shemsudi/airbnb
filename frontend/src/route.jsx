@@ -8,6 +8,7 @@ import HostHomes from "./pages/hostHomes.jsx";
 import BecameAhost from "./pages/became-a-host.jsx";
 import AboutYourPlace from "./pages/hostingSteps/aboutYourPlace.jsx";
 import HomeSturcture from "./pages/hostingSteps/homeStructure.jsx";
+import PrivacyType from "./pages/hostingSteps/privacyType.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -40,7 +41,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/became-a-host/:uuid/privacyType",
-    element: <NewRealeased />,
+    element: <PrivacyType />,
   },
   {
     path: `/became-a-host/:uuid/structure`,

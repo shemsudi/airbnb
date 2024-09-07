@@ -15,12 +15,14 @@ const BecameAhost = () => {
     console.log("clicked");
     try {
       dispatch(clearHost());
+      localStorage.removeItem("currentHost");
       const response = await axios.get(
         "http://localhost:3000/host/generate-uuid"
       ); //"http://localhost:3000/login"
       const data = response.data;
 
       dispatch(addHost(data));
+      localStorage.setItem("currentHost", JSON.stringify(data));
       navigate(`/became-a-host/${data.uuid}/about-your-place`);
     } catch (error) {
       console.log(error);

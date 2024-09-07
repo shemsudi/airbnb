@@ -23,11 +23,11 @@ router.post(
   "/structure",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
-    const { uuid, structure, lastPage } = req.body;
+    const { uuid, structure } = req.body;
     try {
       const hosting = await Hosting.findOne({ uuid });
       hosting.structure = structure;
-      hosting.lastPage = lastPage;
+      hosting.lastPage = "privacyType";
       await hosting.save();
       res.status(200).json();
     } catch (error) {

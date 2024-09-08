@@ -74,7 +74,7 @@ const HomeSturcture = () => {
       <HostHeader />
       <div className="flex-1 flex flex-col min-[720px]:items-center px-4  min-[720px]:px-10  overflow-y-auto">
         {" "}
-        <h1 className="text-2xl  font-roboto pb-3 pt-2">
+        <h1 className="text-2xl  font-medium pb-3 pt-4">
           Which of these best describes your places?{" "}
         </h1>
         <div className=" grid grid-cols-1 min-[390px]:grid-cols-2 min-[720px]:grid-cols-3 gap-2 ">
@@ -82,7 +82,9 @@ const HomeSturcture = () => {
             <button
               key={type}
               className={`flex flex-col min-w-44 justify-start border  p-2 rounded-lg ${
-                typeOfPlace === type ? "border-black" : "hover:border-black"
+                typeOfPlace === type
+                  ? "outline outline-2"
+                  : "hover:outline outline-2"
               }`}
               onClick={() => setTypeOfPlace(type)}
             >

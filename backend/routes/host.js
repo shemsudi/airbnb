@@ -55,4 +55,17 @@ router.post(
   }
 );
 
+router.get(
+  "/get-hosts",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    try {
+      const hosts = await Hosting.find({ user: req.user.id });
+      res.status(200).json(hosts);
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: "Internal Server Error" });
+    }
+  }
+);
 module.exports = router;

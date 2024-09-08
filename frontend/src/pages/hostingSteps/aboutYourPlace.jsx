@@ -16,7 +16,7 @@ const AboutYourPlace = () => {
   };
 
   return (
-    <div className="h-screen">
+    <div className="h-screen flex flex-col">
       <div className="flex justify-between px-12 pt-8 sticky top-0 left-0 bg-white">
         <Link to={"/host/homes"}>
           <svg
@@ -34,8 +34,8 @@ const AboutYourPlace = () => {
           Save & exit
         </button>
       </div>{" "}
-      <div className="mx-16 my-10 flex items-center justify-center ">
-        <div className="flex flex-col-reverse md:flex-row items-center justify-center ">
+      <div className=" flex-1 mx-6 md:mx-16 my-5 md:my-10 flex items-center justify-start md:justify-center ">
+        <div className="flex flex-col-reverse md:flex-row items-center justify-start md:justify-center ">
           <div className="w-full md:max-w-lg md:max-h-3/5 flex flex-col">
             <h1>Step 1</h1>
             <h1 className="font-semibold text-3xl pt-2">

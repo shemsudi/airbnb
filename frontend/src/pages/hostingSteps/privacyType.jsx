@@ -53,8 +53,8 @@ const PrivacyType = () => {
   return (
     <div className="flex flex-col h-screen">
       <HostHeader />
-      <div className="flex-1 justify-center items-center mx-2 my-5 min-[580px]:m-10">
-        <div className="flex flex-col justify-center  items-center gap-3 w-fit min-[580px]:w-[500px] mx-auto">
+      <div className="flex-1  mx-2 my-5 min-[580px]:m-10 flex justify-center">
+        <div className="flex flex-col justify-start mt-6  items-center gap-3 min-[580px]:justify-center  min-[580px]:w-[500px]">
           <h1 className="text-3xl mb-5 text-start font-roboto w-full">
             What type of place will guests have?
           </h1>

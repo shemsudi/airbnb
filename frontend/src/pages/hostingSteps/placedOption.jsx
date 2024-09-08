@@ -14,7 +14,9 @@ const PlaceOptionButton = ({
     <button
       onClick={() => onSelect(value)}
       className={`px-3 py-4 flex justify-between gap-3 border rounded-xl w-full 
-        ${isSelected ? "border-black" : "border-gray-300"} hover:border-black`}
+        ${
+          isSelected ? "outline outline-2" : "border-gray-300"
+        } hover:outline outline-2`}
     >
       <div className="flex flex-col items-start w-full">
         <h1 className="font-semibold">{title}</h1>

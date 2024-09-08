@@ -23,14 +23,47 @@ const router = createBrowserRouter([
       {
         path: "/icons",
         element: <Icons />,
+        visible: false,
       },
       {
-        path: "/places",
-        element: (
-          <h1 className="text-center font-bold">
-            Here is some images of places
-          </h1>
-        ),
+        path: "/amazing-pools",
+        element: <Icons />,
+      },
+      {
+        path: "/Tropical",
+        element: <Icons />,
+      },
+      {
+        path: "/Top-cities",
+        element: <Icons />,
+      },
+      {
+        path: "/New",
+        element: <Icons />,
+      },
+      {
+        path: "/National-parks",
+        element: <Icons />,
+      },
+      {
+        path: "/Rooms",
+        element: <Icons />,
+      },
+      {
+        path: "/Lake-front",
+        element: <Icons />,
+      },
+      {
+        path: "/Design",
+        element: <Icons />,
+      },
+      {
+        path: "/Trending",
+        element: <Icons />,
+      },
+      {
+        path: "/Camping",
+        element: <Icons />,
       },
     ],
   },

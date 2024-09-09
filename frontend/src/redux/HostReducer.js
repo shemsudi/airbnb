@@ -30,9 +30,16 @@ const hostSlice = createSlice({
     },
     setPrivacyType: (state, action) => {
       const { uuid, privacyType } = action.payload;
-
       state.host.privacyType = privacyType;
     },
+    setFloorPlan: (state, action) => {
+      const { guests, beds, bedrooms, bathrooms } = action.payload;
+      state.host.guests = guests;
+      state.host.beds = beds;
+      state.host.bedrooms = bedrooms;
+      state.host.bathrooms = bathrooms;
+    },
+
     setLoading: (state, action) => {
       state.loading = action.payload;
     },
@@ -53,6 +60,7 @@ export const {
   setPrivacyType,
   setLoading,
   setError,
+  setFloorPlan,
   clearHost,
 } = hostSlice.actions;
 export default hostSlice.reducer;

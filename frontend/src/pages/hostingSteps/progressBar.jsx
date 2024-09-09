@@ -8,7 +8,7 @@ const ProgressBar = ({ step, pos }) => {
           className="bg-black h-full"
           style={{
             width:
-              step > 1 ? "100%" : step === 1 ? `${(pos / 4) * 100}%` : "0%",
+              step > 1 ? "100%" : step === 1 ? `${(pos / 5) * 100}%` : "0%",
           }}
         ></div>
       </div>
@@ -18,7 +18,7 @@ const ProgressBar = ({ step, pos }) => {
           className="bg-black h-full"
           style={{
             width:
-              step > 2 ? "100%" : step === 2 ? `${(pos / 4) * 100}%` : "0%",
+              step > 2 ? "100%" : step === 2 ? `${(pos / 5) * 100}%` : "0%",
           }}
         ></div>
       </div>
@@ -28,7 +28,7 @@ const ProgressBar = ({ step, pos }) => {
           className="bg-black h-full"
           style={{
             width:
-              step > 3 ? "100%" : step === 3 ? `${(pos / 4) * 100}%` : "0%",
+              step > 3 ? "100%" : step === 3 ? `${(pos / 5) * 100}%` : "0%",
           }}
         ></div>
       </div>

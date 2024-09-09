@@ -68,4 +68,27 @@ router.get(
     }
   }
 );
+
+router.post(
+  "/floor-plan",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    try {
+      const { uuid, guests, bedrooms, beds, bathrooms } = req.body;
+      const host = await Hosting.findOne({ uuid });
+
+      host.guests = guests;
+      host.bedrooms = bedrooms;
+      host.beds = beds;
+      host.bathrooms = bathrooms;
+
+      await host.save();
+      res.status(200).json({});
+    } catch (error) {
+      console.log(error);
+      res.status(400).json({ message: "Internal server Eroor" });
+    }
+  }
+);
+
 module.exports = router;

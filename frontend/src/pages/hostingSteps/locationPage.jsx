@@ -9,7 +9,7 @@ const LocationPage = () => {
   const host = useSelector((state) => state.host.host);
   const navigate = useNavigate();
   const onNext = () => {
-    navigate(`/became-a-host/${host.uuid}/family`);
+    navigate(`/became-a-host/${host.uuid}/floor-plan`);
   };
   const onBack = () => {
     navigate(`/became-a-host/${host.uuid}/privacyType`);

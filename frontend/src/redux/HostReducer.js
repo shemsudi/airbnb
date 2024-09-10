@@ -39,6 +39,12 @@ const hostSlice = createSlice({
       state.host.bedrooms = bedrooms;
       state.host.bathrooms = bathrooms;
     },
+    setAmenitiesState: (state, action) => {
+      const { amenities, uniqueAmenities, safetyAmenities } = action.payload;
+      state.host.amenities = amenities;
+      state.host.uniqueAmenities = uniqueAmenities;
+      state.host.safetyAmenities = safetyAmenities;
+    },
 
     setLoading: (state, action) => {
       state.loading = action.payload;
@@ -53,6 +59,7 @@ const hostSlice = createSlice({
 });
 
 export const {
+  setAmenitiesState,
   setHost,
   addHost,
   setStructure,

@@ -8,41 +8,9 @@ import FooterNavigation from "./footerNavigation.jsx";
 import axios from "axios";
 import HostHeader from "./hostHeader.jsx";
 import ProgressBar from "./progressBar.jsx";
+import { types } from "../../utils/types.jsx";
 
 const HomeSturcture = () => {
-  const types = [
-    "House",
-    "Apartment",
-    "Barn",
-    "Bed & breakfast",
-    "Boat",
-    "Cabin",
-    "Camper/RV",
-    "Casa particular",
-    "Castle",
-    "Cave",
-    "Container",
-    "Cycladic home",
-    "Dammuso",
-    "Dome",
-    "Earth home",
-    "Farm",
-    "GuestHouse",
-    "Hotel",
-    "Houseboat",
-    "Kizhan",
-    "Minsu",
-    "Riad",
-    "Ryokan",
-    "Shepherd's hat",
-    "Tent",
-    "Tiny home",
-    "Tower",
-    "Treehouse",
-    "Trullo",
-    "Windmill",
-    "Yurt",
-  ];
   const host = useSelector((state) => state.host.host);
   const previouslyChoosed = host.structure ? host.structure : "";
   console.log(previouslyChoosed);
@@ -77,25 +45,26 @@ const HomeSturcture = () => {
         <h1 className="text-2xl  font-medium pb-3 pt-4">
           Which of these best describes your places?{" "}
         </h1>
-        <div className=" grid grid-cols-1 min-[390px]:grid-cols-2 min-[720px]:grid-cols-3 gap-2 ">
-          {types.map((type) => (
+        <div className=" grid grid-cols-1 min-[390px]:grid-cols-2 min-[720px]:grid-cols-3 gap-2 mb-8 ">
+          {types.map(({ type, icon }) => (
             <button
               key={type}
-              className={`flex flex-col min-w-44 justify-start border  p-2 rounded-lg ${
+              className={`flex flex-col active:scale-95 active:duration-100 min-w-44 justify-start border  p-2 rounded-lg ${
                 typeOfPlace === type
                   ? "outline outline-2"
                   : "hover:outline outline-2"
               }`}
               onClick={() => setTypeOfPlace(type)}
             >
-              <HouseIcon />
+              {icon || <HouseIcon />}
               <p className="text-sm">{type}</p>
             </button>
           ))}
         </div>
       </div>
-      <ProgressBar step={1} pos={1} />
       <FooterNavigation
+        step={1}
+        pos={1}
         onBack={backToStructurePage}
         onNext={NavigateToPrivacyTypePage}
       />

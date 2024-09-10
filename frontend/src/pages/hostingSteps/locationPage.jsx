@@ -18,8 +18,7 @@ const LocationPage = () => {
     <div className="h-screen flex flex-col">
       <HostHeader />
       <div className="flex-1"></div>
-      <ProgressBar step={1} pos={3} />
-      <FooterNavigation onBack={onBack} onNext={onNext} />
+      <FooterNavigation step={1} pos={3} onBack={onBack} onNext={onNext} />
     </div>
   );
 };

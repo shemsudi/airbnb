@@ -11,6 +11,8 @@ import HomeSturcture from "./pages/hostingSteps/homeStructure.jsx";
 import PrivacyType from "./pages/hostingSteps/privacyType.jsx";
 import LocationPage from "./pages/hostingSteps/locationPage.jsx";
 import FloorPlanPage from "./pages/hostingSteps/floorPlanpage.jsx";
+import StandOut from "./pages/hostingSteps/standOut.jsx";
+import AmenitiesPage from "./pages/hostingSteps/amenitesPage.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -90,6 +92,14 @@ const router = createBrowserRouter([
   {
     path: "/became-a-host/:uuid/floor-plan",
     element: <FloorPlanPage />,
+  },
+  {
+    path: "/became-a-host/:uuid/stand-out",
+    element: <StandOut />,
+  },
+  {
+    path: "/became-a-host/:uuid/amenities",
+    element: <AmenitiesPage />,
   },
   {
     path: "/release/features",

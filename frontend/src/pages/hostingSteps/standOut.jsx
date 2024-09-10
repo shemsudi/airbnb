@@ -1,22 +1,22 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import ProgressBar from "./progressBar.jsx";
+import FooterNavigation from "./footerNavigation.jsx";
 import { useNavigate } from "react-router-dom";
-import FooterNavigation from "./footerNavigation";
-import ProgressBar from "./progressBar";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 
-const AboutYourPlace = () => {
+const StandOut = () => {
   const host = useSelector((state) => state.host.host);
   const navigate = useNavigate();
-  const BackToHome = () => {
-    navigate("/became-a-host/overview");
+  const BackToFloorPlanPage = () => {
+    navigate(`/became-a-host/${host.uuid}/floor-plan`);
   };
-  const NavigateToStructurePage = () => {
-    navigate(`/became-a-host/${host.uuid}/structure`);
+  const NavigateToAmenitesPage = () => {
+    navigate(`/became-a-host/${host.uuid}/amenities`);
   };
-
   return (
-    <div className="h-screen flex flex-col">
+    <div className="flex flex-col h-screen">
       <div className="flex justify-between px-12 pt-8 sticky top-0 left-0 bg-white">
         <Link to={"/host/homes"}>
           <svg
@@ -34,17 +34,16 @@ const AboutYourPlace = () => {
           Save & exit
         </button>
       </div>{" "}
-      <div className=" flex-1 mx-6 md:mx-16 my-5 md:my-10 flex items-center justify-start md:justify-center ">
+      <div className=" flex-1 mx-4 sm:mx-16 my-2 md:my-10 flex items-center justify-start md:justify-center ">
         <div className="flex flex-col-reverse md:flex-row items-center justify-start md:justify-center ">
           <div className="w-full md:max-w-lg md:max-h-3/5 flex flex-col">
-            <h1>Step 1</h1>
+            <h1>Step 2</h1>
             <h1 className="font-semibold text-3xl pt-2">
-              Tell us about your place
+              Make your place stand out{" "}
             </h1>
             <p className="text-sm text-gray-600 pt-6">
-              In this step, we'll ask you which type of property you have and if
-              guests will book the entire place or just a room. Then let us know
-              the location and how many guests can stay.
+              In this step, you’ll add some of the amenities your place offers,
+              plus 5 or more photos. Then, you’ll create a title and description
             </p>
           </div>
           <div className="w-full md:max-w-md   ">
@@ -57,20 +56,20 @@ const AboutYourPlace = () => {
             >
               <source
                 type="video/mp4"
-                src="https://stream.media.muscache.com/zFaydEaihX6LP01x8TSCl76WHblb01Z01RrFELxyCXoNek.mp4?v_q=high"
+                src="https://stream.media.muscache.com/H0101WTUG2qWbyFhy02jlOggSkpsM9H02VOWN52g02oxhDVM.mp4?v_q=high"
               />
             </video>
           </div>
         </div>
       </div>
       <FooterNavigation
-        step={0}
-        pos={0}
-        onBack={BackToHome}
-        onNext={NavigateToStructurePage}
-      />
+        step={1}
+        pos={5}
+        onBack={BackToFloorPlanPage}
+        onNext={NavigateToAmenitesPage}
+      />{" "}
     </div>
   );
 };
 
-export default AboutYourPlace;
+export default StandOut;

@@ -81,6 +81,27 @@ router.post(
       host.bedrooms = bedrooms;
       host.beds = beds;
       host.bathrooms = bathrooms;
+      host.lastPage = "amenites";
+
+      await host.save();
+      res.status(200).json({});
+    } catch (error) {
+      console.log(error);
+      res.status(400).json({ message: "Internal server Eroor" });
+    }
+  }
+);
+router.post(
+  "/amenities",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    try {
+      const { uuid, amenities, uniqueAmenities, safetyAmenities } = req.body;
+      const host = await Hosting.findOne({ uuid });
+
+      host.amenities = amenities;
+      host.uniqueAmenities = uniqueAmenities;
+      host.safetyAmenities = safetyAmenities;
 
       await host.save();
       res.status(200).json({});

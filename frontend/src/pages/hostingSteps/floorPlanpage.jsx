@@ -77,8 +77,12 @@ const FloorPlanPage = () => {
           </div>
         </div>
       </div>
-      <ProgressBar step={1} pos={4} />
-      <FooterNavigation onBack={BackToLocation} onNext={navigateToStep2} />
+      <FooterNavigation
+        step={1}
+        pos={4}
+        onBack={BackToLocation}
+        onNext={navigateToStep2}
+      />
     </div>
   );
 };

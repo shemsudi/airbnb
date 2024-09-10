@@ -70,9 +70,8 @@ const PrivacyType = () => {
           ))}
         </div>
       </div>
-      <ProgressBar step={1} pos={2} />
 
-      <FooterNavigation onBack={onBack} onNext={onNext} />
+      <FooterNavigation step={1} pos={2} onBack={onBack} onNext={onNext} />
     </div>
   );
 };

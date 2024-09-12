@@ -70,7 +70,7 @@ const AmenitiesPage = () => {
     }
   };
   return (
-    <div className="h-auto flex flex-col">
+    <div className="h-full flex flex-col">
       <HostHeader />
       <div className="flex-1 mx-4 md:mx-10 flex  justify-center ">
         <div className="flex flex-col gap-6   mt-2 md:max-w-[500px]">

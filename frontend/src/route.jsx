@@ -13,6 +13,7 @@ import LocationPage from "./pages/hostingSteps/locationPage.jsx";
 import FloorPlanPage from "./pages/hostingSteps/floorPlanpage.jsx";
 import StandOut from "./pages/hostingSteps/standOut.jsx";
 import AmenitiesPage from "./pages/hostingSteps/amenitesPage.jsx";
+import PhotosPage from "./pages/hostingSteps/photosPage.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -100,6 +101,10 @@ const router = createBrowserRouter([
   {
     path: "/became-a-host/:uuid/amenities",
     element: <AmenitiesPage />,
+  },
+  {
+    path: "/became-a-host/:uuid/photos",
+    element: <PhotosPage />,
   },
   {
     path: "/release/features",

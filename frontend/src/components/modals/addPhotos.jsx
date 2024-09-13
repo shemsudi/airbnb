@@ -5,11 +5,9 @@ import PlusIcon from "../icons/plusIcon";
 import ImageIcon from "../icons/imageIcon";
 import { h } from "vue";
 
-const AddPhotos = (props) => {
-  const { isOpen, setIsOpen } = props;
-  const [files, setFiles] = useState([]);
+const AddPhotos = ({ isOpen, setIsOpen, files, setFiles }) => {
   const [previews, setPreviews] = useState([]);
-  console.log(files, previews);
+  console.log(previews);
   console.log(isOpen);
   const photoAdd = useRef(null);
   useEffect(() => {
@@ -27,7 +25,6 @@ const AddPhotos = (props) => {
 
   const handleFileChange = (e) => {
     const selectedFiles = Array.from(e.target.files);
-    setFiles((prevFiles) => [...prevFiles, ...selectedFiles]);
     const selectedPreviews = selectedFiles.map((file) =>
       URL.createObjectURL(file)
     );
@@ -38,12 +35,14 @@ const AddPhotos = (props) => {
     document.getElementById("file-input").click();
   };
   const removeImage = (index) => {
-    const newFiles = [...files];
-    newFiles.splice(index, 1);
-    setFiles(newFiles);
     const newPreviews = [...previews];
     newPreviews.splice(index, 1);
     setPreviews(newPreviews);
+  };
+  const uploadFiles = () => {
+    setFiles((prevFiles) => [...prevFiles, ...previews]);
+    setPreviews([]);
+    setIsOpen(false);
   };
   return (
     <div
@@ -62,8 +61,8 @@ const AddPhotos = (props) => {
             <p className="text-lg font-bold ">Upload Photos</p>
             <small className="text-gray-700">
               {" "}
-              {files.length > 0
-                ? `${files.length} items selected`
+              {previews.length > 0
+                ? `${previews.length} items selected`
                 : "No items selected"}
             </small>
           </div>
@@ -78,12 +77,12 @@ const AddPhotos = (props) => {
             <PlusIcon />
           </button>
         </div>
-        {files.length > 0 ? (
+        {previews.length > 0 ? (
           <div
             className="flex-grow p-4 overflow-y-auto
           "
           >
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-1">
               {previews.map((preview, index) => (
                 <div
                   key={index}
@@ -127,7 +126,7 @@ const AddPhotos = (props) => {
         <div className="flex border-t-2 p-4 justify-between items-center">
           <button onClick={() => setIsOpen(false)}>Done</button>
           <button
-            onClick={triggerFileInput}
+            onClick={uploadFiles}
             className="bg-black opacity-90 hover:opacity-100 text-white px-4 py-2 rounded-lg"
           >
             Upload

@@ -3,12 +3,9 @@ import React, { useRef, useEffect, useState } from "react";
 import CloseIcon from "../icons/closeIcon";
 import PlusIcon from "../icons/plusIcon";
 import ImageIcon from "../icons/imageIcon";
-import { h } from "vue";
 
 const AddPhotos = ({ isOpen, setIsOpen, files, setFiles }) => {
   const [previews, setPreviews] = useState([]);
-  console.log(previews);
-  console.log(isOpen);
   const photoAdd = useRef(null);
   useEffect(() => {
     const handleClickOutside = (event) => {

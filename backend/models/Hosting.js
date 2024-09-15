@@ -87,14 +87,8 @@ const hostingSchema = new Schema({
   },
   photos: [
     {
-      url: {
-        type: String,
-        required: false,
-      },
-      description: {
-        type: String,
-        required: false,
-      },
+      type: String,
+      required: false,
     },
   ],
   amenities: [

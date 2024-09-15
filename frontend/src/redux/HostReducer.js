@@ -45,6 +45,10 @@ const hostSlice = createSlice({
       state.host.uniqueAmenities = uniqueAmenities;
       state.host.safetyAmenities = safetyAmenities;
     },
+    setPhotos: (state, action) => {
+      const { photos } = action.payload;
+      state.host.photos = photos;
+    },
 
     setLoading: (state, action) => {
       state.loading = action.payload;
@@ -69,5 +73,6 @@ export const {
   setError,
   setFloorPlan,
   clearHost,
+  setPhotos,
 } = hostSlice.actions;
 export default hostSlice.reducer;

@@ -35,6 +35,16 @@ const FloorPlanPage = () => {
       beds: beds,
       bathrooms: bathrooms,
     });
+    const currentHost = JSON.parse(localStorage.getItem("currentHost"));
+    const updatedHost = {
+      ...currentHost,
+      lastPage: "stand-out",
+      guests: guests,
+      bedrooms: bedrooms,
+      beds: beds,
+      bathrooms: bathrooms,
+    };
+    localStorage.setItem("currentHost", JSON.stringify(updatedHost));
     navigate(`/became-a-host/${host.uuid}/stand-out`);
   };
 

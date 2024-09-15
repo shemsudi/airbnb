@@ -38,6 +38,15 @@ const AmenitiesPage = () => {
       uniqueAmenities: uniqueAmenities,
       safetyAmenities: safetyAmenities,
     });
+    const currentHost = JSON.parse(localStorage.getItem("currentHost"));
+    const updatedHost = {
+      ...currentHost,
+      lastPage: "photos",
+      amenities: amenites,
+      uniqueAmenities: uniqueAmenities,
+      safetyAmenities: safetyAmenities,
+    };
+    localStorage.setItem("currentHost", JSON.stringify(updatedHost));
     navigate(`/became-a-host/${host.uuid}/photos`);
   };
   const onBack = () => {

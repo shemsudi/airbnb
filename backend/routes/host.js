@@ -3,6 +3,8 @@ const { v4: uuidv4 } = require("uuid");
 const router = Router();
 const Hosting = require("../models/Hosting");
 const passport = require("passport");
+const { path } = require("path");
+const multer = require("multer");
 router.get(
   "/generate-uuid",
   passport.authenticate("jwt", { session: false }),
@@ -102,12 +104,61 @@ router.post(
       host.amenities = amenities;
       host.uniqueAmenities = uniqueAmenities;
       host.safetyAmenities = safetyAmenities;
+      host.lastPage = "photos";
 
       await host.save();
       res.status(200).json({});
     } catch (error) {
       console.log(error);
       res.status(400).json({ message: "Internal server Eroor" });
+    }
+  }
+);
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "uploads/");
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname);
+  },
+});
+
+const upload = multer({
+  storage: storage,
+  limits: { fileSize: 1000000 },
+  fileFilter: function (req, file, cb) {
+    const filetypes = /jpeg|jpg|png|gif/;
+    const extname = filetypes.test(
+      path.extname(file.originalname).toLowerCase()
+    );
+    const mimetype = filetypes.test(file.mimetype);
+    if (mimetype && extname) {
+      return cb(null, true);
+    } else {
+      cb("Error: Images Only!");
+    }
+  },
+});
+
+router.post(
+  "/addPhotos",
+  passport.authenticate("jwt", { session: false }),
+  upload.array("photos", 10),
+  async (req, res) => {
+    try {
+      console.log(req.body);
+      console.log(req.files);
+      const { uuid, photos } = req.body;
+      console.log(uuid);
+      console.log(photos);
+      const host = await Hosting.findOne({ uuid });
+      host.photos = req.body.photos;
+      await host.save();
+      res.status(200).json({ photos: req.body.photos });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: "Internal Server Error" });
     }
   }
 );

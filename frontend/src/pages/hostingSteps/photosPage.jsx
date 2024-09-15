@@ -5,26 +5,47 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useState } from "react";
 import AddPhotos from "../../components/modals/addPhotos";
-import CloseIcon from "../../components/icons/closeIcon";
 import PlusIcon from "../../components/icons/plusIcon";
 import EmptyState from "./emptyState";
 import PhotoGrid from "./photoGrid";
+import { setPhotos } from "../../redux/HostReducer";
+import { useDispatch } from "react-redux";
+import axios from "axios";
 const PhotosPage = () => {
-  const [files, setFiles] = useState([]);
   const host = useSelector((state) => state.host.host);
+  const [files, setFiles] = useState(host.photos || []);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
-  console.log(isOpen);
-  const onNext = () => {
+  const onNext = async () => {
+    const formData = new FormData();
+    formData.append("uuid", host.uuid);
+    files.forEach((file) => formData.append("photos", file));
+    console.log(files);
+    console.log(formData.getAll("photos", "uuid"));
+    dispatch(setPhotos({ photos: files }));
+
+    const response = await axios.post(
+      "http://localhost:3000/host/addPhotos",
+      formData,
+      {
+        headers: { "Content-Type": "multipart/form-data" },
+      }
+    );
+    const currentHost = JSON.parse(localStorage.getItem("currentHost"));
+    const updatedHost = {
+      ...currentHost,
+      lastPage: "title",
+      photos: files,
+    };
+    localStorage.setItem("currentHost", JSON.stringify(updatedHost));
     navigate(`/became-a-host/${host.uuid}/title`);
   };
   const onBack = () => {
     navigate(`/became-a-host/${host.uuid}/amenities`);
   };
   const removeImage = (index) => {
-    const newFiles = [...files];
-    newFiles.splice(index, 1);
-    setFiles(newFiles);
+    setFiles(files.filter((_, i) => i !== index));
   };
   return (
     <div className="h-screen flex flex-col">

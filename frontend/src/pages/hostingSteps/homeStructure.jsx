@@ -2,18 +2,16 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { UpdateLastPage, setStructure } from "../../redux/HostReducer";
+import { setStructure } from "../../redux/HostReducer";
 import HouseIcon from "../../components/icons/houseIcon";
 import FooterNavigation from "./footerNavigation.jsx";
 import axios from "axios";
 import HostHeader from "./hostHeader.jsx";
-import ProgressBar from "./progressBar.jsx";
 import { types } from "../../utils/types.jsx";
 
 const HomeSturcture = () => {
   const host = useSelector((state) => state.host.host);
   const previouslyChoosed = host.structure ? host.structure : "";
-  console.log(previouslyChoosed);
   const [typeOfPlace, setTypeOfPlace] = useState(previouslyChoosed);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -27,7 +25,6 @@ const HomeSturcture = () => {
       lastPage: "PrivacyType",
     });
     dispatch(setStructure({ uuid: host.uuid, structure: typeOfPlace }));
-    dispatch(UpdateLastPage({ uuid: host.uuid, lastPage: "PrivacyType" }));
     const currentHost = JSON.parse(localStorage.getItem("currentHost"));
     const updatedHost = {
       ...currentHost,

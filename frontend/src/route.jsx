@@ -14,6 +14,16 @@ import FloorPlanPage from "./pages/hostingSteps/floorPlanpage.jsx";
 import StandOut from "./pages/hostingSteps/standOut.jsx";
 import AmenitiesPage from "./pages/hostingSteps/amenitesPage.jsx";
 import PhotosPage from "./pages/hostingSteps/photosPage.jsx";
+// import axios from "axios";
+// import { useSelector } from "react-redux";
+
+// // const loadPhotos = async () => {
+// //   const response = axios.get("http://localhost:3000/host/photos", {
+// //     params: { uuid: host.uuid },
+// //   });
+// //   const data = await response.json();
+// //   return data;
+// // };
 const router = createBrowserRouter([
   {
     path: "/",
@@ -105,6 +115,7 @@ const router = createBrowserRouter([
   {
     path: "/became-a-host/:uuid/photos",
     element: <PhotosPage />,
+    // loader: loadPhotos,
   },
   {
     path: "/release/features",

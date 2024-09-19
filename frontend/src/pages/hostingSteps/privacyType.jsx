@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import HostHeader from "./hostHeader";
 import options from "../../utils/options";
 import PlaceOptionButton from "./placedOption.jsx";
-import { setPrivacyType, UpdateLastPage } from "../../redux/HostReducer.js";
+import { setPrivacyType } from "../../redux/HostReducer.js";
 import ProgressBar from "./progressBar.jsx";
 import axios from "axios";
 const PrivacyType = () => {
@@ -46,7 +46,6 @@ const PrivacyType = () => {
     localStorage.setItem("currentHost", JSON.stringify(updatedHost));
 
     dispatch(setPrivacyType({ uuid: host.uuid, privacyType: typeOfPrivacy }));
-    dispatch(UpdateLastPage({ uuid: host.uuid, lastPage: "location" }));
     navigate(`/became-a-host/${host.uuid}/location`);
   };
 

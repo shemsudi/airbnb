@@ -1,6 +1,5 @@
 import React from "react";
 import HostHeader from "./hostHeader";
-import ProgressBar from "./progressBar";
 import FooterNavigation from "./footerNavigation";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";

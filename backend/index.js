@@ -7,6 +7,7 @@ const ProfileRouter = require("./routes/profile.js");
 const HostRouter = require("./routes/host.js");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const User = require("./models/User.js");
+const path = require("path");
 
 const cors = require("cors");
 const bodyParser = require("body-parser");
@@ -18,6 +19,8 @@ const corsOptions = {
   credentials: true, //access-control-allow-credentials:true
   optionSuccessStatus: 200,
 };
+
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.use(cors(corsOptions));
 app.use(bodyParser.urlencoded({ extended: false }));

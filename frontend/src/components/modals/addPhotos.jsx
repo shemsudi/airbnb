@@ -3,10 +3,17 @@ import React, { useRef, useEffect, useState } from "react";
 import CloseIcon from "../icons/closeIcon";
 import PlusIcon from "../icons/plusIcon";
 import ImageIcon from "../icons/imageIcon";
+import axios from "axios";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { setPhotos } from "../../redux/HostReducer";
 
 const AddPhotos = ({ isOpen, setIsOpen, files, setFiles }) => {
+  const host = useSelector((state) => state.host.host);
+  console.log(host);
   const [previews, setPreviews] = useState([]);
   const photoAdd = useRef(null);
+  const dispatch = useDispatch();
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (photoAdd.current && !photoAdd.current.contains(event.target)) {
@@ -22,6 +29,7 @@ const AddPhotos = ({ isOpen, setIsOpen, files, setFiles }) => {
 
   const handleFileChange = (e) => {
     const selectedFiles = Array.from(e.target.files);
+    setFiles((prevFiles) => [...prevFiles, ...selectedFiles]);
     const selectedPreviews = selectedFiles.map((file) =>
       URL.createObjectURL(file)
     );
@@ -36,8 +44,20 @@ const AddPhotos = ({ isOpen, setIsOpen, files, setFiles }) => {
     newPreviews.splice(index, 1);
     setPreviews(newPreviews);
   };
-  const uploadFiles = () => {
-    setFiles((prevFiles) => [...prevFiles, ...previews]);
+  const uploadFiles = async () => {
+    const formdata = new FormData();
+    formdata.append("uuid", host.uuid);
+    files.forEach((file) => formdata.append("photos", file));
+    const result = await axios.post(
+      "http://localhost:3000/host/addPhotos",
+      formdata,
+      { headers: { "Content-Type": "multipart/form-data" } }
+    );
+    console.log(result);
+    const urlFiles = result.data.photos;
+    console.log(urlFiles);
+
+    setFiles(urlFiles);
     setPreviews([]);
     setIsOpen(false);
   };

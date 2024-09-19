@@ -127,18 +127,6 @@ const storage = multer.diskStorage({
 const upload = multer({
   storage: storage,
   limits: { fileSize: 1000000 },
-  fileFilter: function (req, file, cb) {
-    const filetypes = /jpeg|jpg|png|gif/;
-    const extname = filetypes.test(
-      path.extname(file.originalname).toLowerCase()
-    );
-    const mimetype = filetypes.test(file.mimetype);
-    if (mimetype && extname) {
-      return cb(null, true);
-    } else {
-      cb("Error: Images Only!");
-    }
-  },
 });
 
 router.post(
@@ -147,20 +135,52 @@ router.post(
   upload.array("photos", 10),
   async (req, res) => {
     try {
-      console.log(req.body);
-      console.log(req.files);
-      const { uuid, photos } = req.body;
-      console.log(uuid);
-      console.log(photos);
+      const { uuid } = req.body;
+      const fireUrls = req.files.map((file) => {
+        return `http://localhost:3000/uploads/${file.filename}`;
+      });
       const host = await Hosting.findOne({ uuid });
-      host.photos = req.body.photos;
+      if (!host.photos) {
+        host.photos = [];
+      }
+      host.photos = [...host.photos, ...fireUrls];
       await host.save();
-      res.status(200).json({ photos: req.body.photos });
+      res.status(200).json({ photos: host.photos });
     } catch (error) {
       console.log(error);
       res.status(500).json({ message: "Internal Server Error" });
     }
   }
 );
+
+router.delete("/deletePhoto/:index", async (req, res) => {
+  try {
+    const { index } = req.params;
+    const { uuid } = req.query;
+    const host = await Hosting.findOne({ uuid });
+    console.log(host);
+    if (!host.photos) {
+      host.photos = [];
+    }
+    host.photos.splice(index, 1);
+    console.log(host.photos);
+    await host.save();
+    res.status(200).json();
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
+router.get("/photos", async (req, res) => {
+  try {
+    const { uuid } = req.query;
+    const host = await Hosting.findOne({ uuid });
+    res.status(200).json({ photos: host.photos });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
 
 module.exports = router;

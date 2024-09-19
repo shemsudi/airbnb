@@ -16,21 +16,22 @@ const hostSlice = createSlice({
     },
     addHost: (state, action) => {
       const { uuid, lastPage } = action.payload;
-      state.host.uuid = action.payload.uuid;
-      state.host.lastPage = action.payload.lastPage;
-    },
-    UpdateLastPage: (state, action) => {
-      const { uuid, lastPage } = action.payload;
+      state.host.uuid = uuid;
       state.host.lastPage = lastPage;
     },
     setStructure: (state, action) => {
-      const { uuid, structure } = action.payload;
-
-      state.host.structure = structure;
+      const { structure } = action.payload;
+      if (uuid === state.host.uuid) {
+        state.host.structure = structure;
+        state.host.lastPage = "structure";
+      }
     },
     setPrivacyType: (state, action) => {
-      const { uuid, privacyType } = action.payload;
-      state.host.privacyType = privacyType;
+      const { privacyType } = action.payload;
+      if (uuid === state.host.uuid) {
+        state.host.privacyType = privacyType;
+        state.host.lastPage = "privacyType";
+      }
     },
     setFloorPlan: (state, action) => {
       const { guests, beds, bedrooms, bathrooms } = action.payload;
@@ -38,12 +39,14 @@ const hostSlice = createSlice({
       state.host.beds = beds;
       state.host.bedrooms = bedrooms;
       state.host.bathrooms = bathrooms;
+      state.host.lastPage = "amenities";
     },
     setAmenitiesState: (state, action) => {
       const { amenities, uniqueAmenities, safetyAmenities } = action.payload;
       state.host.amenities = amenities;
       state.host.uniqueAmenities = uniqueAmenities;
       state.host.safetyAmenities = safetyAmenities;
+      state.host.lastPage = "photos";
     },
     setPhotos: (state, action) => {
       const { photos } = action.payload;
@@ -67,7 +70,6 @@ export const {
   setHost,
   addHost,
   setStructure,
-  UpdateLastPage,
   setPrivacyType,
   setLoading,
   setError,

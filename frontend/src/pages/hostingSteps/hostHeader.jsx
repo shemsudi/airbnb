@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 const HostHeader = () => {
   return (
     <div className="flex justify-between px-12 pt-8 sticky top-0 left-0 bg-white">
-      <Link to="/host/homes">
+      <Link to="/">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 32 32"

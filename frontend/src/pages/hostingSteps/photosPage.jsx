@@ -11,27 +11,16 @@ import PhotoGrid from "./photoGrid";
 import { setPhotos } from "../../redux/HostReducer";
 import { useDispatch } from "react-redux";
 import axios from "axios";
+import { useLoaderData } from "react-router-dom";
 const PhotosPage = () => {
   const host = useSelector((state) => state.host.host);
-  const [files, setFiles] = useState(host.photos || []);
+  const Photos = useLoaderData();
+  const [files, setFiles] = useState(Photos || []);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
   const onNext = async () => {
-    const formData = new FormData();
-    formData.append("uuid", host.uuid);
-    files.forEach((file) => formData.append("photos", file));
-    console.log(files);
-    console.log(formData.getAll("photos", "uuid"));
     dispatch(setPhotos({ photos: files }));
-
-    const response = await axios.post(
-      "http://localhost:3000/host/addPhotos",
-      formData,
-      {
-        headers: { "Content-Type": "multipart/form-data" },
-      }
-    );
     const currentHost = JSON.parse(localStorage.getItem("currentHost"));
     const updatedHost = {
       ...currentHost,
@@ -44,7 +33,10 @@ const PhotosPage = () => {
   const onBack = () => {
     navigate(`/became-a-host/${host.uuid}/amenities`);
   };
-  const removeImage = (index) => {
+  const removeImage = async (index) => {
+    await axios.delete(`http://localhost:3000/host/deletePhoto/${index}`, {
+      params: { uuid: host.uuid },
+    });
     setFiles(files.filter((_, i) => i !== index));
   };
   return (

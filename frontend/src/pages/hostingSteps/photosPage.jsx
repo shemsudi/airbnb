@@ -11,39 +11,49 @@ import PhotoGrid from "./photoGrid";
 import { setPhotos } from "../../redux/HostReducer";
 import { useDispatch } from "react-redux";
 import axios from "axios";
-import { useLoaderData } from "react-router-dom";
+// import { useLoaderData } from "react-router-dom";
 const PhotosPage = () => {
   const host = useSelector((state) => state.host.host);
-  const Photos = useLoaderData();
-  const [files, setFiles] = useState(Photos || []);
+  // const { Photos } = useLoaderData();
+  // console.log(Photos);
+  const [files, setFiles] = useState(host.photos || []);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
   const onNext = async () => {
-    dispatch(setPhotos({ photos: files }));
-    const currentHost = JSON.parse(localStorage.getItem("currentHost"));
-    const updatedHost = {
-      ...currentHost,
-      lastPage: "title",
-      photos: files,
-    };
-    localStorage.setItem("currentHost", JSON.stringify(updatedHost));
     navigate(`/became-a-host/${host.uuid}/title`);
   };
   const onBack = () => {
     navigate(`/became-a-host/${host.uuid}/amenities`);
   };
   const removeImage = async (index) => {
+    // Delete the photo on the server
     await axios.delete(`http://localhost:3000/host/deletePhoto/${index}`, {
       params: { uuid: host.uuid },
     });
-    setFiles(files.filter((_, i) => i !== index));
+
+    // Filter files and update state
+    const newFiles = files.filter((_, i) => i !== index);
+    console.log("files after removing:", newFiles);
+
+    // Update the files state and dispatch the action
+    setFiles(newFiles);
+    dispatch(setPhotos({ photos: newFiles }));
+
+    // Update localStorage with the new photos array
+    const currentHost = JSON.parse(localStorage.getItem("currentHost"));
+    const updatedHost = {
+      ...currentHost,
+      photos: newFiles,
+    };
+    localStorage.setItem("currentHost", JSON.stringify(updatedHost));
   };
+
   return (
     <div className="h-screen flex flex-col">
       <HostHeader />
-      <div className="flex-1 mx-5 md:mx-14 flex justify-center ">
-        <div className="flex  flex-col  md:max-w-[500px] md:min-h-[500px] gap-5 mb-5">
+      <div className=" flex-grow mx-6 sm:mx-14 flex justify-center  ">
+        <div className="flex  flex-col mx-4 w-full  sm:max-w-[500px] md:min-h-[400px] gap-3 mb-5 max-md:mt-4">
           {files.length > 0 ? (
             <>
               <div className="flex justify-between items-start">
@@ -65,6 +75,7 @@ const PhotosPage = () => {
                 setIsOpen={setIsOpen}
                 files={files}
                 removeImage={removeImage}
+                setFiles={setFiles}
               />
             </>
           ) : (

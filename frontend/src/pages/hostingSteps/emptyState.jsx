@@ -8,7 +8,7 @@ const EmptyState = ({ onClick }) => (
     />
     <button
       onClick={onClick}
-      className="px-3 py-1 border border-black bg-white rounded-lg"
+      className="px-3 py-1 mb-4 border border-black bg-white rounded-lg"
     >
       Add photos
     </button>

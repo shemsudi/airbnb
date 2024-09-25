@@ -20,14 +20,14 @@ const hostSlice = createSlice({
       state.host.lastPage = lastPage;
     },
     setStructure: (state, action) => {
-      const { structure } = action.payload;
+      const { structure, uuid } = action.payload;
       if (uuid === state.host.uuid) {
         state.host.structure = structure;
         state.host.lastPage = "structure";
       }
     },
     setPrivacyType: (state, action) => {
-      const { privacyType } = action.payload;
+      const { privacyType, uuid } = action.payload;
       if (uuid === state.host.uuid) {
         state.host.privacyType = privacyType;
         state.host.lastPage = "privacyType";

@@ -136,16 +136,34 @@ router.post(
   async (req, res) => {
     try {
       const { uuid } = req.body;
-      const fireUrls = req.files.map((file) => {
+      const fileUrls = req.files.map((file) => {
         return `http://localhost:3000/uploads/${file.filename}`;
       });
       const host = await Hosting.findOne({ uuid });
       if (!host.photos) {
         host.photos = [];
       }
-      host.photos = [...host.photos, ...fireUrls];
+      host.photos = [...host.photos, ...fileUrls];
       await host.save();
-      res.status(200).json({ photos: host.photos });
+      res.status(200).json({ photos: fileUrls });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: "Internal Server Error" });
+    }
+  }
+);
+
+router.post(
+  "/title",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    try {
+      const { uuid, title } = req.body;
+      const host = await Hosting.findOne({ uuid });
+      host.title = title;
+      host.lastPage = "description";
+      await host.save();
+      res.status(200).json();
     } catch (error) {
       console.log(error);
       res.status(500).json({ message: "Internal Server Error" });

@@ -1,4 +1,3 @@
-import { LockClosedIcon } from "@heroicons/react/16/solid";
 import React, { useRef, useEffect, useState } from "react";
 import CloseIcon from "../icons/closeIcon";
 import PlusIcon from "../icons/plusIcon";
@@ -10,7 +9,7 @@ import { setPhotos } from "../../redux/HostReducer";
 
 const AddPhotos = ({ isOpen, setIsOpen, files, setFiles }) => {
   const host = useSelector((state) => state.host.host);
-  console.log(host);
+  const [tempFiles, setTempFiles] = useState([]);
   const [previews, setPreviews] = useState([]);
   const photoAdd = useRef(null);
   const dispatch = useDispatch();
@@ -29,38 +28,57 @@ const AddPhotos = ({ isOpen, setIsOpen, files, setFiles }) => {
 
   const handleFileChange = (e) => {
     const selectedFiles = Array.from(e.target.files);
-    setFiles((prevFiles) => [...prevFiles, ...selectedFiles]);
+    setTempFiles((prevFiles) => [...prevFiles, ...selectedFiles]);
     const selectedPreviews = selectedFiles.map((file) =>
       URL.createObjectURL(file)
     );
+    console.log(selectedPreviews);
     setPreviews((prevPreviews) => [...prevPreviews, ...selectedPreviews]);
-    e.target.value = "";
   };
   const triggerFileInput = () => {
     document.getElementById("file-input").click();
   };
   const removeImage = (index) => {
-    const newPreviews = [...previews];
-    newPreviews.splice(index, 1);
-    setPreviews(newPreviews);
+    setTempFiles((tempFiles) => tempFiles.filter((_, i) => i !== index));
+    setPreviews((previews) => previews.filter((_, i) => i !== index));
   };
   const uploadFiles = async () => {
     const formdata = new FormData();
     formdata.append("uuid", host.uuid);
-    files.forEach((file) => formdata.append("photos", file));
-    const result = await axios.post(
-      "http://localhost:3000/host/addPhotos",
-      formdata,
-      { headers: { "Content-Type": "multipart/form-data" } }
-    );
-    console.log(result);
-    const urlFiles = result.data.photos;
-    console.log(urlFiles);
+    tempFiles.forEach((file) => formdata.append("photos", file));
 
-    setFiles(urlFiles);
-    setPreviews([]);
-    setIsOpen(false);
+    try {
+      const result = await axios.post(
+        "http://localhost:3000/host/addPhotos",
+        formdata,
+        { headers: { "Content-Type": "multipart/form-data" } }
+      );
+
+      const urlFiles = result.data.photos;
+      console.log("Uploaded files:", urlFiles);
+
+      // Update files state and dispatch
+      setFiles((files) => [...files, ...urlFiles]);
+      dispatch(setPhotos({ photos: [...files, ...urlFiles] }));
+
+      // Update localStorage directly with urlFiles
+      const currentHost = JSON.parse(localStorage.getItem("currentHost"));
+      const updatedHost = {
+        ...currentHost,
+        lastPage: "title",
+        photos: [...files, ...urlFiles],
+      };
+      localStorage.setItem("currentHost", JSON.stringify(updatedHost));
+
+      // Clear previews and temp files
+      setPreviews([]);
+      setTempFiles([]);
+      setIsOpen(false);
+    } catch (error) {
+      console.error("Error uploading files:", error);
+    }
   };
+
   return (
     <div
       className={`fixed top-0 right-0 left-0 bottom-0 bg-black bg-opacity-60 z-10`}
@@ -95,20 +113,17 @@ const AddPhotos = ({ isOpen, setIsOpen, files, setFiles }) => {
           </button>
         </div>
         {previews.length > 0 ? (
-          <div
-            className="flex-grow p-4 overflow-y-auto
-          "
-          >
-            <div className="grid grid-cols-2 gap-1">
+          <div className="flex-1 p-4 overflow-y-auto">
+            <div className="grid grid-cols-1  min-[350px]:grid-cols-2 gap-1">
               {previews.map((preview, index) => (
                 <div
                   key={index}
-                  className="relative rounded-lg overflow-hidden"
+                  className="relative  w-full h-40 sm:h-32 rounded-lg overflow-hidden"
                 >
                   <img
                     src={preview}
                     alt=" shemsu"
-                    className="w-full h-full object-cover"
+                    className="size-full object-cover"
                   />
                   <button
                     onClick={() => removeImage(index)}
@@ -121,7 +136,10 @@ const AddPhotos = ({ isOpen, setIsOpen, files, setFiles }) => {
             </div>
           </div>
         ) : (
-          <div className="flex-grow flex flex-col m-4 p-4 border-gray-400 rounded-xl  items-center justify-center border border-dashed">
+          <div
+            {...getRootProps}
+            className=" flex-1 flex flex-col p-4 border-gray-400 rounded-xl  items-center justify-center border border-dashed"
+          >
             <ImageIcon />
             <p className="font-semibold mb-2 mt-3">Drag and Drop</p>{" "}
             <small>or browse for photos</small>
@@ -130,6 +148,7 @@ const AddPhotos = ({ isOpen, setIsOpen, files, setFiles }) => {
               type="file"
               id="file-input"
               className="hidden"
+              {...getInputProps}
               onChange={handleFileChange}
             />
             <button

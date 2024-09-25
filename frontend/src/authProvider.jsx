@@ -13,7 +13,7 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const token = localStorage.getItem("jwtToken");
     const currentHost = JSON.parse(localStorage.getItem("currentHost"));
-    console.log(currentHost);
+    dispatch(setHost(currentHost));
     if (currentHost) {
       dispatch(setHost(currentHost));
     }

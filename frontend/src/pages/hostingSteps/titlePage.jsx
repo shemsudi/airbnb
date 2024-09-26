@@ -3,12 +3,16 @@ import HostHeader from "./hostHeader";
 import FooterNavigation from "./footerNavigation";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { addTitle } from "../../redux/HostReducer";
 import axios from "axios";
 
 const TitlePage = () => {
-  const [title, setTitle] = useState("");
   const host = useSelector((state) => state.host.host);
+  const [title, setTitle] = useState(host.title || "");
+  const count = title.length;
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const onBack = () => {
     navigate(`/became-a-host/${host.uuid}/photos`);
   };
@@ -17,6 +21,13 @@ const TitlePage = () => {
       title,
       uuid: host.uuid,
     });
+    dispatch(addTitle({ title: title }));
+    const currentHost = JSON.parse(localStorage.getItem("currentHost"));
+    const updatedHost = {
+      ...currentHost,
+      title: title,
+    };
+    localStorage.setItem("currentHost", JSON.stringify(updatedHost));
     if (response.status === 200) {
       navigate(`/became-a-host/${host.uuid}/description`);
     }
@@ -39,10 +50,13 @@ const TitlePage = () => {
             className=" border border-gray-500 rounded-md p-2 mt-5 h-32"
             name=""
             id=""
+            value={title}
+            maxLength={32}
           ></textarea>
+          <small>{count}/32</small>
         </div>
       </div>
-      <FooterNavigation onBack={onBack} onNext={onNext} />
+      <FooterNavigation onBack={onBack} onNext={onNext} step={2} pos={3} />
     </div>
   );
 };

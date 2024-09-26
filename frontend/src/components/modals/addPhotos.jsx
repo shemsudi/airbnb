@@ -34,6 +34,7 @@ const AddPhotos = ({ isOpen, setIsOpen, files, setFiles }) => {
     );
     console.log(selectedPreviews);
     setPreviews((prevPreviews) => [...prevPreviews, ...selectedPreviews]);
+    e.target.value = null;
   };
   const triggerFileInput = () => {
     document.getElementById("file-input").click();
@@ -136,10 +137,7 @@ const AddPhotos = ({ isOpen, setIsOpen, files, setFiles }) => {
             </div>
           </div>
         ) : (
-          <div
-            {...getRootProps}
-            className=" flex-1 flex flex-col p-4 border-gray-400 rounded-xl  items-center justify-center border border-dashed"
-          >
+          <div className=" flex-1 flex flex-col p-4 border-gray-400 rounded-xl  items-center justify-center border border-dashed">
             <ImageIcon />
             <p className="font-semibold mb-2 mt-3">Drag and Drop</p>{" "}
             <small>or browse for photos</small>
@@ -148,7 +146,6 @@ const AddPhotos = ({ isOpen, setIsOpen, files, setFiles }) => {
               type="file"
               id="file-input"
               className="hidden"
-              {...getInputProps}
               onChange={handleFileChange}
             />
             <button

@@ -51,8 +51,30 @@ const hostSlice = createSlice({
     setPhotos: (state, action) => {
       const { photos } = action.payload;
       state.host.photos = photos;
+      state.host.lastPage = "title";
     },
-
+    addTitle: (state, action) => {
+      const { title } = action.payload;
+      console.log(title);
+      state.host.title = title;
+      state.host.lastPage = "description";
+    },
+    setDescriptions: (state, action) => {
+      const { description, highlights } = action.payload;
+      state.host.description = description;
+      state.host.highlights = highlights;
+      state.host.lastPage = "instantBook";
+    },
+    setInstantBook: (state, action) => {
+      const { instantBook } = action.payload;
+      state.host.instantBook = instantBook;
+      state.host.lastPage = "visibility";
+    },
+    setVisiblity: (state, action) => {
+      const { visibility } = action.payload;
+      state.host.visibility = visibility;
+      state.host.lastPage = "price";
+    },
     setLoading: (state, action) => {
       state.loading = action.payload;
     },
@@ -76,5 +98,9 @@ export const {
   setFloorPlan,
   clearHost,
   setPhotos,
+  addTitle,
+  setDescriptions,
+  setInstantBook,
+  setVisiblity,
 } = hostSlice.actions;
 export default hostSlice.reducer;

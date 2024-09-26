@@ -69,4 +69,19 @@ const safetyAmenitiesItems = [
   { type: "Fire extinguisher", icon: <HouseIcon /> },
   { type: "Carbon monoxide alarm", icon: <HouseIcon /> },
 ];
-export { types, amenitiesItems, uniqueAmenitiesItems, safetyAmenitiesItems };
+
+const descriptionTypes = [
+  { type: "Peacful", icon: <HouseIcon /> },
+  { type: "Unique", icon: <HouseIcon /> },
+  { type: "Familly friendly", icon: <HouseIcon /> },
+  { type: "Stylish", icon: <HouseIcon /> },
+  { type: "Central", icon: <HouseIcon /> },
+  { type: "Spacious", icon: <HouseIcon /> },
+];
+export {
+  types,
+  amenitiesItems,
+  uniqueAmenitiesItems,
+  safetyAmenitiesItems,
+  descriptionTypes,
+};

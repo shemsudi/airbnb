@@ -32,6 +32,21 @@ const hostingSchema = new Schema({
     type: String,
     required: false,
   },
+  visibility: {
+    type: String,
+    required: false,
+  },
+
+  highlights: [
+    {
+      type: String,
+      required: false,
+    },
+  ],
+  instantBook: {
+    type: String,
+    required: false,
+  },
   guests: {
     type: Number,
     required: false,

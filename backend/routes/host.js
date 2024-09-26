@@ -201,4 +201,58 @@ router.get("/photos", async (req, res) => {
   }
 });
 
+router.post(
+  "/description",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    try {
+      const { uuid, description, highlights } = req.body;
+      const host = await Hosting.findOne({ uuid });
+      host.description = description;
+      host.highlights = highlights;
+      host.lastPage = "finishSetup";
+      await host.save();
+      res.status(200).json();
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: "Internal Server Error" });
+    }
+  }
+);
+
+router.post(
+  "/instant-book",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    try {
+      const { uuid, instantBook } = req.body;
+      const host = await Hosting.findOne({ uuid });
+      host.instantBook = instantBook;
+      host.lastPage = "visibility";
+      await host.save();
+      res.status(200).json();
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: "Internal Server Error" });
+    }
+  }
+);
+
+router.post(
+  "/visibility",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    try {
+      const { uuid, visibility } = req.body;
+      const host = await Hosting.findOne({ uuid });
+      host.visibility = visibility;
+      host.lastPage = "price";
+      await host.save();
+      res.status(200).json();
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: "Internal Server Error" });
+    }
+  }
+);
 module.exports = router;

@@ -22,6 +22,8 @@ import InstantBookPage from "./pages/hostingSteps/instantBook.jsx";
 import VisiblityPage from "./pages/hostingSteps/visiblityPage.jsx";
 import PricePage from "./pages/hostingSteps/pricePage.jsx";
 import DiscountPage from "./pages/hostingSteps/discountPage.jsx";
+import LegalPage from "./pages/hostingSteps/legalPage.jsx";
+import ReceiptPage from "./pages/hostingSteps/receiptPage.jsx";
 // import { useSelector } from "react-redux";
 
 // const photoLoader = async () => {
@@ -152,6 +154,14 @@ const router = createBrowserRouter([
   {
     path: "/became-a-host/:uuid/discount",
     element: <DiscountPage />,
+  },
+  {
+    path: "/became-a-host/:uuid/legal",
+    element: <LegalPage />,
+  },
+  {
+    path: "/became-a-host/:uuid/receipt",
+    element: <ReceiptPage />,
   },
   {
     path: "/release/features",

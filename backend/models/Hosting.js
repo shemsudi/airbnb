@@ -177,6 +177,30 @@ const hostingSchema = new Schema({
       required: false,
     },
   },
+  legalInfo: {
+    hostingType: {
+      type: String,
+      required: false,
+    },
+    securityCameras: {
+      isAvailable: {
+        type: Boolean,
+        required: false,
+      },
+      description: {
+        type: String,
+        required: false,
+      },
+    },
+    noiseMonitors: {
+      type: Boolean,
+      required: false,
+    },
+    weapons: {
+      type: Boolean,
+      required: false,
+    },
+  },
   user: {
     type: Schema.Types.ObjectId,
     ref: "User",

@@ -283,16 +283,49 @@ router.post(
       const { uuid, discount } = req.body;
       console.log(uuid);
       const host = await Hosting.findOne({ uuid });
-      if (discount.weeklyDiscount) {
-        host.discount.weeklyDiscount = discount.weeklyDiscount;
-      }
-      if (discount.monthlyDiscount) {
-        host.discount.monthlyDiscount = discount.monthlyDiscount;
-      }
-      if (discount.newLPDiscount) {
-        host.discount.newLPDiscount = discount.newLPDiscount;
-      }
+      // if (discount.weeklyDiscount) {
+      //   host.discount.weeklyDiscount = discount.weeklyDiscount;
+      // }
+      // if (discount.monthlyDiscount) {
+      //   host.discount.monthlyDiscount = discount.monthlyDiscount;
+      // }
+      // if (discount.newLPDiscount) {
+      //   host.discount.newLPDiscount = discount.newLPDiscount;
+      // }
+      host.discount = { ...host.discount, ...discount };
       host.lastPage = "final";
+      await host.save();
+      res.status(200).json();
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: "Internal Server Error" });
+    }
+  }
+);
+
+router.post(
+  "/setLegalInfo",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    try {
+      const { uuid, legalInfo } = req.body;
+
+      const host = await Hosting.findOne({ uuid });
+      if (legalInfo.securityCameras) {
+        host.legalInfo.securityCameras.isAvailable =
+          legalInfo.securityCameras.isAvailable ||
+          host.legalInfo.securityCameras.isAvailable;
+        host.legalInfo.securityCameras.description =
+          legalInfo.securityCameras.description ||
+          host.legalInfo.securityCameras.description;
+      }
+      host.legalInfo.hostingType =
+        legalInfo.hostingType || host.legalInfo.hostingType;
+      host.legalInfo.noiseMonitors =
+        legalInfo.noiseMonitors ?? host.legalInfo.noiseMonitors;
+      host.legalInfo.weapons = legalInfo.weapons ?? host.legalInfo.weapons;
+
+      host.lastPage = "discount";
       await host.save();
       res.status(200).json();
     } catch (error) {

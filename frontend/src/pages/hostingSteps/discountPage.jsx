@@ -47,7 +47,7 @@ const DiscountPage = () => {
           discount: discountsToSend,
         };
         localStorage.setItem("currentHost", JSON.stringify(updatedHost));
-        navigate(`/became-a-host/${host.uuid}/final`);
+        navigate(`/became-a-host/${host.uuid}/legal`);
       }
     } catch (error) {}
   };

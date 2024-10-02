@@ -83,6 +83,11 @@ const hostSlice = createSlice({
     setDiscounts: (state, action) => {
       state.host.discount = action.payload;
     },
+    setLegalInfo: (state, action) => {
+      const { legalInfo } = action.payload;
+      state.host.legalInfo = legalInfo;
+      state.host.lastPage = "finish";
+    },
     setLoading: (state, action) => {
       state.loading = action.payload;
     },
@@ -96,6 +101,7 @@ const hostSlice = createSlice({
 });
 
 export const {
+  setLegalInfo,
   setPriceRedux,
   setAmenitiesState,
   setHost,

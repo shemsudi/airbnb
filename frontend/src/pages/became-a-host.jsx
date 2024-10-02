@@ -29,7 +29,7 @@ const BecameAhost = () => {
     }
   };
   return (
-    <div className="h-full flex flex-col">
+    <div className="h-screen flex flex-col">
       <div className="flex justify-between px-12 pt-8 sticky top-0 left-0 bg-white">
         <Link to={"/host/homes"}>
           <svg
@@ -47,7 +47,7 @@ const BecameAhost = () => {
           Exit
         </button>
       </div>
-      <div className="flex flex-col w-full md:flex-row px-5 md:px-32 gap-4 md:gap-2 overflow-y-scroll ">
+      <div className="flex flex-1 flex-col w-full md:flex-row px-5 md:px-32 gap-4 md:gap-2 overflow-y-scroll ">
         <div className="flex items-center w-full box-border md:w-1/2 text-2xl  md:text-5xl md:pl-4  md:pr-32 font-semibold">
           {" "}
           It's easy to get started on Airbnb{" "}

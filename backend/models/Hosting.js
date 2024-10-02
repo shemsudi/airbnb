@@ -163,6 +163,20 @@ const hostingSchema = new Schema({
       required: false,
     },
   },
+  discount: {
+    weeklyDiscount: {
+      type: Number,
+      required: false,
+    },
+    monthlyDiscount: {
+      type: Number,
+      required: false,
+    },
+    newLPDiscount: {
+      type: Number,
+      required: false,
+    },
+  },
   user: {
     type: Schema.Types.ObjectId,
     ref: "User",

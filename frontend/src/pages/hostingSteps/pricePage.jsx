@@ -5,10 +5,13 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
+import { setPriceRedux } from "../../redux/HostReducer";
 
 const PricePage = () => {
   const host = useSelector((state) => state.host.host);
-  const [price, setPrice] = useState(host.price || "23");
+  const [price, setPrice] = useState(host.price || 23);
   const serviceFee = Math.round(price * 0.15);
   const [isShowMore, setIsShowMore] = useState(false);
   const navigate = useNavigate();
@@ -19,43 +22,46 @@ const PricePage = () => {
   const onNext = async () => {
     const response = await axios.post("http://localhost:3000/host/price", {
       uuid: host.uuid,
-      price: host.price,
+      price: parseInt(price),
     });
-    if (response.status === 200) {
-      navigate(`/became-a-host/${host.uuid}/title`);
-    }
+    dispatch(setPriceRedux({ price: price }));
+    navigate(`/became-a-host/${host.uuid}/discount`);
   };
   const handlePriceChange = (event) => {
     const inputValue = event.target.value;
 
     // Remove the dollar sign and parse the remaining string to a number
     const numericValue = inputValue.replace(/[^0-9.]/g, "");
-
-    // Update the state with the numeric value
-    setPrice(numericValue);
+    console.log(numericValue);
+    if (isNaN(numericValue) || numericValue === "") {
+      setPrice(0);
+    } else {
+      setPrice(parseInt(numericValue));
+    }
   };
   return (
     <div className="h-screen flex flex-col">
       <HostHeader />
-      <div className="flex-1 m-4 flex justify-center items-center">
-        <div className="flex flex-col justify-center items-start md:items-center md:min-w-[500px] ">
+      <div className="grow box-border m-4 flex flex-col items-start justify-start md:items-center md:justify-center">
+        <div className="flex flex-col justify-center   md:w-max">
           <h1 className="text-2xl font-semibold">Now, set your price</h1>
           <small className="text-gray-600">You can change it anytime</small>
-          <div className="flex flex-col justify-center items-center mt-4 py-4">
+          <div className="flex flex-col justify-center items-center  md:max-w-[500px] mt-4 py-4">
             <input
-              className="text-center text-7xl  focus:outline-none font-bold"
+              className="text-center text-6xl w-full focus:outline-none font-bold"
               onChange={handlePriceChange}
               type="text"
               value={"$" + price}
             />
             {!isShowMore ? (
-              <div className="flex flex-col gap-10 items-center">
-                <button onClick={() => setIsShowMore(true)}>
+              <div className="flex flex-col  items-center mt-2 ">
+                <button className="mb-16" onClick={() => setIsShowMore(true)}>
                   Guest prices before taxes ${serviceFee + parseInt(price)}
                 </button>
-                <button className="border text-sm rounded-full p-2">
+                <button className="border flex items-center text-sm rounded-full p-2 mb-10 hover:border-black font-sans space-x-2">
                   {" "}
-                  similar listings $54 -$80
+                  <FontAwesomeIcon icon={faLocationDot} />
+                  <p> Similar listings $54 -$80</p>{" "}
                 </button>
                 <Link className="text-sm underline">
                   {" "}
@@ -65,17 +71,17 @@ const PricePage = () => {
             ) : (
               <div className="mt-4 flex flex-col">
                 <div className=" flex flex-col border rounded-lg border-gray-400 p-2 gap-2 ">
-                  <div className="flex justify-between gap-10">
+                  <div className="flex justify-between gap-16">
                     {" "}
                     <small>Base price</small>
                     <small>${price}</small>
                   </div>
-                  <div className="flex gap-10 justify-between pb-2 border-b-2">
+                  <div className="flex gap-16 justify-between pb-2 border-b-2">
                     {" "}
                     <small>Guest service fee</small>
                     <small>${serviceFee}</small>
                   </div>
-                  <div className="flex justify-between gap-10">
+                  <div className="flex justify-between gap-16">
                     {" "}
                     <small className="font-medium">
                       Guest prices before taxes ${serviceFee + parseInt(price)}
@@ -91,7 +97,7 @@ const PricePage = () => {
                   className="text-sm mt-4  "
                   onClick={() => setIsShowMore(false)}
                 >
-                  show less
+                  Show less
                 </button>
               </div>
             )}

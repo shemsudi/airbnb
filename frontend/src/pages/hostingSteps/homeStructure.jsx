@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -15,6 +15,19 @@ const HomeSturcture = () => {
   const [typeOfPlace, setTypeOfPlace] = useState(previouslyChoosed);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  useEffect(() => {
+    const currentHost = JSON.parse(localStorage.getItem("currentHost"));
+    if (currentHost && currentHost.structure) {
+      setTypeOfPlace(currentHost.structure);
+      dispatch(
+        setStructure({
+          uuid: currentHost.uuid,
+          structure: currentHost.structure,
+        })
+      );
+    }
+  }, [dispatch]);
+
   const backToStructurePage = () => {
     navigate(`/became-a-host/${host.uuid}/about-your-place`);
   };

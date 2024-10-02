@@ -75,6 +75,14 @@ const hostSlice = createSlice({
       state.host.visibility = visibility;
       state.host.lastPage = "price";
     },
+    setPriceRedux: (state, action) => {
+      const { price } = action.payload;
+      state.host.price = price;
+      state.host.lastPage = "discount";
+    },
+    setDiscounts: (state, action) => {
+      state.host.discount = action.payload;
+    },
     setLoading: (state, action) => {
       state.loading = action.payload;
     },
@@ -88,6 +96,7 @@ const hostSlice = createSlice({
 });
 
 export const {
+  setPriceRedux,
   setAmenitiesState,
   setHost,
   addHost,
@@ -102,5 +111,6 @@ export const {
   setDescriptions,
   setInstantBook,
   setVisiblity,
+  setDiscounts,
 } = hostSlice.actions;
 export default hostSlice.reducer;

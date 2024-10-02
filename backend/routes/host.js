@@ -255,4 +255,50 @@ router.post(
     }
   }
 );
+
+router.post(
+  "/price",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    try {
+      const { uuid, price } = req.body;
+      console.log(price);
+      const host = await Hosting.findOne({ uuid });
+      host.pricing.nightlyRate = price;
+      host.lastPage = "availability";
+      await host.save();
+      res.status(200).json();
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: "Internal Server Error" });
+    }
+  }
+);
+
+router.post(
+  "/setDiscount",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    try {
+      const { uuid, discount } = req.body;
+      console.log(uuid);
+      const host = await Hosting.findOne({ uuid });
+      if (discount.weeklyDiscount) {
+        host.discount.weeklyDiscount = discount.weeklyDiscount;
+      }
+      if (discount.monthlyDiscount) {
+        host.discount.monthlyDiscount = discount.monthlyDiscount;
+      }
+      if (discount.newLPDiscount) {
+        host.discount.newLPDiscount = discount.newLPDiscount;
+      }
+      host.lastPage = "final";
+      await host.save();
+      res.status(200).json();
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: "Internal Server Error" });
+    }
+  }
+);
 module.exports = router;

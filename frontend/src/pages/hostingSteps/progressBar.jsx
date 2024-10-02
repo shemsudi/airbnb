@@ -28,7 +28,7 @@ const ProgressBar = ({ step, pos }) => {
           className="bg-black h-full"
           style={{
             width:
-              step > 3 ? "100%" : step === 3 ? `${(pos / 6) * 100}%` : "0%",
+              step > 3 ? "100%" : step === 3 ? `${(pos / 7) * 100}%` : "0%",
           }}
         ></div>
       </div>

@@ -164,6 +164,10 @@ const router = createBrowserRouter([
     element: <ReceiptPage />,
   },
   {
+    path: "/became-a-host/:uuid/publish-celebration",
+    element: <ReceiptPage />,
+  },
+  {
     path: "/release/features",
     element: <NewRealeased />,
   },

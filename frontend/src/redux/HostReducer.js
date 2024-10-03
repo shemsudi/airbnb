@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
+  removeImageRedux,
   updateAmenities,
   updateFloorPlan,
   updateHostStructure,
@@ -165,6 +166,18 @@ const hostSlice = createSlice({
         }
       })
       .addCase(updateAmenities.rejected, (state, action) => {
+        state.loading = false;
+      })
+      .addCase(removeImageRedux.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(removeImageRedux.fulfilled, (state, action) => {
+        const { uuid, index } = action.payload;
+        console.log("after", state.host.uuid);
+        if (uuid === state.host.uuid) {
+          state.host.photos = state.host.photos.filter((_, i) => i !== index);
+        }
+        console.log("after", state.host.uuid);
         state.loading = false;
       });
   },

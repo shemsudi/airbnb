@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import HostHeader from "./hostHeader";
 import FooterNavigation from "./footerNavigation";
 import { useNavigate } from "react-router-dom";
@@ -11,6 +11,7 @@ import PhotoGrid from "./photoGrid";
 import { setPhotos } from "../../redux/HostReducer";
 import { useDispatch } from "react-redux";
 import axios from "axios";
+import { removeImageRedux } from "../../redux/hostActions";
 // import { useLoaderData } from "react-router-dom";
 const PhotosPage = () => {
   const host = useSelector((state) => state.host.host);
@@ -19,7 +20,14 @@ const PhotosPage = () => {
   const [files, setFiles] = useState(host.photos || []);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
   const [isOpen, setIsOpen] = useState(false);
+  useEffect(() => {
+    const currentHost = JSON.parse(localStorage.getItem("currentHost"));
+    if (currentHost && currentHost.photos) {
+      setFiles(currentHost.photos);
+    }
+  }, []);
   const onNext = async () => {
     navigate(`/became-a-host/${host.uuid}/title`);
   };
@@ -27,20 +35,11 @@ const PhotosPage = () => {
     navigate(`/became-a-host/${host.uuid}/amenities`);
   };
   const removeImage = async (index) => {
-    // Delete the photo on the server
-    await axios.delete(`http://localhost:3000/host/deletePhoto/${index}`, {
-      params: { uuid: host.uuid },
-    });
+    dispatch(removeImageRedux({ uuid: host.uuid, index }));
 
-    // Filter files and update state
     const newFiles = files.filter((_, i) => i !== index);
-    console.log("files after removing:", newFiles);
 
-    // Update the files state and dispatch the action
     setFiles(newFiles);
-    dispatch(setPhotos({ photos: newFiles }));
-
-    // Update localStorage with the new photos array
     const currentHost = JSON.parse(localStorage.getItem("currentHost"));
     const updatedHost = {
       ...currentHost,

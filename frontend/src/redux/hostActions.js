@@ -1,6 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import PrivacyType from "../pages/hostingSteps/privacyType";
 export const updateHostStructure = createAsyncThunk(
   "host/setStructure",
   async ({ uuid, structure }) => {
@@ -87,5 +86,15 @@ export const updateAmenities = createAsyncThunk(
     };
     localStorage.setItem("currentHost", JSON.stringify(updatedHost));
     return response.data;
+  }
+);
+
+export const removeImageRedux = createAsyncThunk(
+  "host/removeImage",
+  async ({ uuid, index }) => {
+    await axios.delete(`http://localhost:3000/host/deletePhoto/${index}`, {
+      params: { uuid: uuid },
+    });
+    return { uuid, index };
   }
 );

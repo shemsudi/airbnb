@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { updateHostStructure } from "./hostActions";
 
 const initialState = {
   hosts: {},
@@ -97,6 +98,23 @@ const hostSlice = createSlice({
     clearHost: (state) => {
       state.host = {};
     },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(updateHostStructure.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updateHostStructure.fulfilled, (state, action) => {
+        const [structure, uuid] = action.payload;
+        if (uuid === state.host.uuid) {
+          state.loading = false;
+          state.host.structure = structure;
+          state.host.lastPage = "structure";
+        }
+      })
+      .addCase(updateHostStructure.rejected, (state, action) => {
+        state.loading = false;
+      });
   },
 });
 

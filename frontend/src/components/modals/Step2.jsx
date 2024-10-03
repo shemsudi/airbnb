@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Form } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { verifyOtp } from "../../redux/action.js";
+import { verifyOtp } from "../../redux/authAction.js";
 import { closeVerifyPage, openLoginPage } from "../../redux/ModalReducer.js";
 // redux
 import {

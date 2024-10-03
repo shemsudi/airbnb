@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { Form } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { closeSignUp_LoginPage } from "../../redux/ModalReducer.js";
-import { sendMessage } from "../../redux/action.js";
+import { sendMessage } from "../../redux/authAction.js";
 import {
   selectCurrentError,
   selectLoading,

@@ -5,9 +5,9 @@ import { useNavigate } from "react-router-dom";
 import { setStructure } from "../../redux/HostReducer";
 import HouseIcon from "../../components/icons/houseIcon";
 import FooterNavigation from "./footerNavigation.jsx";
-import axios from "axios";
 import HostHeader from "./hostHeader.jsx";
 import { types } from "../../utils/types.jsx";
+import { updateHostStructure } from "../../redux/hostActions.js";
 
 const HomeSturcture = () => {
   const host = useSelector((state) => state.host.host);
@@ -31,20 +31,9 @@ const HomeSturcture = () => {
   const backToStructurePage = () => {
     navigate(`/became-a-host/${host.uuid}/about-your-place`);
   };
-  const NavigateToPrivacyTypePage = async () => {
-    const response = await axios.post("http://localhost:3000/host/structure", {
-      uuid: host.uuid,
-      structure: typeOfPlace,
-      lastPage: "PrivacyType",
-    });
-    dispatch(setStructure({ uuid: host.uuid, structure: typeOfPlace }));
-    const currentHost = JSON.parse(localStorage.getItem("currentHost"));
-    const updatedHost = {
-      ...currentHost,
-      lastPage: "PrivacyType",
-      structure: typeOfPlace,
-    };
-    localStorage.setItem("currentHost", JSON.stringify(updatedHost));
+
+  const onNext = () => {
+    dispatch(updateHostStructure({ uuid: host.uuid, structure: typeOfPlace }));
     navigate(`/became-a-host/${host.uuid}/privacyType`);
   };
   return (
@@ -76,7 +65,7 @@ const HomeSturcture = () => {
         step={1}
         pos={1}
         onBack={backToStructurePage}
-        onNext={NavigateToPrivacyTypePage}
+        onNext={onNext}
       />
     </div>
   );

@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { sendMessage, verifyOtp, registerUser } from "./action.js";
+import { sendMessage, verifyOtp, registerUser } from "./authAction.js";
 import setAuthToken from "../utils/setAuthToken.js";
 
 const initialState = {

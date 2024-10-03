@@ -4,7 +4,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { closeSignUpPage, openLoginPage } from "../../redux/ModalReducer";
 // import { setErrors } from "../redux/errorReducer";
-import { registerUser } from "../../redux/action";
+import { registerUser } from "../../redux/authAction";
 import {
   selectCurrentError,
   selectLoading,

@@ -26,12 +26,17 @@ router.post(
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     const { uuid, structure } = req.body;
+    console.log(uuid);
+    console.log(req.body);
     try {
       const hosting = await Hosting.findOne({ uuid });
       hosting.structure = structure;
       hosting.lastPage = "privacyType";
       await hosting.save();
-      res.status(200).json();
+      res.status(200).json({
+        uuid: hosting.uuid,
+        structure: hosting.structure,
+      });
     } catch (error) {
       console.log(error);
       res.status(500).json({ message: "Internal Server Error" });

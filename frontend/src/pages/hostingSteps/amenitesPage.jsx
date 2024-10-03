@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import HostHeader from "./hostHeader";
 import FooterNavigation from "./footerNavigation";
 import { useNavigate } from "react-router-dom";
@@ -12,41 +12,37 @@ import {
   safetyAmenitiesItems,
 } from "../../utils/types";
 import axios from "axios";
+import { updateAmenities } from "../../redux/hostActions";
 const AmenitiesPage = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const host = useSelector((state) => state.host.host);
-  const [amenites, setAmenites] = useState(host.amenities || []);
+  const [amenities, setAmenites] = useState(host.amenities || []);
   const [uniqueAmenities, setUniqueAmenities] = useState(
     host.uniqueAmenities || []
   );
   const [safetyAmenities, setSafetyAmenities] = useState(
     host.safetyAmenities || []
   );
+  useEffect(() => {
+    const currentHost = JSON.parse(localStorage.getItem("currentHost"));
+    if (currentHost && currentHost.amenities) {
+      setAmenites(currentHost.amenities);
+      setUniqueAmenities(currentHost.uniqueAmenities);
+      setSafetyAmenities(currentHost.safetyAmenities);
+    }
+  }, []);
 
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
   const onNext = async () => {
     dispatch(
-      setAmenitiesState({
-        amenities: amenites,
+      updateAmenities({
+        uuid: host.uuid,
+        amenities: amenities,
         uniqueAmenities: uniqueAmenities,
         safetyAmenities: safetyAmenities,
       })
     );
-    const response = await axios.post("http://localhost:3000/host/amenities", {
-      uuid: host.uuid,
-      amenities: amenites,
-      uniqueAmenities: uniqueAmenities,
-      safetyAmenities: safetyAmenities,
-    });
-    const currentHost = JSON.parse(localStorage.getItem("currentHost"));
-    const updatedHost = {
-      ...currentHost,
-      lastPage: "photos",
-      amenities: amenites,
-      uniqueAmenities: uniqueAmenities,
-      safetyAmenities: safetyAmenities,
-    };
-    localStorage.setItem("currentHost", JSON.stringify(updatedHost));
+
     navigate(`/became-a-host/${host.uuid}/photos`);
   };
   const onBack = () => {
@@ -54,10 +50,10 @@ const AmenitiesPage = () => {
   };
 
   const HandleSelectedAmenities = (type) => {
-    if (amenites.includes(type)) {
-      setAmenites(amenites.filter((selected) => selected != type));
+    if (amenities.includes(type)) {
+      setAmenites(amenities.filter((selected) => selected != type));
     } else {
-      setAmenites([...amenites, type]);
+      setAmenites([...amenities, type]);
     }
   };
   const HandleSelectedUniqueAmenities = (type) => {
@@ -97,7 +93,7 @@ const AmenitiesPage = () => {
               <button
                 key={type}
                 className={`flex flex-col active:scale-95 active:duration-100 justify-between items-start border p-2 rounded-lg ${
-                  amenites.includes(type) && "outline outline-2 bg-neutral-100"
+                  amenities.includes(type) && "outline outline-2 bg-neutral-100"
                 } hover:outline  hover:outline-2`}
                 onClick={() => HandleSelectedAmenities(type)}
               >

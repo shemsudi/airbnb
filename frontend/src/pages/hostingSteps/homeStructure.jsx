@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { setStructure } from "../../redux/HostReducer";
 import HouseIcon from "../../components/icons/houseIcon";
 import FooterNavigation from "./footerNavigation.jsx";
 import HostHeader from "./hostHeader.jsx";
@@ -19,14 +18,8 @@ const HomeSturcture = () => {
     const currentHost = JSON.parse(localStorage.getItem("currentHost"));
     if (currentHost && currentHost.structure) {
       setTypeOfPlace(currentHost.structure);
-      dispatch(
-        setStructure({
-          uuid: currentHost.uuid,
-          structure: currentHost.structure,
-        })
-      );
     }
-  }, [dispatch]);
+  }, []);
 
   const backToStructurePage = () => {
     navigate(`/became-a-host/${host.uuid}/about-your-place`);

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import FooterNavigation from "./footerNavigation";
 import { useState } from "react";
@@ -7,9 +7,7 @@ import { useNavigate } from "react-router-dom";
 import HostHeader from "./hostHeader";
 import options from "../../utils/options";
 import PlaceOptionButton from "./placedOption.jsx";
-import { setPrivacyType } from "../../redux/HostReducer.js";
-import ProgressBar from "./progressBar.jsx";
-import axios from "axios";
+import { updatePrivacyType } from "../../redux/hostActions.js";
 const PrivacyType = () => {
   const host = useSelector((state) => state.host.host);
   const previouslyChoosed = host.privacyType ? host.privacyType : "";
@@ -23,29 +21,21 @@ const PrivacyType = () => {
   const handleSelect = (value) => {
     setTypeOfPrivacy(value);
   };
+  useEffect(() => {
+    const currentHost = JSON.parse(localStorage.getItem("currentHost"));
+    if (currentHost && currentHost.privacyType) {
+      setTypeOfPrivacy(currentHost.privacyType);
+    }
+  }, []);
 
   const onBack = () => {
     navigate(`/became-a-host/${host.uuid}/structure`);
   };
 
   const onNext = async () => {
-    const response = await axios.post(
-      "http://localhost:3000/host/privacyType",
-      {
-        uuid: host.uuid,
-        privacyType: typeOfPrivacy,
-      }
+    dispatch(
+      updatePrivacyType({ uuid: host.uuid, privacyType: typeOfPrivacy })
     );
-
-    const currentHost = JSON.parse(localStorage.getItem("currentHost"));
-    const updatedHost = {
-      ...currentHost,
-      lastPage: "location",
-      privacyType: typeOfPrivacy,
-    };
-    localStorage.setItem("currentHost", JSON.stringify(updatedHost));
-
-    dispatch(setPrivacyType({ uuid: host.uuid, privacyType: typeOfPrivacy }));
     navigate(`/became-a-host/${host.uuid}/location`);
   };
 

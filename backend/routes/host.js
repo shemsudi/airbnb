@@ -49,12 +49,17 @@ router.post(
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     const { uuid, privacyType } = req.body;
+    console.log(req.body);
     try {
       const hosting = await Hosting.findOne({ uuid });
       hosting.privacyType = privacyType;
+      console.log(hosting);
       hosting.lastPage = "location";
       await hosting.save();
-      res.status(200).json();
+      res.status(200).json({
+        uuid: hosting.uuid,
+        privacyType: hosting.privacyType,
+      });
     } catch (error) {
       console.log(error);
       res.status(500).json({ message: "Internal Server Error" });
@@ -91,7 +96,13 @@ router.post(
       host.lastPage = "amenites";
 
       await host.save();
-      res.status(200).json({});
+      res.status(200).json({
+        uuid: host.uuid,
+        guests: host.guests,
+        bedrooms: host.bedrooms,
+        beds: host.beds,
+        bathrooms: host.bathrooms,
+      });
     } catch (error) {
       console.log(error);
       res.status(400).json({ message: "Internal server Eroor" });
@@ -104,6 +115,7 @@ router.post(
   async (req, res) => {
     try {
       const { uuid, amenities, uniqueAmenities, safetyAmenities } = req.body;
+      console.log(req.body);
       const host = await Hosting.findOne({ uuid });
 
       host.amenities = amenities;
@@ -112,7 +124,12 @@ router.post(
       host.lastPage = "photos";
 
       await host.save();
-      res.status(200).json({});
+      res.status(200).json({
+        uuid: host.uuid,
+        amenities: host.amenities,
+        uniqueAmenities: host.uniqueAmenities,
+        safetyAmenities: host.safetyAmenities,
+      });
     } catch (error) {
       console.log(error);
       res.status(400).json({ message: "Internal server Eroor" });

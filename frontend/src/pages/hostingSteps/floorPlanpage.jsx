@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import HostHeader from "./hostHeader.jsx";
 import ProgressBar from "./progressBar.jsx";
 import FooterNavigation from "./footerNavigation.jsx";
@@ -6,8 +6,7 @@ import CounterControl from "./counterContorl.jsx";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { setFloorPlan } from "../../redux/HostReducer.js";
-import axios from "axios";
+import { updateFloorPlan } from "../../redux/hostActions.js";
 
 const FloorPlanPage = () => {
   const host = useSelector((state) => state.host.host);
@@ -23,28 +22,23 @@ const FloorPlanPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const BackToLocation = () => {
+  useEffect(() => {
+    const currentHost = JSON.parse(localStorage.getItem("currentHost"));
+    if (currentHost && currentHost.guests) {
+      setGuests(currentHost.guests);
+      setBedrooms(currentHost.bedrooms);
+      setBeds(currentHost.beds);
+      setBathrooms(currentHost.bathrooms);
+    }
+  }, []);
+
+  const onBack = () => {
     navigate(`/became-a-host/${host.uuid}/location`);
   };
-  const navigateToStep2 = async () => {
-    dispatch(setFloorPlan({ guests, bedrooms, beds, bathrooms }));
-    const response = await axios.post("http://localhost:3000/host/floor-plan", {
-      uuid: host.uuid,
-      guests: guests,
-      bedrooms: bedrooms,
-      beds: beds,
-      bathrooms: bathrooms,
-    });
-    const currentHost = JSON.parse(localStorage.getItem("currentHost"));
-    const updatedHost = {
-      ...currentHost,
-      lastPage: "stand-out",
-      guests: guests,
-      bedrooms: bedrooms,
-      beds: beds,
-      bathrooms: bathrooms,
-    };
-    localStorage.setItem("currentHost", JSON.stringify(updatedHost));
+  const onNext = async () => {
+    dispatch(
+      updateFloorPlan({ uuid: host.uuid, guests, bedrooms, beds, bathrooms })
+    );
     navigate(`/became-a-host/${host.uuid}/stand-out`);
   };
 
@@ -87,12 +81,7 @@ const FloorPlanPage = () => {
           </div>
         </div>
       </div>
-      <FooterNavigation
-        step={1}
-        pos={4}
-        onBack={BackToLocation}
-        onNext={navigateToStep2}
-      />
+      <FooterNavigation step={1} pos={4} onBack={onBack} onNext={onNext} />
     </div>
   );
 };

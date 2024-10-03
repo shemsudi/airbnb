@@ -1,18 +1,26 @@
 import React from "react";
-import Logo from "../assets/logos";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addHost, clearHost } from "../redux/HostReducer";
+import { openLoginPage, openSignUp_LoginPage } from "../redux/ModalReducer";
+import Signup from "../components/modals/signup";
 
 const BecameAhost = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { isSignUp_LoginPageOpen } = useSelector((state) => state.modal);
 
   const handleClick = async () => {
-    console.log("clicked");
+    const jwtToken = localStorage.getItem("jwtToken");
+
+    if (!jwtToken) {
+      dispatch(openSignUp_LoginPage());
+      dispatch(openLoginPage());
+      return;
+    }
+
     try {
       dispatch(clearHost());
       localStorage.removeItem("currentHost");
@@ -123,6 +131,7 @@ const BecameAhost = () => {
           </button>
         </div>
       </div>
+      {isSignUp_LoginPageOpen && <Signup />}
     </div>
   );
 };

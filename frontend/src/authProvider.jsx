@@ -4,11 +4,14 @@ import { setCredentials, logOut } from "./redux/AuthReducer";
 import { jwtDecode } from "jwt-decode";
 import setAuthToken from "./utils/setAuthToken";
 import { setHost } from "./redux/HostReducer";
-
+import Signup from "./components/modals/signup";
 const AuthContext = createContext();
-
+import { useSelector } from "react-redux";
+import { selectModals } from "./redux/ModalReducer";
 export const AuthProvider = ({ children }) => {
   const dispatch = useDispatch();
+  const { isSignUp_LoginPageOpen } = useSelector(selectModals);
+  console.log(isSignUp_LoginPageOpen);
 
   useEffect(() => {
     const token = localStorage.getItem("jwtToken");

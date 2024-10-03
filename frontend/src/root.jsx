@@ -8,7 +8,6 @@ import { useDispatch } from "react-redux";
 
 const Root = () => {
   const [atTop, setAtTop] = useState(true);
-  const dispatch = useDispatch();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -33,7 +32,6 @@ const Root = () => {
       <div className="overflow-y-auto ">
         <Outlet className="overflow-y-auto" />
       </div>
-      {/* <Footer /> */}
     </div>
   );
 };

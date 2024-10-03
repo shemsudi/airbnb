@@ -58,6 +58,7 @@ const Header = ({ atTop }) => {
           <ProfileModal />
         </div>
       </header>
+
       {atTop ? <SearchBar selectedOption={selectedOption} /> : <div></div>}
 
       <div className="mt-3 -z-50">

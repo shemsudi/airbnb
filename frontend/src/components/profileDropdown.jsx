@@ -45,7 +45,6 @@ const ProfileDropDown = (props) => {
         <ProfileIcon />
       </button>
       {isDropDownOpen && <ProfileModal />}
-
       {isSignUp_LoginPageOpen && <Signup />}
     </div>
   );

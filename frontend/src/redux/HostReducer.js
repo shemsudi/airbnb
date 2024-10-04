@@ -2,10 +2,16 @@ import { createSlice } from "@reduxjs/toolkit";
 import {
   removeImageRedux,
   updateAmenities,
+  updateDescription,
   updateFloorPlan,
   updateHostStructure,
+  updateInstantBook,
+  updateTitle,
+  updateVisibility,
+  uploadFiles,
 } from "./hostActions";
 import { updatePrivacyType } from "./hostActions";
+import { act } from "react";
 
 const initialState = {
   hosts: {},
@@ -113,10 +119,10 @@ const hostSlice = createSlice({
       .addCase(updateHostStructure.fulfilled, (state, action) => {
         const { structure, uuid } = action.payload;
         if (uuid === state.host.uuid) {
-          state.loading = false;
           state.host.structure = structure;
           state.host.lastPage = "structure";
         }
+        state.loading = false;
       })
       .addCase(updateHostStructure.rejected, (state, action) => {
         state.loading = false;
@@ -128,10 +134,10 @@ const hostSlice = createSlice({
         const { privacyType, uuid } = action.payload;
         console.log(action.payload);
         if (uuid === state.host.uuid) {
-          state.loading = false;
           state.host.privacyType = privacyType;
           state.host.lastPage = "privacyType";
         }
+        state.loading = false;
       })
       .addCase(updatePrivacyType.rejected, (state, action) => {
         console.log(action.payload);
@@ -143,13 +149,13 @@ const hostSlice = createSlice({
       .addCase(updateFloorPlan.fulfilled, (state, action) => {
         const { uuid, guests, beds, bedrooms, bathrooms } = action.payload;
         if (uuid === state.host.uuid) {
-          state.loading = false;
           state.host.guests = guests;
           state.host.beds = beds;
           state.host.bedrooms = bedrooms;
           state.host.bathrooms = bathrooms;
           state.host.lastPage = "amenities";
         }
+        state.loading = false;
       })
       .addCase(updateAmenities.pending, (state) => {
         state.loading = true;
@@ -158,12 +164,12 @@ const hostSlice = createSlice({
         const { uuid, amenities, uniqueAmenities, safetyAmenities } =
           action.payload;
         if (uuid === state.host.uuid) {
-          state.loading = false;
           state.host.amenities = amenities;
           state.host.uniqueAmenities = uniqueAmenities;
           state.host.safetyAmenities = safetyAmenities;
           state.host.lastPage = "photos";
         }
+        state.loading = false;
       })
       .addCase(updateAmenities.rejected, (state, action) => {
         state.loading = false;
@@ -173,12 +179,83 @@ const hostSlice = createSlice({
       })
       .addCase(removeImageRedux.fulfilled, (state, action) => {
         const { uuid, index } = action.payload;
-        console.log("after", state.host.uuid);
         if (uuid === state.host.uuid) {
           state.host.photos = state.host.photos.filter((_, i) => i !== index);
         }
-        console.log("after", state.host.uuid);
         state.loading = false;
+      })
+      .addCase(uploadFiles.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(uploadFiles.fulfilled, (state, action) => {
+        const { newFiles } = action.payload;
+        state.host.photos = [...state.host.photos, ...newFiles];
+        state.loading = false;
+        state.host.lastPage = "title";
+      })
+      .addCase(uploadFiles.rejected, (state, action) => {
+        state.loading = false;
+      })
+      .addCase(updateTitle.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updateTitle.fulfilled, (state, action) => {
+        const { title, uuid } = action.payload;
+        if (uuid === state.host.uuid) {
+          state.host.title = title;
+          state.host.lastPage = "description";
+        }
+        state.loading = false;
+      })
+      .addCase(updateTitle.rejected, (state, action) => {
+        state.loading = false;
+      })
+      .addCase(updateDescription.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updateDescription.fulfilled, (state, action) => {
+        const { uuid, description, highlights } = action.payload;
+        console.log(action.payload);
+        if (uuid === state.host.uuid) {
+          state.host.description = description;
+          state.host.highlights = highlights;
+          state.host.lastPage = "instantBook";
+        }
+        state.loading = false;
+      })
+      .addCase(updateDescription.rejected, (state, error) => {
+        state.loading = false;
+        console.log(error);
+      })
+      .addCase(updateInstantBook.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updateInstantBook.fulfilled, (state, action) => {
+        const { uuid, instantBook } = action.payload;
+        if (uuid === state.host.uuid) {
+          state.host.instantBook = instantBook;
+          state.host.lastPage = "visibility";
+        }
+        state.loading = false;
+      })
+      .addCase(updateInstantBook.rejected, (state, error) => {
+        state.loading = false;
+        console.log(error);
+      })
+      .addCase(updateVisibility.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updateVisibility.fulfilled, (state, action) => {
+        const { uuid, visibility } = action.payload;
+        if (uuid === state.host.uuid) {
+          state.host.visibility = visibility;
+          state.host.lastPage = "price";
+        }
+        state.loading = false;
+      })
+      .addCase(updateVisibility.rejected, (state, error) => {
+        state.loading = false;
+        console.log(error);
       });
   },
 });

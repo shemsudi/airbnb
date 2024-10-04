@@ -1,3 +1,4 @@
+import { Description } from "@headlessui/react";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 export const updateHostStructure = createAsyncThunk(
@@ -96,5 +97,123 @@ export const removeImageRedux = createAsyncThunk(
       params: { uuid: uuid },
     });
     return { uuid, index };
+  }
+);
+
+export const uploadFiles = createAsyncThunk(
+  "host/uploadFiles",
+  async ({ tempFiles, uuid, setFiles }, { dispatch }) => {
+    const formdata = new FormData();
+    console.log(tempFiles);
+    formdata.append("uuid", uuid);
+    tempFiles.forEach((file) => formdata.append("photos", file));
+    const result = await axios.post(
+      "http://localhost:3000/host/addPhotos",
+      formdata,
+      { headers: { "Content-Type": "multipart/form-data" } }
+    );
+
+    const urlFiles = result.data.photos;
+
+    setFiles((files) => [...files, ...urlFiles]);
+    const currentHost = JSON.parse(localStorage.getItem("currentHost"));
+    const updatedHost = {
+      ...currentHost,
+      lastPage: "title",
+      photos: [...currentHost.photos, ...urlFiles],
+    };
+    localStorage.setItem("currentHost", JSON.stringify(updatedHost));
+
+    return { newFiles: urlFiles };
+  }
+);
+
+export const updateTitle = createAsyncThunk(
+  "host/updateTitle",
+  async ({ uuid, title }) => {
+    const response = await axios.post("http://localhost:3000/host/title", {
+      title,
+      uuid: uuid,
+    });
+    const currentHost = JSON.parse(localStorage.getItem("currentHost"));
+    const updatedHost = {
+      ...currentHost,
+      title: title,
+    };
+    localStorage.setItem("currentHost", JSON.stringify(updatedHost));
+    return { title, uuid };
+  }
+);
+
+export const updateDescription = createAsyncThunk(
+  "host/updateDescription",
+  async ({ uuid, description, highlights }) => {
+    console.log(uuid, description, highlights);
+    const response = await axios.post(
+      "http://localhost:3000/host/description",
+      {
+        uuid: uuid,
+        description: description,
+        highlights: highlights,
+      }
+    );
+
+    const currentHost = JSON.parse(localStorage.getItem("currentHost"));
+    const updatedHost = {
+      ...currentHost,
+      description: description,
+      highlights: highlights,
+    };
+    localStorage.setItem("currentHost", JSON.stringify(updatedHost));
+    return {
+      uuid,
+      description,
+      highlights,
+    };
+  }
+);
+
+export const updateInstantBook = createAsyncThunk(
+  "host/updateInstantBook",
+  async ({ uuid, instantBook }) => {
+    const response = await axios.post(
+      "http://localhost:3000/host/instant-book",
+      {
+        uuid: uuid,
+        instantBook: instantBook,
+      }
+    );
+    const currentHost = JSON.parse(localStorage.getItem("currentHost"));
+    const updatedHost = {
+      ...currentHost,
+      instantBook: instantBook,
+    };
+    localStorage.setItem("currentHost", JSON.stringify(updatedHost));
+    return {
+      uuid,
+      instantBook,
+    };
+  }
+);
+
+export const updateVisibility = createAsyncThunk(
+  "host/updateVisibility",
+  async ({ uuid, visibility }) => {
+    const response = await axios.post("http://localhost:3000/host/visibility", {
+      uuid: uuid,
+      visibility: visibility,
+    });
+    const currentHost = JSON.parse(localStorage.getItem("currentHost"));
+    const updatedHost = {
+      ...currentHost,
+      visibility: visibility,
+      lastPage: "price",
+    };
+    localStorage.setItem("currentHost", JSON.stringify(updatedHost));
+
+    return {
+      visibility,
+      uuid,
+    };
   }
 );

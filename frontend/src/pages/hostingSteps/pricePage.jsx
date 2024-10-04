@@ -30,7 +30,6 @@ const PricePage = () => {
   const handlePriceChange = (event) => {
     const inputValue = event.target.value;
 
-    // Remove the dollar sign and parse the remaining string to a number
     const numericValue = inputValue.replace(/[^0-9.]/g, "");
     console.log(numericValue);
     if (isNaN(numericValue) || numericValue === "") {

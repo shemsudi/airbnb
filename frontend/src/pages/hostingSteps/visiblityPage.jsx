@@ -1,33 +1,27 @@
-import React, { useState } from "react";
-import HostHeader from "./hostHeader";
+import React, { useState, useEffect } from "react";
 import FooterNavigation from "./footerNavigation";
 import { Link, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import axios from "axios";
-import { setVisiblity } from "../../redux/HostReducer";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { updateVisibility } from "../../redux/hostActions";
+import HostHeader from "./hostHeader";
 
 const VisiblityPage = () => {
   const host = useSelector((state) => state.host.host);
   const [typeofGuest, setTypeofGuest] = useState(host.visibility || "anyone");
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  useEffect(() => {
+    const currentHost = JSON.parse(localStorage.getItem("currentHost"));
+    if (currentHost && currentHost.visibility) {
+      setTypeofGuest(currentHost.visibility);
+    }
+  }, []);
   const onBack = () => {
     navigate(`/became-a-host/${host.uuid}/instant-book`);
   };
   const onNext = async () => {
-    const response = await axios.post("http://localhost:3000/host/visibility", {
-      uuid: host.uuid,
-      visibility: typeofGuest,
-    });
-    dispatch(setVisiblity({ visibility: typeofGuest }));
-    const currentHost = JSON.parse(localStorage.getItem("currentHost"));
-    const updatedHost = {
-      ...currentHost,
-      visibility: typeofGuest,
-      lastPage: "price",
-    };
-    localStorage.setItem("currentHost", JSON.stringify(updatedHost));
+    dispatch(updateVisibility({ uuid: host.uuid, visibility: typeofGuest }));
+
     navigate(`/became-a-host/${host.uuid}/price`);
   };
   return (

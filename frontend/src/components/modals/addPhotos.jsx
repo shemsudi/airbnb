@@ -6,6 +6,7 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { setPhotos } from "../../redux/HostReducer";
+import { uploadFiles } from "../../redux/hostActions";
 
 const AddPhotos = ({ isOpen, setIsOpen, files, setFiles }) => {
   const host = useSelector((state) => state.host.host);
@@ -43,35 +44,9 @@ const AddPhotos = ({ isOpen, setIsOpen, files, setFiles }) => {
     setTempFiles((tempFiles) => tempFiles.filter((_, i) => i !== index));
     setPreviews((previews) => previews.filter((_, i) => i !== index));
   };
-  const uploadFiles = async () => {
-    const formdata = new FormData();
-    formdata.append("uuid", host.uuid);
-    tempFiles.forEach((file) => formdata.append("photos", file));
-
+  const uploadPhotos = async () => {
     try {
-      const result = await axios.post(
-        "http://localhost:3000/host/addPhotos",
-        formdata,
-        { headers: { "Content-Type": "multipart/form-data" } }
-      );
-
-      const urlFiles = result.data.photos;
-      console.log("Uploaded files:", urlFiles);
-
-      // Update files state and dispatch
-      setFiles((files) => [...files, ...urlFiles]);
-      dispatch(setPhotos({ photos: [...files, ...urlFiles] }));
-
-      // Update localStorage directly with urlFiles
-      const currentHost = JSON.parse(localStorage.getItem("currentHost"));
-      const updatedHost = {
-        ...currentHost,
-        lastPage: "title",
-        photos: [...files, ...urlFiles],
-      };
-      localStorage.setItem("currentHost", JSON.stringify(updatedHost));
-
-      // Clear previews and temp files
+      dispatch(uploadFiles({ uuid: host.uuid, tempFiles, setFiles }));
       setPreviews([]);
       setTempFiles([]);
       setIsOpen(false);
@@ -159,7 +134,7 @@ const AddPhotos = ({ isOpen, setIsOpen, files, setFiles }) => {
         <div className="flex border-t-2 p-4 justify-between items-center">
           <button onClick={() => setIsOpen(false)}>Done</button>
           <button
-            onClick={uploadFiles}
+            onClick={uploadPhotos}
             className="bg-black opacity-90 hover:opacity-100 text-white px-4 py-2 rounded-lg"
           >
             Upload

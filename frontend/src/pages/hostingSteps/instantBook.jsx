@@ -8,6 +8,8 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import axios from "axios";
 import { setInstantBook } from "../../redux/HostReducer";
+import { useEffect } from "react";
+import { updateInstantBook } from "../../redux/hostActions";
 const InstantBookPage = () => {
   const host = useSelector((state) => state.host.host);
   const navigate = useNavigate();
@@ -16,29 +18,21 @@ const InstantBookPage = () => {
   const [instantBooking, setInstantBooking] = useState(
     host.instantBook || "instant"
   );
-  console.log(instantBooking);
+
+  useEffect(() => {
+    const currentHost = JSON.parse(localStorage.getItem("currentHost"));
+    if (currentHost && currentHost.instantBook) {
+      setInstantBook(currentHost.instantBook);
+    }
+  }, []);
   const onBack = () => {
     navigate(`/became-a-host/${host.uuid}/finish-setup`);
   };
   const onNext = async () => {
-    const response = await axios.post(
-      "http://localhost:3000/host/instant-book",
-      {
-        uuid: host.uuid,
-        instantBook: instantBooking,
-      }
+    dispatch(
+      updateInstantBook({ uuid: host.uuid, instantBook: instantBooking })
     );
-    dispatch(setInstantBook({ instantBook: instantBooking }));
-    const currentHost = JSON.parse(localStorage.getItem("currentHost"));
-    const updatedHost = {
-      ...currentHost,
-      instantBook: instantBooking,
-    };
-    localStorage.setItem("currentHost", JSON.stringify(updatedHost));
-
-    if (response.status === 200) {
-      navigate(`/became-a-host/${host.uuid}/visibility`);
-    }
+    navigate(`/became-a-host/${host.uuid}/visibility`);
   };
 
   return (

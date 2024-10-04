@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import HostHeader from "./hostHeader";
 import FooterNavigation from "./footerNavigation";
-import { useNavigate } from "react-router-dom";
+import { json, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { addTitle } from "../../redux/HostReducer";
-import axios from "axios";
+
+import { updateTitle } from "../../redux/hostActions";
 
 const TitlePage = () => {
   const host = useSelector((state) => state.host.host);
@@ -13,24 +13,19 @@ const TitlePage = () => {
   const count = title.length;
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    const currentHost = JSON.parse(localStorage.getItem("currentHost"));
+    if (currentHost && currentHost.title) {
+      setTitle(currentHost.title);
+    }
+  }, []);
   const onBack = () => {
     navigate(`/became-a-host/${host.uuid}/photos`);
   };
   const onNext = async () => {
-    const response = await axios.post("http://localhost:3000/host/title", {
-      title,
-      uuid: host.uuid,
-    });
-    dispatch(addTitle({ title: title }));
-    const currentHost = JSON.parse(localStorage.getItem("currentHost"));
-    const updatedHost = {
-      ...currentHost,
-      title: title,
-    };
-    localStorage.setItem("currentHost", JSON.stringify(updatedHost));
-    if (response.status === 200) {
-      navigate(`/became-a-host/${host.uuid}/description`);
-    }
+    dispatch(updateTitle({ uuid: host.uuid, title }));
+    navigate(`/became-a-host/${host.uuid}/description`);
   };
   return (
     <div className="h-screen flex flex-col">

@@ -7,20 +7,31 @@ import { descriptionTypes } from "../../utils/types";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { setDescriptions } from "../../redux/HostReducer";
+import { updateDescription } from "../../redux/hostActions";
+import { useEffect } from "react";
 
 const DescriptionPage = () => {
   const host = useSelector((state) => state.host.host);
   const [step1, setStep1] = React.useState(true);
-  const [descripiton, setDescription] = React.useState(
+  const [description, setDescription] = React.useState(
     host.description ||
       "Make some memories at this unique and family-friendly place."
   );
-  const count = descripiton.length;
+  const count = description.length;
   const [selectedTypes, setSelectedTypes] = React.useState(
     host.highlights || []
   );
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    const currentHost = JSON.parse(localStorage.getItem("currentHost"));
+    if (currentHost && currentHost.description) {
+      setDescription(currentHost.description);
+      setSelectedTypes(currentHost.highlights);
+    }
+  }, []);
+
   const onBack = () => {
     if (!step1) {
       setStep1(true);
@@ -32,28 +43,14 @@ const DescriptionPage = () => {
     if (step1) {
       setStep1(false);
     } else {
-      const response = await axios.post(
-        "http://localhost:3000/host/description",
-        {
-          uuid: host.uuid,
-          description: descripiton,
-          highlights: selectedTypes,
-        }
-      );
       dispatch(
-        setDescriptions({ description: descripiton, highlights: selectedTypes })
+        updateDescription({
+          uuid: host.uuid,
+          description: description,
+          highlights: selectedTypes,
+        })
       );
-      const currentHost = JSON.parse(localStorage.getItem("currentHost"));
-      const updatedHost = {
-        ...currentHost,
-        description: descripiton,
-        highlights: selectedTypes,
-      };
-      localStorage.setItem("currentHost", JSON.stringify(updatedHost));
-
-      if (response.status === 200) {
-        navigate(`/became-a-host/${host.uuid}/finish-setup`);
-      }
+      navigate(`/became-a-host/${host.uuid}/finish-setup`);
     }
   };
   return (
@@ -109,7 +106,7 @@ const DescriptionPage = () => {
             <textarea
               onChange={(e) => setDescription(e.target.value)}
               className="w-full h-40 border border-gray-300 rounded-lg p-2 mt-4"
-              value={descripiton}
+              value={description}
               maxLength={600}
             ></textarea>
             <small>{count}/600</small>

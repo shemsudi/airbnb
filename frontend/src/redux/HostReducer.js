@@ -3,21 +3,44 @@ import {
   removeImageRedux,
   updateAmenities,
   updateDescription,
+  updateDiscounts,
   updateFloorPlan,
   updateHostStructure,
   updateInstantBook,
+  updateLegalInfo,
+  updatePrice,
   updateTitle,
   updateVisibility,
   uploadFiles,
 } from "./hostActions";
 import { updatePrivacyType } from "./hostActions";
-import { act } from "react";
 
 const initialState = {
   hosts: {},
   loading: false,
   error: null,
-  host: {},
+  host: {
+    uuid: "",
+    lastPage: "",
+    structure: "",
+    privacyType: "",
+    guests: 2,
+    beds: 1,
+    bedrooms: 1,
+    bathrooms: 1,
+    amenities: [],
+    uniqueAmenities: [],
+    safetyAmenities: [],
+    photos: [],
+    title: "",
+    description: "",
+    highlights: "",
+    instantBook: false,
+    visibility: "",
+    price: 23,
+    discount: {},
+    legalInfo: {},
+  },
 };
 
 const hostSlice = createSlice({
@@ -120,7 +143,7 @@ const hostSlice = createSlice({
         const { structure, uuid } = action.payload;
         if (uuid === state.host.uuid) {
           state.host.structure = structure;
-          state.host.lastPage = "structure";
+          state.host.lastPage = "PrivacyType";
         }
         state.loading = false;
       })
@@ -135,7 +158,7 @@ const hostSlice = createSlice({
         console.log(action.payload);
         if (uuid === state.host.uuid) {
           state.host.privacyType = privacyType;
-          state.host.lastPage = "privacyType";
+          state.host.lastPage = "location";
         }
         state.loading = false;
       })
@@ -189,12 +212,18 @@ const hostSlice = createSlice({
       })
       .addCase(uploadFiles.fulfilled, (state, action) => {
         const { newFiles } = action.payload;
-        state.host.photos = [...state.host.photos, ...newFiles];
+        if (state.host.photos === undefined) {
+          state.host.photos = [...newFiles];
+        } else {
+          state.host.photos = [...state.host?.photos, ...newFiles];
+        }
         state.loading = false;
         state.host.lastPage = "title";
       })
-      .addCase(uploadFiles.rejected, (state, action) => {
+      .addCase(uploadFiles.rejected, (state, error) => {
         state.loading = false;
+        state.error = error;
+        console.log(error);
       })
       .addCase(updateTitle.pending, (state) => {
         state.loading = true;
@@ -255,6 +284,54 @@ const hostSlice = createSlice({
       })
       .addCase(updateVisibility.rejected, (state, error) => {
         state.loading = false;
+        console.log(error);
+      })
+      .addCase(updatePrice.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updatePrice.fulfilled, (state, action) => {
+        const { uuid, price } = action.payload;
+        if (uuid === state.host.uuid) {
+          state.host.price = price;
+          state.host.lastPage = "discount";
+        }
+        state.loading = false;
+      })
+      .addCase(updatePrice.rejected, (state, error) => {
+        state.loading = false;
+        state.error = error;
+        console.log(error);
+      })
+      .addCase(updateDiscounts.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updateDiscounts.fulfilled, (state, action) => {
+        const { uuid, discount } = action.payload;
+        if (uuid === state.host.uuid) {
+          state.host.discount = discount;
+          state.host.lastPage = "legal";
+        }
+        state.loading = false;
+      })
+      .addCase(updateDiscounts.rejected, (state, error) => {
+        state.loading = false;
+        state.error = error;
+        console.log(error);
+      })
+      .addCase(updateLegalInfo.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updateLegalInfo.fulfilled, (state, action) => {
+        const { uuid, legalInfo } = action.payload;
+        if (uuid === state.host.uuid) {
+          state.host.legalInfo = legalInfo;
+          state.lastPage = "receipt";
+        }
+        state.loading = false;
+      })
+      .addCase(updateLegalInfo.rejected, (state, error) => {
+        state.loading = false;
+        state.error = error;
         console.log(error);
       });
   },

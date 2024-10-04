@@ -53,7 +53,7 @@ exports.verifyOTP = async (req, res) => {
     if (true) {
       const user = await User.findOne({ phone: phoneNumber });
       if (user) {
-        const payload = { userId: user.id };
+        const payload = { userId: user.id, name: user.firstName };
         const authToken = jwt.sign(payload, process.env.JWT_SECRET, {
           expiresIn: "2h",
         });
@@ -103,7 +103,7 @@ exports.completeRegistration = async (req, res) => {
     });
     console.log(newUser);
 
-    const payload = { userId: newUser._id };
+    const payload = { userId: newUser._id, name: newUser.firstName };
     console.log(payload);
     const authToken = jwt.sign(payload, process.env.JWT_SECRET, {
       expiresIn: "2h",

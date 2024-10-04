@@ -8,6 +8,8 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import { setPriceRedux } from "../../redux/HostReducer";
+import { updatePrice } from "../../redux/hostActions";
+import { useEffect } from "react";
 
 const PricePage = () => {
   const host = useSelector((state) => state.host.host);
@@ -16,15 +18,19 @@ const PricePage = () => {
   const [isShowMore, setIsShowMore] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    const currentHost = JSON.parse(localStorage.getItem("currentHost"));
+    if (currentHost && currentHost.price) {
+      setPrice(currentHost.price);
+    }
+  }, []);
+
   const onBack = () => {
     navigate(`/became-a-host/${host.uuid}/visibility`);
   };
   const onNext = async () => {
-    const response = await axios.post("http://localhost:3000/host/price", {
-      uuid: host.uuid,
-      price: parseInt(price),
-    });
-    dispatch(setPriceRedux({ price: price }));
+    dispatch(updatePrice({ uuid: host.uuid, price: price }));
     navigate(`/became-a-host/${host.uuid}/discount`);
   };
   const handlePriceChange = (event) => {

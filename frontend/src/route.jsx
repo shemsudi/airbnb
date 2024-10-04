@@ -24,6 +24,7 @@ import PricePage from "./pages/hostingSteps/pricePage.jsx";
 import DiscountPage from "./pages/hostingSteps/discountPage.jsx";
 import LegalPage from "./pages/hostingSteps/legalPage.jsx";
 import ReceiptPage from "./pages/hostingSteps/receiptPage.jsx";
+import PublishCelebration from "./pages/hostingSteps/publishCelebration.jsx";
 // import { useSelector } from "react-redux";
 
 // const photoLoader = async () => {
@@ -165,7 +166,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/became-a-host/:uuid/publish-celebration",
-    element: <ReceiptPage />,
+    element: <PublishCelebration />,
   },
   {
     path: "/release/features",

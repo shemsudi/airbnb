@@ -3,16 +3,21 @@ import HostHeader from "./hostHeader";
 import FooterNavigation from "./footerNavigation";
 import { useNavigate, Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { setLegalInfo } from "../../redux/HostReducer";
-import axios from "axios";
+import { updateLegalInfo } from "../../redux/hostActions";
 
 const LegalPage = () => {
   const host = useSelector((state) => state.host.host);
 
-  const [hostingType, setHostingType] = useState("");
-  const [securityCameras, setSecurityCameras] = useState(false);
-  const [noiseMonitors, setNoiseMonitors] = useState(false);
-  const [weapons, setWeapons] = useState(false);
+  const [hostingType, setHostingType] = useState(
+    host.legalInfo?.hostingType || ""
+  );
+  const [securityCameras, setSecurityCameras] = useState(
+    host.legalInfo?.securityCameras?.isAvailable || false
+  );
+  const [noiseMonitors, setNoiseMonitors] = useState(
+    host.legalInfo?.noiseMonitors || false
+  );
+  const [weapons, setWeapons] = useState(host.legalInfo?.weapons || false);
 
   const handleChange = (e) => {
     setHostingType(e.target.value);
@@ -48,22 +53,7 @@ const LegalPage = () => {
       weapons,
     };
     console.log(legalInfo);
-    dispatch(setLegalInfo({ legalInfo }));
-
-    const currentHost = JSON.parse(localStorage.getItem("currentHost"));
-    const updatedHost = {
-      ...currentHost,
-      legalInfo,
-    };
-    localStorage.setItem("currentHost", JSON.stringify(updatedHost));
-
-    const response = await axios.post(
-      "http://localhost:3000/host/setLegalInfo",
-      {
-        uuid: host.uuid,
-        legalInfo,
-      }
-    );
+    dispatch(updateLegalInfo({ uuid: host.uuid, legalInfo }));
 
     navigate(`/became-a-host/${host.uuid}/receipt`);
   };

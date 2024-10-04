@@ -3,19 +3,33 @@ import HostHeader from "./hostHeader";
 import FooterNavigation from "./footerNavigation";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import axios from "axios";
-import { setDiscounts } from "../../redux/HostReducer";
+import { updateDiscounts } from "../../redux/hostActions";
+import { useEffect } from "react";
+import { current } from "@reduxjs/toolkit";
 
 const DiscountPage = () => {
   const host = useSelector((state) => state.host.host);
-  const [weeklyDiscount, setWeeklyDiscount] = useState(8);
-  const [monthlyDiscount, setMonthlyDiscount] = useState(10);
+  const [weeklyDiscount, setWeeklyDiscount] = useState(
+    host.discount?.weeklyDiscount || 8
+  );
+  const [monthlyDiscount, setMonthlyDiscount] = useState(
+    host.discount?.monthlyDiscount || 10
+  );
   const [isNewLPDiscountEnabled, setIsNewLPDiscountEnabled] = useState(true);
   const [isWeeklyDiscountEnabled, setIsWeeklyDiscountEnabled] = useState(true);
   const [isMonthlyDiscountEnabled, setIsMonthlyDiscountEnabled] =
     useState(true);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    const currentHost = JSON.parse(localStorage.getItem("currentHost"));
+    if (currentHost && currentHost.discount) {
+      setMonthlyDiscount(currentHost.discount.monthlyDiscount);
+      setWeeklyDiscount(currentHost.discount.weeklyDiscount);
+    }
+  }, []);
+
   const onBack = () => {
     navigate(`/became-a-host/${host.uuid}/price`);
   };
@@ -31,25 +45,9 @@ const DiscountPage = () => {
     if (isNewLPDiscountEnabled) {
       discountsToSend.newLPDiscount = 20;
     }
-    try {
-      const response = await axios.post(
-        "http://localhost:3000/host/setDiscount",
-        {
-          uuid: host.uuid,
-          discount: discountsToSend,
-        }
-      );
-      if (response.status === 200) {
-        dispatch(setDiscounts({ discountsToSend }));
-        const currentHost = JSON.parse(localStorage.getItem("currentHost"));
-        const updatedHost = {
-          ...currentHost,
-          discount: discountsToSend,
-        };
-        localStorage.setItem("currentHost", JSON.stringify(updatedHost));
-        navigate(`/became-a-host/${host.uuid}/legal`);
-      }
-    } catch (error) {}
+
+    dispatch(updateDiscounts({ uuid: host.uuid, discount: discountsToSend }));
+    navigate(`/became-a-host/${host.uuid}/legal`);
   };
 
   return (

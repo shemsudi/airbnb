@@ -33,7 +33,6 @@ const AddPhotos = ({ isOpen, setIsOpen, files, setFiles }) => {
     const selectedPreviews = selectedFiles.map((file) =>
       URL.createObjectURL(file)
     );
-    console.log(selectedPreviews);
     setPreviews((prevPreviews) => [...prevPreviews, ...selectedPreviews]);
     e.target.value = null;
   };
@@ -46,9 +45,9 @@ const AddPhotos = ({ isOpen, setIsOpen, files, setFiles }) => {
   };
   const uploadPhotos = async () => {
     try {
-      dispatch(uploadFiles({ uuid: host.uuid, tempFiles, setFiles }));
-      setPreviews([]);
-      setTempFiles([]);
+      dispatch(uploadFiles({ uuid: host.uuid, files, tempFiles, setFiles }));
+      // setPreviews([]);
+      // setTempFiles([]);
       setIsOpen(false);
     } catch (error) {
       console.error("Error uploading files:", error);
